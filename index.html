@@ -29,6 +29,13 @@
   ============================================================ -->
   <link rel="stylesheet" href="css/style.css" />
 
+  <!-- ============================================================
+       AUTH MODAL STYLESHEET
+       — Alada file: auth.css
+       — Login & Register modal er sob style ekhane
+  ============================================================ -->
+  <link rel="stylesheet" href="css/auth.css" />
+
 </head>
 <body class="page-load">
 
@@ -75,8 +82,8 @@
       <!-- Dark/Light Mode Toggle Button -->
       <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
 
-      <!-- Login Button -->
-      <button class="btn-primary" onclick="notify('🔔 Login feature coming soon!')">Login</button>
+      <!-- Login Button — Click korle auth modal khulbe -->
+      <button class="btn-primary" onclick="openAuthModal('login')">Login</button>
 
       <!-- Hamburger (Mobile only, shown via CSS) -->
       <div class="hamburger" id="hamburger" aria-label="Menu">
@@ -100,7 +107,7 @@
     <a href="#categories" class="nav-link" onclick="closeMobile()">📂 Categories</a>
     <a href="#why"        class="nav-link" onclick="closeMobile()">⭐ Why Us</a>
     <a href="#contact"    class="nav-link" onclick="closeMobile()">💬 Support</a>
-    <button class="btn-primary" style="width:100%; padding:12px;" onclick="notify('Login feature coming soon!')">
+    <button class="btn-primary" style="width:100%; padding:12px;" onclick="openAuthModal('login')">
       Login / Register
     </button>
   </div>
@@ -893,11 +900,232 @@
 
 
   <!-- ============================================================
+       AUTH MODAL — LOGIN & REGISTER
+       — openAuthModal('login') ba openAuthModal('register') call kore khola jay
+       — Overlay click, ESC key, X button diye band hoy
+       — Style: auth.css | Logic: auth.js
+  ============================================================ -->
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="auth-modal" id="authModal">
+
+      <!-- Modal Header: Title + Close Button -->
+      <div class="auth-header">
+        <div class="auth-title">
+          <div class="auth-title-icon">🎮</div>
+          Account
+        </div>
+        <button class="auth-close" id="authCloseBtn" title="Close">✕</button>
+      </div>
+
+      <!-- Tab Switcher: Login / Register -->
+      <div class="auth-tabs">
+        <button class="auth-tab tab-active" id="loginTab">
+          →  Login
+        </button>
+        <button class="auth-tab" id="registerTab">
+          👤 Register
+        </button>
+      </div>
+
+      <!-- ── LOGIN PANEL ── -->
+      <form class="form-panel form-panel-active" id="loginForm" novalidate>
+
+        <!-- Global success/error message -->
+        <div class="auth-message"></div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="form-label-icon">✉️</span> Email
+          </label>
+          <div class="input-wrapper">
+            <input
+              class="form-input"
+              type="email"
+              id="loginEmail"
+              placeholder="your@email.com"
+              autocomplete="email"
+            />
+            <!-- Email clear/copy icon (optional) -->
+            <div class="input-action" title="Clear" onclick="document.getElementById('loginEmail').value=''">✕</div>
+          </div>
+          <div class="field-error">⚠️ </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="form-label-icon">🔒</span> Password
+          </label>
+          <div class="input-wrapper">
+            <input
+              class="form-input"
+              type="password"
+              id="loginPassword"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+            />
+            <!-- Show/Hide password toggle -->
+            <div class="input-action" data-toggle-pw="loginPassword" title="Show password">👁️</div>
+          </div>
+          <div class="field-error">⚠️ </div>
+        </div>
+
+        <!-- Login Submit Button -->
+        <button class="btn-auth-submit" type="submit" id="loginSubmitBtn">
+          → Login
+        </button>
+
+        <!-- Divider -->
+        <div class="auth-divider">or</div>
+
+        <!-- Google Login -->
+        <button type="button" class="btn-google">
+          <div class="google-g"></div>
+          Continue with Google
+        </button>
+
+        <!-- Forgot Password + Switch link -->
+        <div class="auth-footer-links">
+          <button type="button" class="forgot-link" id="forgotPasswordBtn">🔑 Forgot Password?</button>
+          <button type="button" class="switch-link" onclick="switchTab('register')">
+            Don't have an account? <span>Register now</span>
+          </button>
+        </div>
+
+      </form>
+      <!-- END: LOGIN PANEL -->
+
+
+      <!-- ── REGISTER PANEL ── -->
+      <form class="form-panel" id="registerForm" novalidate>
+
+        <!-- Global success/error message -->
+        <div class="auth-message"></div>
+
+        <!-- Username Field -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="form-label-icon">👤</span> Username
+          </label>
+          <div class="input-wrapper">
+            <input
+              class="form-input"
+              type="text"
+              id="regName"
+              placeholder="Your gaming username"
+              autocomplete="username"
+            />
+            <div class="input-action" title="Clear" onclick="document.getElementById('regName').value=''">✕</div>
+          </div>
+          <div class="field-error">⚠️ </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="form-label-icon">✉️</span> Email
+          </label>
+          <div class="input-wrapper">
+            <input
+              class="form-input"
+              type="email"
+              id="regEmail"
+              placeholder="your@email.com"
+              autocomplete="email"
+            />
+            <div class="input-action" title="Clear" onclick="document.getElementById('regEmail').value=''">✕</div>
+          </div>
+          <div class="field-error">⚠️ </div>
+        </div>
+
+        <!-- Password Field + Strength Meter -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="form-label-icon">🔒</span> Password
+          </label>
+          <div class="input-wrapper">
+            <input
+              class="form-input"
+              type="password"
+              id="regPassword"
+              placeholder="Min. 6 characters"
+              autocomplete="new-password"
+            />
+            <div class="input-action" data-toggle-pw="regPassword" title="Show password">👁️</div>
+          </div>
+          <div class="field-error">⚠️ </div>
+          <!-- Password strength indicator -->
+          <div class="password-strength">
+            <div class="strength-bars">
+              <div class="strength-bar"></div>
+              <div class="strength-bar"></div>
+              <div class="strength-bar"></div>
+            </div>
+            <span class="strength-label" id="strengthLabel"></span>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="form-label-icon">🔐</span> Confirm Password
+          </label>
+          <div class="input-wrapper">
+            <input
+              class="form-input"
+              type="password"
+              id="regConfirm"
+              placeholder="Re-enter your password"
+              autocomplete="new-password"
+            />
+            <div class="input-action" data-toggle-pw="regConfirm" title="Show password">👁️</div>
+          </div>
+          <div class="field-error">⚠️ </div>
+        </div>
+
+        <!-- Register Submit Button -->
+        <button class="btn-auth-submit" type="submit" id="registerSubmitBtn">
+          🎮 Create Account
+        </button>
+
+        <!-- Divider -->
+        <div class="auth-divider">or</div>
+
+        <!-- Google Register -->
+        <button type="button" class="btn-google">
+          <div class="google-g"></div>
+          Continue with Google
+        </button>
+
+        <!-- Switch to Login -->
+        <div class="auth-footer-links">
+          <button type="button" class="switch-link" onclick="switchTab('login')">
+            Already have an account? <span>Login here</span>
+          </button>
+        </div>
+
+      </form>
+      <!-- END: REGISTER PANEL -->
+
+    </div>
+  </div>
+  <!-- END: AUTH MODAL -->
+
+
+  <!-- ============================================================
        JAVASCRIPT
        — Alada file: script.js
        — Theme toggle, mobile menu, particles, filter, reveal
   ============================================================ -->
   <script src="js/script.js"></script>
+
+  <!-- ============================================================
+       AUTH JAVASCRIPT
+       — Alada file: auth.js
+       — Modal open/close, tab switch, validation, form submit
+  ============================================================ -->
+  <script src="js/auth.js"></script>
 
 </body>
 </html>
