@@ -1,0 +1,1505 @@
+/* ============================================================
+   V1PER X SHOP — Main Stylesheet
+   File: style.css
+   
+   TABLE OF CONTENTS:
+   01. CSS Variables (Colors, Fonts, Sizes)
+   02. Dark Theme Colors
+   03. Light Theme Colors
+   04. Reset & Base Styles
+   05. Scrollbar
+   06. Announcement Bar
+   07. Header & Navigation
+   08. Mobile Menu
+   09. Hero Section
+   10. Main Content Wrapper
+   11. Section Header
+   12. Category Filter Nav
+   13. Product Grid & Cards
+   14. Featured Banner
+   15. Why Choose Us Section
+   16. Feature Cards
+   17. Video Section
+   18. Testimonials
+   19. Footer
+   20. Scroll To Top Button
+   21. Notification Toast
+   22. Animations & Keyframes
+   23. Responsive Breakpoints
+   ============================================================ */
+
+
+/* ============================================================
+   01. CSS VARIABLES
+   — Rang, font, size change korte hobe ei section theke
+   — --accent = main color (currently orange)
+   — --accent2 = secondary highlight color (yellow/gold)
+   — --accent3 = third accent (cyan/teal)
+   ============================================================ */
+:root {
+  /* === Main Accent Colors === */
+  --accent:  #f97316;   /* Primary orange — buttons, borders, glows */
+  --accent2: #f59e0b;   /* Gold/yellow — prices, highlights */
+  --accent3: #06b6d4;   /* Cyan — demo buttons, secondary accents */
+  --verified: #22c55e;  /* Green — verified badges, success */
+
+  /* === Border Radius === */
+  --radius:    12px;  /* Cards, modals */
+  --radius-sm: 8px;   /* Buttons, small elements */
+
+  /* === Transition Speed === */
+  --transition: 0.3s cubic-bezier(.4, 0, .2, 1);
+
+  /* === Fonts === */
+  --font-head: 'Orbitron', monospace;  /* Headings, logo, titles */
+  --font-body: 'Rajdhani', sans-serif; /* Body text */
+  --font-ui:   'Inter', sans-serif;    /* UI elements, buttons, labels */
+}
+
+
+/* ============================================================
+   02. DARK THEME COLORS
+   — data-theme="dark" er jonno sab color ekhane
+   — Default theme dark
+   ============================================================ */
+[data-theme="dark"] {
+  --bg:           #0a0a0f;  /* Page background */
+  --bg2:          #111118;  /* Footer, secondary bg */
+  --bg3:          #1a1a26;  /* Input, button backgrounds */
+  --bg4:          #232333;  /* Hover states */
+  --card:         #141420;  /* Card backgrounds */
+  --card-border:  rgba(249, 115, 22, 0.18); /* Card borders */
+  --text:         #f1f0ff;  /* Main text */
+  --text2:        #a89fc0;  /* Secondary text */
+  --text3:        #6b6585;  /* Muted/placeholder text */
+  --header-bg:    rgba(10, 10, 15, 0.92);   /* Header with blur */
+  --hero-overlay: linear-gradient(135deg, rgba(10,10,15,0.85) 0%, rgba(60,20,0,0.6) 100%);
+  --section-divider: rgba(249, 115, 22, 0.12);
+  --tag-bg:       rgba(249, 115, 22, 0.15);
+  --tag-text:     #fb923c;
+  --shadow:       0 8px 40px rgba(0, 0, 0, 0.6);
+  --glow:         0 0 30px rgba(249, 115, 22, 0.25);
+}
+
+
+/* ============================================================
+   03. LIGHT THEME COLORS
+   — data-theme="light" switch korle ei colors active hobe
+   — Theme toggle button theke switch hoy
+   ============================================================ */
+[data-theme="light"] {
+  --bg:           #fff8f2;
+  --bg2:          #fff0e6;
+  --bg3:          #ffe8d6;
+  --bg4:          #ffddc2;
+  --card:         #ffffff;
+  --card-border:  rgba(249, 115, 22, 0.2);
+  --text:         #1a0f00;
+  --text2:        #6b3a00;
+  --text3:        #aa7840;
+  --header-bg:    rgba(255, 248, 242, 0.92);
+  --hero-overlay: linear-gradient(135deg, rgba(255,248,242,0.5) 0%, rgba(255,180,80,0.25) 100%);
+  --section-divider: rgba(249, 115, 22, 0.12);
+  --tag-bg:       rgba(249, 115, 22, 0.12);
+  --tag-text:     #ea580c;
+  --shadow:       0 8px 40px rgba(100, 80, 180, 0.12);
+  --glow:         0 0 30px rgba(249, 115, 22, 0.15);
+}
+
+
+/* ============================================================
+   04. RESET & BASE STYLES
+   — Browser default styles reset kora
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* Smooth scroll for anchor links */
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+  min-height: 100vh;
+  overflow-x: hidden; /* Horizontal scroll band korbe */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* ============================================================
+   05. SCROLLBAR
+   — Browser scrollbar custom styling
+   — Color change korte --accent variable update koro
+   ============================================================ */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+
+/* ============================================================
+   06. ANNOUNCEMENT BAR
+   — Site er shob upora animated gradient text bar
+   — Text change korte index.html e .announce-bar div dekho
+   ============================================================ */
+.announce-bar {
+  background: linear-gradient(90deg,
+    #c2410c, var(--accent), #f59e0b,
+    var(--accent), #c2410c
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+  padding: 9px 20px;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+
+/* ============================================================
+   07. HEADER & NAVIGATION
+   — Fixed top header with blur effect
+   — Logo, desktop nav links, theme toggle, login button
+   ============================================================ */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 clamp(16px, 4vw, 48px);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+/* --- Logo --- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+/* Logo icon box — emoji/image change korte .logo-icon er andar dekho */
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--accent), #c2410c);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
+}
+
+/* --- Desktop Nav Links --- */
+nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 2vw, 28px);
+}
+
+.nav-link {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: color var(--transition);
+  letter-spacing: 0.5px;
+}
+
+.nav-link:hover { color: var(--accent); }
+
+/* --- Right Side Action Buttons --- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Dark/Light mode toggle button */
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--card-border);
+  background: var(--bg3);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all var(--transition);
+  color: var(--text2);
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.05);
+}
+
+/* Primary button (Login, Buy, etc.) */
+.btn-primary {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 20px;
+  background: linear-gradient(135deg, var(--accent), #c2410c);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+}
+
+/* --- Hamburger Menu Icon (Mobile only) --- */
+.hamburger {
+  display: none; /* Hidden on desktop, shown on mobile */
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text2);
+  transition: all var(--transition);
+  border-radius: 2px;
+}
+
+/* Hamburger → X animation when active */
+.hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ============================================================
+   08. MOBILE MENU
+   — Mobile e hamburger click korle ei dropdown khulbe
+   — .open class JS diye toggle hoy
+   ============================================================ */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 20px clamp(16px, 4vw, 48px);
+  flex-direction: column;
+  gap: 16px;
+  z-index: 999;
+  animation: slideDown 0.3s ease;
+}
+
+.mobile-menu.open { display: flex; }
+
+.mobile-menu .nav-link {
+  font-size: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--section-divider);
+}
+
+
+/* ============================================================
+   09. HERO SECTION
+   — Homepage er main banner section
+   — Background, particle animation, text, stats
+   ============================================================ */
+
+/* Hero outer wrapper */
+.hero {
+  margin-top: 68px; /* Header height compensate */
+  position: relative;
+  min-height: clamp(300px, 55vw, 520px);
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f0800 0%, #1a0800 40%, #1a0a00 100%);
+  display: flex;
+  align-items: center;
+}
+
+/* Radial glow background layer */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 70% 50%, rgba(249, 115, 22, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 70% at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
+}
+
+/* Floating particle dots container (filled by JS) */
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Individual particle dot */
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: float linear infinite;
+  opacity: 0;
+}
+
+/* Hero content grid (text left, visual card right) */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: clamp(40px, 6vw, 80px) clamp(16px, 6vw, 80px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 60px);
+  align-items: center;
+}
+
+/* "Premium Gaming Tools" badge pill */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #fb923c;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: fadeInUp 0.6s ease both;
+}
+
+/* Pulsing green dot inside badge */
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--verified);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+/* Hero main heading */
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 5vw, 62px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.7s 0.1s ease both;
+}
+
+/* Colored words in hero title */
+.hero-title .accent  { color: var(--accent2); text-shadow: 0 0 30px rgba(245, 158, 11, 0.5); }
+.hero-title .accent2 { color: var(--accent);  text-shadow: 0 0 30px rgba(249, 115, 22, 0.5); }
+
+/* Hero description paragraph */
+.hero-desc {
+  font-family: var(--font-ui);
+  font-size: clamp(14px, 1.6vw, 17px);
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 32px;
+  animation: fadeInUp 0.7s 0.2s ease both;
+  max-width: 480px;
+}
+
+/* Hero CTA Buttons row */
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.7s 0.3s ease both;
+}
+
+/* Base hero button */
+.btn-hero {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 13px 28px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+}
+
+/* Filled orange hero button */
+.btn-hero-primary {
+  background: linear-gradient(135deg, var(--accent), #c2410c);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+}
+.btn-hero-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 35px rgba(249, 115, 22, 0.6);
+}
+
+/* Ghost/outlined hero button */
+.btn-hero-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.btn-hero-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Hero stats row (10K+, 50+, etc.) */
+.hero-stats {
+  display: flex;
+  gap: clamp(16px, 3vw, 40px);
+  flex-wrap: wrap;
+  margin-top: 36px;
+  animation: fadeInUp 0.7s 0.4s ease both;
+}
+
+.stat { text-align: center; }
+
+.stat-num {
+  font-family: var(--font-head);
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 900;
+  color: var(--accent2);
+  display: block;
+}
+
+.stat-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Slider indicator dots */
+.hero-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  animation: fadeInUp 0.7s 0.5s ease both;
+}
+
+.dot {
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.dot.active {
+  background: var(--accent);
+  width: 48px;
+}
+
+/* Hero right side — visual card */
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInRight 0.8s 0.2s ease both;
+  position: relative;
+}
+
+/* The glowing card in hero right column */
+.hero-card-visual {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 20px;
+  padding: clamp(20px, 3vw, 36px);
+  text-align: center;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  max-width: 320px;
+  width: 100%;
+}
+
+/* Top gradient line on the visual card */
+.hero-card-visual::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.hero-trophy { font-size: clamp(50px, 7vw, 80px); margin-bottom: 12px; filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6)); }
+
+.hero-level {
+  font-family: var(--font-head);
+  font-size: clamp(32px, 5vw, 50px);
+  font-weight: 900;
+  color: var(--accent2);
+  text-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+}
+.hero-level span {
+  font-size: 0.4em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-uid {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+/* Spinning conic gradient ring around hero card */
+.glowing-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 20px;
+  background: conic-gradient(from 0deg, transparent 0%, var(--accent) 30%, transparent 60%);
+  opacity: 0.3;
+  animation: spin 4s linear infinite;
+  z-index: -1;
+}
+
+/* Light theme hero override — keep dark background */
+[data-theme="light"] .hero {
+  background: linear-gradient(135deg, #1a0a00 0%, #2a1000 50%, #1a0800 100%);
+}
+[data-theme="light"] .hero-bg {
+  background:
+    radial-gradient(ellipse 60% 80% at 70% 50%, rgba(249, 115, 22, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+}
+
+
+/* ============================================================
+   10. MAIN CONTENT WRAPPER
+   — Max width centering for all inner sections
+   ============================================================ */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px clamp(16px, 4vw, 48px);
+}
+
+
+/* ============================================================
+   11. SECTION HEADER
+   — Each product section er uporer title + "See All" link
+   ============================================================ */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Section title with orange left border */
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 28px;
+  background: linear-gradient(to bottom, var(--accent), #c2410c);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Small colored pill badge beside title (e.g. "Hot", "Popular") */
+.section-badge {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* "View All →" link */
+.see-all {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap var(--transition);
+}
+.see-all:hover { gap: 8px; }
+
+
+/* ============================================================
+   12. CATEGORY FILTER NAV
+   — "All Products / Non Root / Root / iPhone / PC" button row
+   — Active class JS diye toggle hoy
+   ============================================================ */
+.cat-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.cat-btn {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.5px;
+}
+
+/* Active / hovered category button */
+.cat-btn.active,
+.cat-btn:hover {
+  background: linear-gradient(135deg, var(--accent), #c2410c);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+
+/* ============================================================
+   13. PRODUCT GRID & CARDS
+   — Auto-fill responsive grid of product cards
+   — Card: image, title, desc, tags, price, buttons
+   ============================================================ */
+
+/* Responsive auto-fill grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(200px, 22vw, 280px), 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  margin-bottom: 60px;
+}
+
+/* Individual product card */
+.product-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all var(--transition);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: var(--glow), var(--shadow);
+}
+
+/* Top orange line appears on hover */
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.product-card:hover::before { opacity: 1; }
+
+/* Card image area */
+.card-img {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg3);
+}
+
+/* Emoji/icon inside card image — replace with <img> if needed */
+.card-img-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(36px, 5vw, 56px);
+  transition: transform 0.4s ease;
+  background: linear-gradient(135deg, var(--bg3), var(--bg4));
+}
+.product-card:hover .card-img-inner { transform: scale(1.08); }
+
+/* Green "Verified" badge on card image */
+.card-verified {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: var(--verified);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(8px);
+}
+.card-verified::before { content: '✓'; }
+
+/* Category label badge top-right of card image */
+.card-category {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: rgba(249, 115, 22, 0.25);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #fb923c;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Card text content area */
+.card-body {
+  padding: clamp(12px, 2vw, 18px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-family: var(--font-head);
+  font-size: clamp(11px, 1.5vw, 14px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.card-desc {
+  font-family: var(--font-ui);
+  font-size: clamp(10px, 1.2vw, 12px);
+  color: var(--text3);
+  margin-bottom: 10px;
+  flex: 1;
+  line-height: 1.5;
+}
+
+/* Feature tag pills */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.tag {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+}
+
+/* Card bottom: price + buttons */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.card-price {
+  font-family: var(--font-head);
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 900;
+  color: var(--accent2);
+}
+.card-price span {
+  font-size: 0.65em;
+  font-weight: 500;
+  color: var(--text3);
+}
+
+.card-btns { display: flex; gap: 6px; }
+
+/* Demo button (cyan outline style) */
+.btn-demo {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  color: var(--accent3);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-demo:hover { background: rgba(6, 182, 212, 0.3); }
+
+/* Buy button (filled orange) */
+.btn-buy {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), #c2410c);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-buy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.5);
+}
+
+
+/* ============================================================
+   14. FEATURED BANNER
+   — "Best Seller" highlighted product banner
+   — Dark background always, even in light mode
+   ============================================================ */
+.featured-banner {
+  background: linear-gradient(135deg, #1a0800, #150800, #1a0a00);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 16px;
+  padding: clamp(28px, 4vw, 48px);
+  margin-bottom: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow overlay inside banner */
+.featured-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(249, 115, 22, 0.12), transparent);
+}
+
+.featured-content { position: relative; z-index: 1; }
+
+.featured-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.featured-title {
+  font-family: var(--font-head);
+  font-size: clamp(22px, 3.5vw, 38px);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.featured-desc {
+  font-family: var(--font-ui);
+  font-size: clamp(13px, 1.4vw, 15px);
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 480px;
+  margin-bottom: 24px;
+}
+
+.featured-price {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900;
+  color: var(--accent2);
+}
+.featured-price span {
+  font-size: 0.4em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Bouncing trophy emoji on right side */
+.featured-visual {
+  font-size: clamp(60px, 10vw, 100px);
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.4));
+  animation: bounce 3s ease-in-out infinite;
+}
+
+/* Light mode: keep featured banner dark */
+[data-theme="light"] .featured-banner {
+  background: linear-gradient(135deg, #1a0800, #150800, #1a0a00);
+}
+
+
+/* ============================================================
+   15. WHY CHOOSE US SECTION
+   — Centered heading + subtitle, features grid, video, testimonials
+   ============================================================ */
+.why-section {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.why-title {
+  font-family: var(--font-head);
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.why-title .highlight { color: var(--accent); }
+
+.why-subtitle {
+  font-family: var(--font-ui);
+  font-size: clamp(13px, 1.5vw, 16px);
+  color: var(--text2);
+  max-width: 500px;
+  margin: 0 auto 48px;
+}
+
+
+/* ============================================================
+   16. FEATURE CARDS
+   — Icon + Title + Description card grid (Instant Delivery, etc.)
+   ============================================================ */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  margin-bottom: 48px;
+}
+
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: clamp(24px, 3vw, 36px) clamp(20px, 2.5vw, 28px);
+  text-align: center;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+/* Icon circle */
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(194, 65, 12, 0.1));
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: all var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.4), rgba(194, 65, 12, 0.3));
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+}
+
+.feature-title {
+  font-family: var(--font-head);
+  font-size: clamp(13px, 1.6vw, 16px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.feature-desc {
+  font-family: var(--font-ui);
+  font-size: clamp(12px, 1.2vw, 13px);
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   17. VIDEO SECTION
+   — YouTube tutorial video embed placeholder
+   — Click e notify trigger kora hoyeche
+   ============================================================ */
+.video-wrapper {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-width: 700px;
+  margin: 0 auto 48px;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #0f0800, #1a0800);
+  cursor: pointer;
+}
+
+/* Red YouTube play button */
+.video-play {
+  width: 72px;
+  height: 72px;
+  background: rgba(255, 30, 30, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #fff;
+  box-shadow: 0 0 40px rgba(255, 30, 30, 0.4);
+  transition: all var(--transition);
+}
+.video-wrapper:hover .video-play {
+  transform: scale(1.1);
+  box-shadow: 0 0 60px rgba(255, 30, 30, 0.6);
+}
+
+/* Bottom label with YouTube badge */
+.video-label {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.yt-badge {
+  background: #ff0000;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   18. TESTIMONIALS
+   — Customer review cards
+   ============================================================ */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: clamp(12px, 2vw, 20px);
+  margin-bottom: 60px;
+}
+
+.testimonial-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: clamp(16px, 2vw, 24px);
+  transition: all var(--transition);
+}
+.testimonial-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Reviewer header row */
+.t-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.t-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(6, 182, 212, 0.2));
+  border: 2px solid var(--card-border);
+  flex-shrink: 0;
+}
+
+.t-name  { font-family: var(--font-ui); font-size: 14px; font-weight: 600; color: var(--text); }
+.t-stars { color: var(--accent2); font-size: 12px; }
+.t-text  { font-family: var(--font-ui); font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+
+/* ============================================================
+   19. FOOTER
+   — 4-column grid: brand, products, support, contact
+   — Social links, copyright, badge row
+   ============================================================ */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--section-divider);
+  padding: clamp(40px, 6vw, 72px) clamp(16px, 6vw, 80px) clamp(24px, 4vw, 40px);
+}
+
+/* 4-column footer grid */
+.footer-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: clamp(24px, 4vw, 60px);
+  margin-bottom: 48px;
+}
+
+.footer-desc {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text3);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+/* Social icons row */
+.social-links { display: flex; gap: 10px; }
+
+.social-link {
+  width: 38px;
+  height: 38px;
+  background: var(--bg3);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text2);
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.social-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(249, 115, 22, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Column heading */
+.footer-col-title {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-link {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text3);
+  transition: color var(--transition);
+  cursor: pointer;
+}
+.footer-link:hover { color: var(--accent); }
+
+/* Bottom bar: copyright + badges + links */
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--section-divider);
+  padding-top: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.footer-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.footer-badge {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--bg3);
+  border: 1px solid var(--card-border);
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+
+/* ============================================================
+   20. SCROLL TO TOP BUTTON
+   — Fixed bottom-right corner button
+   — Visible only after 400px scroll (JS toggle .visible)
+   ============================================================ */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--accent), #c2410c);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+  transition: all var(--transition);
+  opacity: 0;
+  transform: translateY(10px);
+  z-index: 500;
+}
+
+.scroll-top.visible { opacity: 1; transform: none; }
+
+.scroll-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.7);
+}
+
+
+/* ============================================================
+   21. NOTIFICATION TOAST
+   — Top-right popup after Buy/Demo click
+   — .show class JS diye toggle hoy
+   ============================================================ */
+.notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 2000;
+  background: var(--card);
+  border: 1px solid var(--verified);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(120%);
+  transition: transform 0.4s cubic-bezier(.4, 0, .2, 1);
+}
+
+.notification.show { transform: none; }
+
+.notification-icon { color: var(--verified); font-size: 16px; }
+
+
+/* ============================================================
+   22. ANIMATIONS & KEYFRAMES
+   ============================================================ */
+
+/* Page load fade in */
+.page-load { animation: pageIn 0.5s ease both; }
+@keyframes pageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Upward fade for hero text elements */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Right-to-left for hero visual card */
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Mobile menu dropdown */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Announcement bar moving gradient */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Floating particle */
+@keyframes float {
+  0%   { opacity: 0; transform: translateY(0) scale(0); }
+  20%  { opacity: 1; }
+  80%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+}
+
+/* Hero card glowing ring spin */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Featured trophy bounce */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* Badge dot pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+
+/* ============================================================
+   23. RESPONSIVE BREAKPOINTS
+   — Large → Medium → Tablet → Mobile → Small Mobile
+   ============================================================ */
+
+/* Tablet — footer 2 column */
+@media (max-width: 1100px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Tablet / Mobile — hide desktop nav, show hamburger */
+@media (max-width: 768px) {
+  nav            { display: none; }
+  .hamburger     { display: flex; }
+  .hero-content  { grid-template-columns: 1fr; }
+  .hero-visual   { display: none; } /* Hide visual card on mobile */
+  .hero-title    { font-size: clamp(24px, 7vw, 36px); }
+  .footer-grid   { grid-template-columns: 1fr 1fr; }
+  .featured-banner  { text-align: center; justify-content: center; }
+  .featured-visual  { display: none; }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .footer-grid        { grid-template-columns: 1fr; }
+  .hero-actions       { flex-direction: column; }
+  .btn-hero           { width: 100%; justify-content: center; }
+  .hero-stats         { justify-content: space-around; }
+  .product-grid       { grid-template-columns: 1fr 1fr; }
+  .card-btns          { flex-direction: column; }
+  .btn-demo, .btn-buy { font-size: 10px; padding: 6px 10px; }
+}
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+  .product-grid { grid-template-columns: 1fr; }
+}

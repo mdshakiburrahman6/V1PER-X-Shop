@@ -9,7 +9,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="V1PER X SHOP — Premium FreeFire, BGMI & PC gaming tools. Instant delivery, 24/7 support, 100% verified." />
-  <meta name="keywords" content="FreeFire panel, BGMI hack, non root panel, iphone panel, PC panel, gaming tools Bangladesh, V1PERX, viperx" />
+  <meta name="keywords" content="FreeFire panel, BGMI hack, non root panel, iphone panel, PC panel, gaming tools Bangladesh" />
   <title>V1PER X SHOP — Premium Gaming Tools</title>
 
   <!-- ============================================================
@@ -27,10 +27,877 @@
        — Alada file: style.css
        — Sob color, layout, animation ekhane ache
   ============================================================ -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css" />
 
 </head>
-<body>
-    
+<body class="page-load">
+
+
+  <!-- ============================================================
+       SECTION 01: ANNOUNCEMENT BAR
+       — Site er ekdom upore colored scrolling text bar
+       — Text change korte ekhane text edit koro
+       — Style change: style.css e .announce-bar dekho
+  ============================================================ -->
+  <div class="announce-bar">
+    🎮 V1PER X SHOP — Instant Delivery · 24/7 Support · 100% Secure · Trusted by 10,000+ Gamers Worldwide 🏆
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 02: HEADER / NAVBAR
+       — Fixed top header: Logo, Nav Links, Theme Toggle, Login
+       — Logo text change: .logo span er andar
+       — Nav links add/remove: <nav> er andar <a> tag
+       — Mobile hamburger menu: #hamburger button
+       — Login button: .btn-primary
+  ============================================================ -->
+  <header>
+
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <div class="logo-icon">🎮</div>  <!-- Icon change korte emoji ba <img> diye replace koro -->
+      V1PER X SHOP                     <!-- Shop name -->
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav>
+      <a href="#products"   class="nav-link">Products</a>
+      <a href="#categories" class="nav-link">Categories</a>
+      <a href="#why"        class="nav-link">Why Us</a>
+      <a href="#contact"    class="nav-link">Support</a>
+      <!-- Notun nav link add korte: <a href="#section-id" class="nav-link">Name</a> -->
+    </nav>
+
+    <!-- Right Side Actions -->
+    <div class="nav-actions">
+
+      <!-- Dark/Light Mode Toggle Button -->
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+      <!-- Login Button -->
+      <button class="btn-primary" onclick="notify('🔔 Login feature coming soon!')">Login</button>
+
+      <!-- Hamburger (Mobile only, shown via CSS) -->
+      <div class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ============================================================
+       MOBILE MENU
+       — Hamburger click korle dropdown khulbe
+       — Links same as desktop nav
+       — closeMobile() function: script.js e ache
+  ============================================================ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#products"   class="nav-link" onclick="closeMobile()">🎮 Products</a>
+    <a href="#categories" class="nav-link" onclick="closeMobile()">📂 Categories</a>
+    <a href="#why"        class="nav-link" onclick="closeMobile()">⭐ Why Us</a>
+    <a href="#contact"    class="nav-link" onclick="closeMobile()">💬 Support</a>
+    <button class="btn-primary" style="width:100%; padding:12px;" onclick="notify('Login feature coming soon!')">
+      Login / Register
+    </button>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 03: HERO / BANNER
+       — Homepage er main big banner
+       — Left: Badge, Title, Description, Buttons, Stats
+       — Right: Animated card visual (Lv.7 trophy card)
+       — Background particles: JS diye inject hoy (#particles)
+       — Hero customize: style.css e /* 09. HERO SECTION */ dekho
+  ============================================================ -->
+  <section class="hero" id="home">
+
+    <!-- Background radial glow effect -->
+    <div class="hero-bg"></div>
+
+    <!-- Floating particle dots (filled by JS) -->
+    <div class="hero-particles" id="particles"></div>
+
+    <div class="hero-content">
+
+      <!-- LEFT: Hero Text Content -->
+      <div class="hero-text">
+
+        <!-- Small pill badge -->
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Premium Gaming Tools  <!-- Badge text change koro ekhane -->
+        </div>
+
+        <!-- Main heading — .accent .accent2 = colored words -->
+        <h1 class="hero-title">
+          Level Up Your<br />
+          <span class="accent">GAME</span> with<br />
+          <span class="accent2">Pro Tools</span>
+          <!-- Colors: style.css e .hero-title .accent / .accent2 dekho -->
+        </h1>
+
+        <!-- Hero description paragraph -->
+        <p class="hero-desc">
+          Premium FreeFire, BGMI & PC gaming panels. Non-root, Root & iPhone solutions.
+          Instant delivery, verified & trusted by thousands.
+        </p>
+
+        <!-- Call-to-action buttons -->
+        <div class="hero-actions">
+          <button class="btn-hero btn-hero-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+            🛒 Shop Now
+          </button>
+          <button class="btn-hero btn-hero-secondary" onclick="notify('Demo loaded!')">
+            ▶ View Demo
+          </button>
+        </div>
+
+        <!-- Stats row (10K+, 50+, etc.) -->
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num">10K+</span><span class="stat-label">Customers</span></div>
+          <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Products</span></div>
+          <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label">Rating</span></div>
+          <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Support</span></div>
+          <!-- Notun stat: <div class="stat"><span class="stat-num">XX</span><span class="stat-label">Label</span></div> -->
+        </div>
+
+        <!-- Slider indicator dots (auto-animated by JS) -->
+        <div class="hero-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+
+      </div>
+      <!-- END: Hero Text Content -->
+
+
+      <!-- RIGHT: Hero Visual Card -->
+      <div class="hero-visual">
+        <div class="hero-card-visual">
+          <div class="glowing-ring"></div>
+          <div class="hero-trophy">🏆</div>
+          <div class="hero-level">Lv. 7 <span>MAX</span></div>
+          <div class="hero-uid">UID: 8024740</div><!-- UID number change koro -->
+          <br />
+          <div style="font-family:var(--font-head); font-size:22px; color:#f59e0b; font-weight:900; text-shadow: 0 0 20px rgba(245,158,11,0.5);">
+            FF GUILD GLORY <!-- Featured game name -->
+          </div>
+        </div>
+      </div>
+      <!-- END: Hero Visual Card -->
+
+    </div>
+  </section>
+  <!-- END: HERO SECTION -->
+
+
+  <!-- ============================================================
+       MAIN CONTENT WRAPPER
+       — Max-width 1400px centered container
+       — Sob product section ekhane
+  ============================================================ -->
+  <main>
+
+
+    <!-- ============================================================
+         SECTION 04: CATEGORY FILTER NAV
+         — Product filter buttons
+         — filterCat() function: script.js e ache
+         — Notun category: button add koro + product card e data-category match koro
+    ============================================================ -->
+    <div class="cat-nav" id="categories">
+      <button class="cat-btn active" onclick="filterCat(this, 'all')">All Products</button>
+      <button class="cat-btn"        onclick="filterCat(this, 'others')">Others</button>
+      <button class="cat-btn"        onclick="filterCat(this, 'nonroot')">Non Root Panel</button>
+      <button class="cat-btn"        onclick="filterCat(this, 'root')">Root Panel</button>
+      <button class="cat-btn"        onclick="filterCat(this, 'iphone')">iPhone Panel</button>
+      <button class="cat-btn"        onclick="filterCat(this, 'pc')">PC Panel</button>
+    </div>
+
+
+    <!-- ============================================================
+         SECTION 05: PRODUCTS
+         — Notun product card add kore product-grid er andar
+         — data-category = filter key (notun category o add korte parbe)
+         — Card structure:
+             .card-img       → product image/emoji
+             .card-verified  → verified badge
+             .card-category  → category label
+             .card-title     → product name
+             .card-desc      → short description
+             .card-tags      → feature tags
+             .card-price     → price
+             .card-btns      → demo + buy buttons
+    ============================================================ -->
+    <div id="products">
+
+
+      <!-- ── OTHERS ITEM ── -->
+      <div class="section-header" data-cat="others">
+        <div class="section-title">Others Item <span class="section-badge">Hot</span></div>
+        <a href="#" class="see-all">View All →</a>
+      </div>
+
+      <div class="product-grid" data-cat="others">
+
+        <!-- Product Card: FF Guild Glory -->
+        <div class="product-card" data-category="others">
+          <div class="card-img">
+            <div class="card-img-inner">🏆</div><!-- Emoji ba <img src=""> diye replace koro -->
+            <div class="card-verified">Verified</div>
+            <div class="card-category">Others</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">FF GUILD GLORY</div>
+            <div class="card-desc">FreeFire Guild Level Up Box — Boost your guild ranking instantly</div>
+            <div class="card-tags">
+              <span class="tag">GUILD</span>
+              <span class="tag">GLORY</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $1.25</div>
+              <div class="card-btns">
+                <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END: FF Guild Glory -->
+
+        <!-- Product Card: Carrom Pool Hack -->
+        <div class="product-card" data-category="others">
+          <div class="card-img">
+            <div class="card-img-inner">🎱</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">Others</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">CARROM POOL HACK</div>
+            <div class="card-desc">Carrom pool panel — Unlimited coins & advanced aim assist</div>
+            <div class="card-tags">
+              <span class="tag">Lifetime</span>
+              <span class="tag">Autoseller</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $2.60</div>
+              <div class="card-btns">
+                <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END: Carrom Pool Hack -->
+
+        <!-- 
+          ✏️ NOTUN PRODUCT ADD KORTE COPY KORO:
+          <div class="product-card" data-category="others">
+            <div class="card-img">
+              <div class="card-img-inner">EMOJI_BA_IMG</div>
+              <div class="card-verified">Verified</div>
+              <div class="card-category">Others</div>
+            </div>
+            <div class="card-body">
+              <div class="card-title">PRODUCT NAME</div>
+              <div class="card-desc">Short description here</div>
+              <div class="card-tags">
+                <span class="tag">Tag1</span>
+                <span class="tag">Tag2</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-price"><span>From</span> $0.00</div>
+                <div class="card-btns">
+                  <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                  <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        -->
+
+      </div>
+      <!-- END: OTHERS GRID -->
+
+
+      <!-- ── NON ROOT PANEL ── -->
+      <div class="section-header" data-cat="nonroot">
+        <div class="section-title">Non Root Panel <span class="section-badge">Popular</span></div>
+        <a href="#" class="see-all">View All →</a>
+      </div>
+
+      <div class="product-grid" data-cat="nonroot">
+
+        <!-- Product Card: Drip Client APK -->
+        <div class="product-card" data-category="nonroot">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #1a0800, #3d1500);">💜</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">Non Root</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">DRIP CLIENT APK</div>
+            <div class="card-desc">FreeFire best non-root panel — Advanced features for all devices</div>
+            <div class="card-tags">
+              <span class="tag">Headshot</span>
+              <span class="tag">Autofarm</span>
+              <span class="tag">Clanfarm</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $0.90</div>
+              <div class="card-btns">
+                <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card: Pato Team APK -->
+        <div class="product-card" data-category="nonroot">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #0a1e0a, #1b5e1b);">🐍</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">Non Root</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">PATO TEAM APK</div>
+            <div class="card-desc">Pato team for Android — Easy install, non-root bypass</div>
+            <div class="card-tags">
+              <span class="tag">Easy Install</span>
+              <span class="tag">Non-Root</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $2.40</div>
+              <div class="card-btns">
+                <button class="btn-buy" style="width:100%; justify-content:center;" onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card: HG Chat APKMod -->
+        <div class="product-card" data-category="nonroot">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #0a1830, #1a3060);">🛡️</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">Non Root</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">HG CHAT APKMOD</div>
+            <div class="card-desc">Android non-root panel — HG Cheats mod menu included</div>
+            <div class="card-tags">
+              <span class="tag">Non-Root</span>
+              <span class="tag">Autofarm</span>
+              <span class="tag">Aimbot</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $1.00</div>
+              <div class="card-btns">
+                <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END: NON ROOT GRID -->
+
+
+      <!-- ── ROOT PANEL ── -->
+      <div class="section-header" data-cat="root">
+        <div class="section-title">Root Panel <span class="section-badge">Advanced</span></div>
+        <a href="#" class="see-all">View All →</a>
+      </div>
+
+      <div class="product-grid" data-cat="root">
+
+        <!-- Product Card: BR Mod Root -->
+        <div class="product-card" data-category="root">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #1e0a0a, #3d1515);">⚡</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">Root</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">BR MOD ROOT</div>
+            <div class="card-desc">This panel is for root devices — BR Mods with advanced features</div>
+            <div class="card-tags">
+              <span class="tag">BR Mod</span>
+              <span class="tag">Aim Assist</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $0.90</div>
+              <div class="card-btns">
+                <button class="btn-buy" style="width:100%; justify-content:center;" onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END: ROOT GRID -->
+
+
+      <!-- ── IPHONE PANEL ── -->
+      <div class="section-header" data-cat="iphone">
+        <div class="section-title">iPhone Panel <span class="section-badge">iOS</span></div>
+        <a href="#" class="see-all">View All →</a>
+      </div>
+
+      <div class="product-grid" data-cat="iphone">
+
+        <!-- Product Card: Fluorite iOS FF -->
+        <div class="product-card" data-category="iphone">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #0a0f2e, #151a40);">📱</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">iPhone</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">FLUORITE IOS FF</div>
+            <div class="card-desc">Best panel for iPhone — No jailbreak required, easy install</div>
+            <div class="card-tags">
+              <span class="tag">No Jailbreak</span>
+              <span class="tag">Easy Install</span>
+              <span class="tag">Auto Aim</span>
+              <span class="tag">Streamer Mode</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $5.00</div>
+              <div class="card-btns">
+                <button class="btn-buy" style="width:100%; justify-content:center;" onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card: iPhone Certified -->
+        <div class="product-card" data-category="iphone">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #0f1520, #1a2030);">🍎</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">iPhone</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">IPHONE CERTIFIED</div>
+            <div class="card-desc">iPhone certified panel — Plug, stage & edge features included</div>
+            <div class="card-tags">
+              <span class="tag">Plus</span>
+              <span class="tag">Stage</span>
+              <span class="tag">Edge</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $10.00</div>
+              <div class="card-btns">
+                <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card: Fluorite + Certified -->
+        <div class="product-card" data-category="iphone">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #1a0800, #2e1000);">💎</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">iPhone</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">FLUORITE + CERTIFIED</div>
+            <div class="card-desc">Certified and panel combo — Premium iPhone solution</div>
+            <div class="card-tags">
+              <span class="tag">Certified</span>
+              <span class="tag">Premium</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $15.00</div>
+              <div class="card-btns">
+                <button class="btn-buy" style="width:100%; justify-content:center;" onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END: IPHONE GRID -->
+
+
+      <!-- ── PC PANEL ── -->
+      <div class="section-header" data-cat="pc">
+        <div class="section-title">PC Panel <span class="section-badge">Desktop</span></div>
+        <a href="#" class="see-all">View All →</a>
+      </div>
+
+      <div class="product-grid" data-cat="pc">
+
+        <!-- Product Card: PC Emote Panel -->
+        <div class="product-card" data-category="pc">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #0a1830, #1830a0);">🖥️</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">PC</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">PC EMOTE PANEL</div>
+            <div class="card-desc">PC emote panel — All emotes unlock, no tip draw</div>
+            <div class="card-tags">
+              <span class="tag">All Emote</span>
+              <span class="tag">No Lag</span>
+              <span class="tag">No Tip Draw</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $0.50</div>
+              <div class="card-btns">
+                <button class="btn-demo" onclick="notify('Demo opened!')">Demo</button>
+                <button class="btn-buy"  onclick="notify('Added to cart! 🛒')">🛒 Buy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card: UID Bypass for PC -->
+        <div class="product-card" data-category="pc">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #1a1000, #403000);">🔓</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">PC</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">UID BYPASS FOR PC</div>
+            <div class="card-desc">UID bypass for PC simulator bypass — Emulator bypasses included</div>
+            <div class="card-tags">
+              <span class="tag">UID Bypass</span>
+              <span class="tag">Emulator Bypass</span>
+              <span class="tag">Full Safe</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $0.80</div>
+              <div class="card-btns">
+                <button class="btn-buy" style="width:100%; justify-content:center;" onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Card: BRMOD PC -->
+        <div class="product-card" data-category="pc">
+          <div class="card-img">
+            <div class="card-img-inner" style="background: linear-gradient(135deg, #0a0a1e, #1a1a4e);">🤖</div>
+            <div class="card-verified">Verified</div>
+            <div class="card-category">PC</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">BRMOD PC</div>
+            <div class="card-desc">BR mode silent aim for PC — Giant aim, fly PC features</div>
+            <div class="card-tags">
+              <span class="tag">Giant Aim</span>
+              <span class="tag">Fly PC</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-price"><span>From</span> $1.00</div>
+              <div class="card-btns">
+                <button class="btn-buy" style="width:100%; justify-content:center;" onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END: PC GRID -->
+
+
+    </div>
+    <!-- END: #products -->
+
+
+    <!-- ============================================================
+         SECTION 06: FEATURED BANNER
+         — Best seller highlighted banner
+         — Title, price, description, buttons change koro ekhane
+         — Style: style.css e /* 14. FEATURED BANNER */ dekho
+    ============================================================ -->
+    <div class="featured-banner" id="why">
+
+      <div class="featured-content">
+        <div class="featured-label">🔥 Best Seller</div>
+        <div class="featured-title">FF Guild Glory<br />Level 7 MAX</div>
+        <div class="featured-desc">
+          The most popular FreeFire guild booster in Bangladesh.
+          Instant delivery, verified seller, thousands of happy customers.
+        </div>
+
+        <!-- Price row with old price + discount badge -->
+        <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:20px;">
+          <div class="featured-price"><span>From</span> $1.25</div>
+          <div style="font-family:var(--font-ui); font-size:13px; color:rgba(255,255,255,0.4); text-decoration:line-through;">$2.50</div>
+          <div style="background:#22c55e; color:#fff; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px;">50% OFF</div>
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn-hero btn-hero-primary"   onclick="notify('Added to cart! 🛒')">🛒 Buy Now</button>
+          <button class="btn-hero btn-hero-secondary" onclick="notify('Demo opened!')">▶ Demo</button>
+        </div>
+      </div>
+
+      <!-- Bouncing visual emoji (right side) -->
+      <div class="featured-visual">🏆</div><!-- Emoji change koro ekhane -->
+
+    </div>
+    <!-- END: FEATURED BANNER -->
+
+
+    <!-- ============================================================
+         SECTION 07: WHY CHOOSE US
+         — Heading, subtitle, feature cards, video, testimonials
+         — Style: style.css e /* 15. WHY CHOOSE US */ dekho
+    ============================================================ -->
+    <div class="why-section">
+
+      <h2 class="why-title">WHY CHOOSE <span class="highlight">US?</span></h2>
+      <p class="why-subtitle">Trusted by thousands of gamers worldwide for premium quality and instant delivery</p>
+
+      <!-- Feature Cards Grid (4 cards) -->
+      <div class="features-grid">
+
+        <!-- Feature: Instant Delivery -->
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-title">INSTANT DELIVERY</div>
+          <div class="feature-desc">Get your keys delivered automatically within seconds after payment. No waiting, no hassle.</div>
+        </div>
+
+        <!-- Feature: 24/7 Support -->
+        <div class="feature-card">
+          <div class="feature-icon">🎧</div>
+          <div class="feature-title">24/7 SUPPORT</div>
+          <div class="feature-desc">Our team is always available to help you with any questions via WhatsApp and Telegram.</div>
+        </div>
+
+        <!-- Feature: 100% Secure -->
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">100% SECURE</div>
+          <div class="feature-desc">Safe & encrypted payments with money-back guarantee. Your security is our priority.</div>
+        </div>
+
+        <!-- Feature: Verified Products -->
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <div class="feature-title">VERIFIED PRODUCTS</div>
+          <div class="feature-desc">All products are manually verified and tested before listing. Only the best tools.</div>
+        </div>
+
+        <!--
+          ✏️ NOTUN FEATURE CARD ADD KORTE:
+          <div class="feature-card">
+            <div class="feature-icon">EMOJI</div>
+            <div class="feature-title">TITLE</div>
+            <div class="feature-desc">Description text here.</div>
+          </div>
+        -->
+
+      </div>
+      <!-- END: Feature Cards -->
+
+
+      <!-- ── YouTube Video ── -->
+      <!-- Real YouTube embed er jonno onclick er bodole <iframe> use koro -->
+      <div class="video-wrapper" onclick="notify('Opening YouTube tutorial...')">
+        <div class="video-play">▶</div>
+        <div class="video-label">
+          <span class="yt-badge">YouTube</span>
+          কিভাবে প্রোডাক্ট কিনবেন দেখুন — V1PER Hacker
+          <!-- Video title change koro ekhane -->
+        </div>
+      </div>
+
+
+      <!-- ── Testimonials / Customer Reviews ── -->
+      <div class="section-header">
+        <div class="section-title">Customer Reviews <span class="section-badge">10K+ Happy</span></div>
+      </div>
+
+      <div class="testimonials-grid">
+
+        <!-- Review 1 -->
+        <div class="testimonial-card">
+          <div class="t-header">
+            <div class="t-avatar">👨</div>
+            <div>
+              <div class="t-name">Rakib Hassan</div>
+              <div class="t-stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="t-text">Best shop! Instant delivery ebং product ta khub valo kaj kortese. Highly recommended!</div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="testimonial-card">
+          <div class="t-header">
+            <div class="t-avatar">🧑</div>
+            <div>
+              <div class="t-name">Sabbir Ahmed</div>
+              <div class="t-stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="t-text">iPhone panel ta niyechilam, amazing! No jailbreak lagena, just install kore use korchi.</div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="testimonial-card">
+          <div class="t-header">
+            <div class="t-avatar">👦</div>
+            <div>
+              <div class="t-name">Mehedi FF</div>
+              <div class="t-stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="t-text">Support team 24/7 respond kore. Problem hole instantly help pai. Best shop in BD!</div>
+        </div>
+
+        <!--
+          ✏️ NOTUN REVIEW ADD KORTE:
+          <div class="testimonial-card">
+            <div class="t-header">
+              <div class="t-avatar">EMOJI</div>
+              <div>
+                <div class="t-name">Customer Name</div>
+                <div class="t-stars">★★★★★</div>
+              </div>
+            </div>
+            <div class="t-text">Review text here.</div>
+          </div>
+        -->
+
+      </div>
+      <!-- END: Testimonials -->
+
+    </div>
+    <!-- END: WHY CHOOSE US -->
+
+
+  </main>
+  <!-- END: MAIN CONTENT -->
+
+
+  <!-- ============================================================
+       SECTION 08: FOOTER
+       — Brand, Product links, Support links, Contact links
+       — Social icons, Copyright, Badge row
+       — Style: style.css e /* 19. FOOTER */ dekho
+  ============================================================ -->
+  <footer id="contact">
+
+    <div class="footer-grid">
+
+      <!-- Footer Brand Column -->
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:14px;">
+          <div class="logo-icon">🎮</div>
+          V1PER X SHOP
+        </div>
+        <p class="footer-desc">
+          Bangladesh's most trusted gaming tools shop. Premium FreeFire, BGMI & PC panels
+          with instant delivery and 24/7 support.
+        </p>
+        <!-- Social Icons — href link add koro -->
+        <div class="social-links">
+          <div class="social-link" onclick="notify('Opening Facebook...')"  title="Facebook">📘</div>
+          <div class="social-link" onclick="notify('Opening YouTube...')"   title="YouTube">▶️</div>
+          <div class="social-link" onclick="notify('Opening WhatsApp...')"  title="WhatsApp">💬</div>
+          <div class="social-link" onclick="notify('Opening Telegram...')"  title="Telegram">✈️</div>
+        </div>
+      </div>
+
+      <!-- Products Column -->
+      <div>
+        <div class="footer-col-title">Products</div>
+        <div class="footer-links">
+          <div class="footer-link">FF Guild Glory</div>
+          <div class="footer-link">Non Root Panels</div>
+          <div class="footer-link">Root Panels</div>
+          <div class="footer-link">iPhone Panels</div>
+          <div class="footer-link">PC Panels</div>
+          <div class="footer-link">Carrom Pool</div>
+        </div>
+      </div>
+
+      <!-- Support Column -->
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-links">
+          <div class="footer-link">How to Buy</div>
+          <div class="footer-link">Payment Methods</div>
+          <div class="footer-link">Refund Policy</div>
+          <div class="footer-link">FAQ</div>
+          <div class="footer-link">Contact Us</div>
+        </div>
+      </div>
+
+      <!-- Contact Column -->
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links">
+          <div class="footer-link">💬 WhatsApp Support</div>
+          <div class="footer-link">✈️ Telegram Channel</div>
+          <div class="footer-link">📘 Facebook Page</div>
+          <div class="footer-link">▶️ YouTube Channel</div>
+          <div class="footer-link">📧 Email Support</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 V1PER X SHOP · Secure Shopping · All Rights Reserved</div>
+      <div class="footer-badges">
+        <div class="footer-badge">🔒 SSL Secure</div>
+        <div class="footer-badge">⚡ Instant Delivery</div>
+        <div class="footer-badge">✅ Verified</div>
+      </div>
+      <div class="footer-copy" style="display:flex; gap:16px;">
+        <a href="#" style="color:var(--text3);">Privacy</a>
+        <a href="#" style="color:var(--text3);">Terms</a>
+      </div>
+    </div>
+
+  </footer>
+  <!-- END: FOOTER -->
+
+
+  <!-- ============================================================
+       SCROLL TO TOP BUTTON
+       — .visible class scroll e JS diye toggle hoy
+  ============================================================ -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+
+  <!-- ============================================================
+       NOTIFICATION TOAST
+       — notify('message') call korle ekhane dekhay
+  ============================================================ -->
+  <div class="notification" id="notification">
+    <span class="notification-icon">✅</span>
+    <span id="notifText">Done!</span>
+  </div>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+       — Alada file: script.js
+       — Theme toggle, mobile menu, particles, filter, reveal
+  ============================================================ -->
+  <script src="js/script.js"></script>
+
 </body>
 </html>
