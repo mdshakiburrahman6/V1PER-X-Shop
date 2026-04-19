@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="V1PER X SHOP — My Profile"/>
+  <title>Profile — V1PER X SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Shared Dashboard CSS -->
+  <link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body class="page-load">
+
+<!-- Background Grid -->
+<div class="dash-bg"></div>
+
+<!-- ============================================================
+     SIDEBAR OVERLAY (mobile)
+============================================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================================
+     SIDEBAR
+     — Logo, nav links, user info
+     — Active link: .nav-item.active
+     — New link add: copy existing .nav-item
+============================================================ -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Logo -->
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🎮</div>
+    V1PER X SHOP
+  </div>
+
+  <!-- Nav Section: Main -->
+  <div class="sidebar-section-label">Main Menu</div>
+  <nav class="sidebar-nav">
+    <a href="../index.html"   class="nav-item">
+      <span class="nav-icon">🏠</span> Home Shop
+    </a>
+    <a href="profile.html" class="nav-item active">
+      <span class="nav-icon">👤</span> My Profile
+    </a>
+    <a href="wallet.html"  class="nav-item">
+      <span class="nav-icon">💰</span> Wallet
+    </a>
+    <a href="orders.html"  class="nav-item">
+      <span class="nav-icon">📦</span> My Orders
+      <span class="nav-badge">3</span>
+    </a>
+  </nav>
+
+  <!-- Nav Section: Account -->
+  <div class="sidebar-section-label">Account</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="#" class="nav-item">
+      <span class="nav-icon">🔔</span> Notifications
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon">🔒</span> Security
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon">❓</span> Help & Support
+    </a>
+  </nav>
+
+  <!-- Bottom: User info + Logout -->
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">V</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">V1PER User</div>
+      <div class="sidebar-user-role">Premium Member</div>
+    </div>
+    <a href="../auth/login.html" class="sidebar-logout" title="Logout">🚪</a>
+  </div>
+
+</aside>
+
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<div class="dash-main">
+
+  <!-- TOP HEADER BAR -->
+  <header class="dash-header">
+    <div class="header-left">
+      <!-- Mobile hamburger -->
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <!-- Breadcrumb -->
+      <div class="header-breadcrumb">
+        <a href="../index.html">🏠 Home</a>
+        <span class="sep">›</span>
+        <span class="current">My Profile</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="header-shop-link">🛒 Back to Shop</a>
+      <button class="header-btn" title="Notifications">
+        🔔 <span class="notif-dot"></span>
+      </button>
+      <button class="header-btn" id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+
+  <!-- PAGE CONTENT -->
+  <div class="dash-content">
+
+    <!-- Page Title -->
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">
+          <div class="page-title-icon">👤</div>
+          My Profile
+        </div>
+        <div class="page-subtitle">Manage your account info and preferences</div>
+      </div>
+      <!-- Edit / Save toggle button -->
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-outline" id="editToggleBtn" onclick="toggleEdit()">✏️ Edit Profile</button>
+        <button class="btn btn-primary" id="saveBtn" onclick="saveProfile()" style="display:none;">💾 Save Changes</button>
+        <button class="btn btn-ghost"   id="cancelBtn" onclick="cancelEdit()"  style="display:none;">✕ Cancel</button>
+      </div>
+    </div>
+
+
+    <!-- ── STATS ROW ── -->
+    <div class="stats-row">
+      <div class="stat-card reveal">
+        <div class="stat-icon orange">📦</div>
+        <div class="stat-info">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon green">✅</div>
+        <div class="stat-info">
+          <div class="stat-value">11</div>
+          <div class="stat-label">Delivered</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon gold">💰</div>
+        <div class="stat-info">
+          <div class="stat-value">$24.50</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon cyan">⭐</div>
+        <div class="stat-info">
+          <div class="stat-value">Premium</div>
+          <div class="stat-label">Member Status</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="display:grid; grid-template-columns: 300px 1fr; gap:24px; align-items:start;">
+
+
+      <!-- LEFT COLUMN: Avatar Card -->
+      <div class="reveal">
+
+        <!-- Avatar Card -->
+        <div class="dash-card" style="margin-bottom:20px;">
+          <div class="profile-avatar-wrap">
+
+            <!-- Avatar with camera edit button -->
+            <div class="profile-avatar">
+              <div class="avatar-img" id="avatarDisplay">V</div>
+              <!-- Camera button — click e file picker khulbe -->
+              <div class="avatar-edit-btn" onclick="document.getElementById('avatarInput').click()" title="Change photo">📷</div>
+              <!-- Hidden file input -->
+              <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(this)"/>
+            </div>
+
+            <div class="profile-name" id="displayName">V1PER Gamer</div>
+            <div class="profile-email" id="displayEmail">viper@email.com</div>
+
+            <!-- Online status -->
+            <div class="profile-status">
+              <span class="status-dot"></span> Online
+            </div>
+
+          </div>
+
+          <!-- Quick info grid -->
+          <div class="profile-info-grid">
+            <div class="info-item">
+              <div class="info-label">Member Since</div>
+              <div class="info-value">Jan 2024</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Account Type</div>
+              <div class="info-value" style="color:var(--accent);">🔥 Premium</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Country</div>
+              <div class="info-value">🇧🇩 Bangladesh</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Wallet Balance</div>
+              <div class="info-value" style="color:var(--success);">$12.00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone Card -->
+        <div class="dash-card reveal">
+          <div class="dash-card-header">
+            <div class="dash-card-title" style="color:var(--danger);">⚠️ Danger Zone</div>
+          </div>
+          <div class="dash-card-body" style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-ghost btn-full" onclick="showToast('Password reset email sent!','info')">
+              🔒 Change Password
+            </button>
+            <button class="btn btn-danger btn-full" onclick="confirmAndDelete()">
+              🗑️ Delete Account
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <!-- END: LEFT COLUMN -->
+
+
+      <!-- RIGHT COLUMN: Edit Form -->
+      <div class="reveal">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <div class="dash-card-title">📋 Profile Information</div>
+            <span class="badge badge-green" id="profileStatusBadge">✓ Verified</span>
+          </div>
+          <div class="dash-card-body">
+
+            <form id="profileForm" onsubmit="return false;">
+              <div class="form-grid" style="gap:18px;">
+
+                <!-- Full Name -->
+                <div class="form-group">
+                  <label class="form-label">👤 Full Name</label>
+                  <input class="form-input" type="text" id="fieldName"
+                    value="V1PER Gamer" readonly
+                    placeholder="Your full name"/>
+                </div>
+
+                <!-- Username -->
+                <div class="form-group">
+                  <label class="form-label">🎮 Username</label>
+                  <input class="form-input" type="text" id="fieldUsername"
+                    value="v1per_gamer" readonly
+                    placeholder="Gaming username"/>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                  <label class="form-label">✉️ Email Address</label>
+                  <input class="form-input" type="email" id="fieldEmail"
+                    value="viper@email.com" readonly
+                    placeholder="Email address"/>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                  <label class="form-label">📱 Phone Number</label>
+                  <input class="form-input" type="tel" id="fieldPhone"
+                    value="+880 1700-000000" readonly
+                    placeholder="Phone number"/>
+                </div>
+
+                <!-- Country -->
+                <div class="form-group">
+                  <label class="form-label">🌍 Country</label>
+                  <select class="form-select" id="fieldCountry" disabled>
+                    <option value="BD" selected>🇧🇩 Bangladesh</option>
+                    <option value="IN">🇮🇳 India</option>
+                    <option value="PK">🇵🇰 Pakistan</option>
+                    <option value="US">🇺🇸 United States</option>
+                    <option value="UK">🇬🇧 United Kingdom</option>
+                    <!-- Notun country add korte ekhane option tag add koro -->
+                  </select>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="form-group">
+                  <label class="form-label">🎂 Date of Birth</label>
+                  <input class="form-input" type="date" id="fieldDob"
+                    value="2000-01-01" readonly/>
+                </div>
+
+                <!-- Game UID -->
+                <div class="form-group">
+                  <label class="form-label">🎯 FreeFire UID</label>
+                  <div style="position:relative;">
+                    <input class="form-input" type="text" id="fieldUid"
+                      value="8024740" readonly
+                      placeholder="Your FF UID"
+                      style="padding-right:44px;"/>
+                    <!-- Copy UID button -->
+                    <span onclick="copyText(document.getElementById('fieldUid').value)"
+                      style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;"
+                      title="Copy UID">📋</span>
+                  </div>
+                </div>
+
+                <!-- Server -->
+                <div class="form-group">
+                  <label class="form-label">🌐 Game Server</label>
+                  <select class="form-select" id="fieldServer" disabled>
+                    <option value="BD" selected>Bangladesh (BD)</option>
+                    <option value="IND">India (IND)</option>
+                    <option value="NA">North America (NA)</option>
+                    <option value="EU">Europe (EU)</option>
+                  </select>
+                </div>
+
+                <!-- Bio -->
+                <div class="form-group full">
+                  <label class="form-label">📝 Bio</label>
+                  <textarea class="form-textarea" id="fieldBio" readonly
+                    placeholder="Tell us about yourself...">Premium gamer from Bangladesh. Love FreeFire & BGMI!</textarea>
+                </div>
+
+              </div>
+
+              <!-- Form notice (read-only state) -->
+              <div id="readonlyNotice" style="margin-top:16px;padding:12px 14px;background:var(--bg3);border-radius:8px;font-family:var(--font-ui);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:8px;">
+                🔒 Click <strong style="color:var(--accent);">Edit Profile</strong> button above to modify your information.
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+      <!-- END: RIGHT COLUMN -->
+
+    </div>
+
+  </div>
+  <!-- END: DASH CONTENT -->
+
+</div>
+<!-- END: DASH MAIN -->
+
+
+<!-- ============================================================
+     SHARED JS
+============================================================ -->
+<script src="dashboard.js"></script>
+
+<!-- ============================================================
+     PROFILE PAGE JS
+     — Edit toggle, avatar preview, save
+============================================================ -->
+<script>
+
+  /* ── Responsive layout fix ── */
+  function fixLayout() {
+    const grid = document.querySelector('.dash-content > div[style*="grid"]');
+    if (!grid) return;
+    if (window.innerWidth < 900) {
+      grid.style.gridTemplateColumns = '1fr';
+    } else {
+      grid.style.gridTemplateColumns = '300px 1fr';
+    }
+  }
+  fixLayout();
+  window.addEventListener('resize', fixLayout);
+
+
+  /* ── Edit Mode Toggle ── */
+  let editMode = false;
+
+  const editableFields = ['fieldName','fieldUsername','fieldEmail','fieldPhone','fieldBio','fieldDob','fieldUid'];
+  const editableSelects = ['fieldCountry','fieldServer'];
+
+  function toggleEdit() {
+    editMode = true;
+    /* Enable all fields */
+    editableFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.removeAttribute('readonly');
+    });
+    editableSelects.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.removeAttribute('disabled');
+    });
+    /* Show save/cancel, hide edit */
+    document.getElementById('editToggleBtn').style.display = 'none';
+    document.getElementById('saveBtn').style.display       = 'inline-flex';
+    document.getElementById('cancelBtn').style.display     = 'inline-flex';
+    document.getElementById('readonlyNotice').style.display = 'none';
+    showToast('Edit mode enabled — make your changes', 'info');
+  }
+
+  function cancelEdit() {
+    editMode = false;
+    /* Restore readonly */
+    editableFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('readonly', true);
+    });
+    editableSelects.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('disabled', true);
+    });
+    document.getElementById('editToggleBtn').style.display = 'inline-flex';
+    document.getElementById('saveBtn').style.display       = 'none';
+    document.getElementById('cancelBtn').style.display     = 'none';
+    document.getElementById('readonlyNotice').style.display = 'flex';
+    showToast('Edit cancelled', 'warning', 2000);
+  }
+
+  async function saveProfile() {
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '⏳ Saving...';
+    btn.classList.add('btn-loading');
+
+    try {
+      /* 🔧 REAL API CALL EKHANE:
+         await fetch('/api/profile/update', {
+           method: 'PUT',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({
+             name:     document.getElementById('fieldName').value,
+             username: document.getElementById('fieldUsername').value,
+             phone:    document.getElementById('fieldPhone').value,
+             bio:      document.getElementById('fieldBio').value,
+           })
+         });
+      */
+      await new Promise(r => setTimeout(r, 1200));
+
+      /* Update display name */
+      document.getElementById('displayName').textContent  = document.getElementById('fieldName').value;
+      document.getElementById('displayEmail').textContent = document.getElementById('fieldEmail').value;
+      document.getElementById('avatarDisplay').textContent =
+        (document.getElementById('fieldName').value[0] || 'V').toUpperCase();
+
+      cancelEdit();
+      showToast('Profile updated successfully! ✅', 'success');
+    } catch {
+      showToast('Failed to save. Try again.', 'error');
+    } finally {
+      btn.textContent = '💾 Save Changes';
+      btn.classList.remove('btn-loading');
+    }
+  }
+
+
+  /* ── Avatar Preview ── */
+  function previewAvatar(input) {
+    if (!input.files || !input.files[0]) return;
+    const file   = input.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const avatarEl = document.getElementById('avatarDisplay');
+      avatarEl.innerHTML = `<img src="${e.target.result}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+    };
+    reader.readAsDataURL(file);
+    showToast('Avatar updated! Save to confirm.', 'info');
+  }
+
+
+  /* ── Delete Account Confirm ── */
+  async function confirmAndDelete() {
+    const ok = await confirmAction('⚠️ Are you sure you want to DELETE your account? This cannot be undone!');
+    if (ok) {
+      showToast('Account deletion requested. You will be logged out.', 'error', 5000);
+      /* 🔧 Real: API call → logout → redirect */
+    }
+  }
+
+</script>
+
+</body>
+</html>

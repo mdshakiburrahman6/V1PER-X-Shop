@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="V1PER X SHOP — My Orders"/>
+  <title>My Orders — V1PER X SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body class="page-load">
+
+<div class="dash-bg"></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================================
+     SIDEBAR
+============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🎮</div>
+    V1PER X SHOP
+  </div>
+  <div class="sidebar-section-label">Main Menu</div>
+  <nav class="sidebar-nav">
+    <a href="../index.html"   class="nav-item"><span class="nav-icon">🏠</span> Home Shop</a>
+    <a href="profile.html" class="nav-item"><span class="nav-icon">👤</span> My Profile</a>
+    <a href="wallet.html"  class="nav-item"><span class="nav-icon">💰</span> Wallet</a>
+    <a href="orders.html"  class="nav-item active"><span class="nav-icon">📦</span> My Orders <span class="nav-badge">3</span></a>
+  </nav>
+  <div class="sidebar-section-label">Account</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="#" class="nav-item"><span class="nav-icon">🔔</span> Notifications</a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔒</span> Security</a>
+    <a href="#" class="nav-item"><span class="nav-icon">❓</span> Help & Support</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">V</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">V1PER User</div>
+      <div class="sidebar-user-role">Premium Member</div>
+    </div>
+    <a href="../auth/login.html" class="sidebar-logout" title="Logout">🚪</a>
+  </div>
+</aside>
+
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<div class="dash-main">
+
+  <header class="dash-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="header-breadcrumb">
+        <a href="../index.html">🏠 Home</a>
+        <span class="sep">›</span>
+        <span class="current">My Orders</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="header-shop-link">🛒 Back to Shop</a>
+      <button class="header-btn" title="Notifications">🔔 <span class="notif-dot"></span></button>
+      <button class="header-btn" id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+
+  <div class="dash-content">
+
+    <!-- Page Title -->
+    <div class="page-title-row">
+      <div>
+        <div class="page-title"><div class="page-title-icon">📦</div> My Orders</div>
+        <div class="page-subtitle">Track and manage all your purchases</div>
+      </div>
+      <a href="../index.html" class="btn btn-primary">🛒 Buy More</a>
+    </div>
+
+
+    <!-- ── STATS ROW ── -->
+    <div class="stats-row">
+      <div class="stat-card reveal">
+        <div class="stat-icon orange">📦</div>
+        <div class="stat-info">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Total Orders</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon green">✅</div>
+        <div class="stat-info">
+          <div class="stat-value">9</div>
+          <div class="stat-label">Delivered</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon gold">⏳</div>
+        <div class="stat-info">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Pending</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon cyan">💰</div>
+        <div class="stat-info">
+          <div class="stat-value">$24.50</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── FILTER + SEARCH BAR ── -->
+    <div class="dash-card reveal" style="margin-bottom:20px;">
+      <div class="dash-card-body" style="padding:14px 18px;">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+
+          <!-- Search -->
+          <div style="position:relative;flex:1;min-width:180px;">
+            <input class="form-input" type="text" id="searchInput"
+              placeholder="🔍  Search orders..."
+              oninput="filterOrders()"
+              style="padding-left:14px;"/>
+          </div>
+
+          <!-- Status filter buttons -->
+          <div style="display:flex;gap:7px;flex-wrap:wrap;">
+            <button class="btn btn-sm btn-primary"  onclick="filterByStatus('all', this)">All</button>
+            <button class="btn btn-sm btn-ghost"     onclick="filterByStatus('delivered', this)">✅ Delivered</button>
+            <button class="btn btn-sm btn-ghost"     onclick="filterByStatus('pending', this)">⏳ Pending</button>
+            <button class="btn btn-sm btn-ghost"     onclick="filterByStatus('processing', this)">🔄 Processing</button>
+            <button class="btn btn-sm btn-ghost"     onclick="filterByStatus('cancelled', this)">❌ Cancelled</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── ORDERS TABLE ── -->
+    <div class="dash-card reveal">
+      <div class="dash-card-header">
+        <div class="dash-card-title">📋 Order History</div>
+        <span class="badge badge-orange" id="orderCount">12 Orders</span>
+      </div>
+
+      <div class="orders-table-wrap">
+        <table class="orders-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody">
+
+            <!--
+              ✏️ NOTUN ORDER ADD KORTE EKHANE TR ADD KORO:
+              data-status = "delivered" / "pending" / "processing" / "cancelled"
+              data-name   = product name (search er jonno)
+            -->
+
+            <tr data-status="delivered" data-name="ff guild glory">
+              <td><span class="order-id" onclick="copyText('#VXS-001')" title="Copy">#VXS-001</span></td>
+              <td>
+                <div class="order-product">
+                  <div class="order-product-icon">🏆</div>
+                  <div>
+                    <div class="order-product-name">FF Guild Glory</div>
+                    <div class="order-product-category">Lv.7 MAX · Others</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-orange">Others</span></td>
+              <td style="color:var(--text2);font-size:12px;white-space:nowrap;">Apr 17, 2026</td>
+              <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent2);">$1.25</td>
+              <td><span class="status-badge status-delivered">Delivered</span></td>
+              <td>
+                <div class="order-actions">
+                  <button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal');loadOrderDetail('VXS-001')">👁️ View</button>
+                  <button class="btn btn-sm btn-outline" onclick="downloadKey('VXS-001')">⬇️ Key</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr data-status="pending" data-name="drip client apk">
+              <td><span class="order-id" onclick="copyText('#VXS-002')" title="Copy">#VXS-002</span></td>
+              <td>
+                <div class="order-product">
+                  <div class="order-product-icon">💜</div>
+                  <div>
+                    <div class="order-product-name">Drip Client APK</div>
+                    <div class="order-product-category">Non Root Panel</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-cyan">Non Root</span></td>
+              <td style="color:var(--text2);font-size:12px;white-space:nowrap;">Apr 18, 2026</td>
+              <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent2);">$0.90</td>
+              <td><span class="status-badge status-pending">Pending</span></td>
+              <td>
+                <div class="order-actions">
+                  <button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal');loadOrderDetail('VXS-002')">👁️ View</button>
+                  <button class="btn btn-sm btn-danger" onclick="cancelOrder('VXS-002')">✕ Cancel</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr data-status="processing" data-name="iphone certified panel">
+              <td><span class="order-id" onclick="copyText('#VXS-003')" title="Copy">#VXS-003</span></td>
+              <td>
+                <div class="order-product">
+                  <div class="order-product-icon">🍎</div>
+                  <div>
+                    <div class="order-product-name">iPhone Certified</div>
+                    <div class="order-product-category">iPhone Panel</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-gray">iPhone</span></td>
+              <td style="color:var(--text2);font-size:12px;white-space:nowrap;">Apr 18, 2026</td>
+              <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent2);">$10.00</td>
+              <td><span class="status-badge status-processing">Processing</span></td>
+              <td>
+                <div class="order-actions">
+                  <button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal');loadOrderDetail('VXS-003')">👁️ View</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr data-status="delivered" data-name="brmod pc">
+              <td><span class="order-id" onclick="copyText('#VXS-004')" title="Copy">#VXS-004</span></td>
+              <td>
+                <div class="order-product">
+                  <div class="order-product-icon">🤖</div>
+                  <div>
+                    <div class="order-product-name">BRMOD PC</div>
+                    <div class="order-product-category">PC Panel</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-green">PC</span></td>
+              <td style="color:var(--text2);font-size:12px;white-space:nowrap;">Apr 15, 2026</td>
+              <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent2);">$1.00</td>
+              <td><span class="status-badge status-delivered">Delivered</span></td>
+              <td>
+                <div class="order-actions">
+                  <button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal');loadOrderDetail('VXS-004')">👁️ View</button>
+                  <button class="btn btn-sm btn-outline" onclick="downloadKey('VXS-004')">⬇️ Key</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr data-status="cancelled" data-name="pato team apk">
+              <td><span class="order-id" onclick="copyText('#VXS-005')" title="Copy">#VXS-005</span></td>
+              <td>
+                <div class="order-product">
+                  <div class="order-product-icon">🐍</div>
+                  <div>
+                    <div class="order-product-name">Pato Team APK</div>
+                    <div class="order-product-category">Non Root Panel</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-cyan">Non Root</span></td>
+              <td style="color:var(--text2);font-size:12px;white-space:nowrap;">Apr 10, 2026</td>
+              <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent2);">$2.40</td>
+              <td><span class="status-badge status-cancelled">Cancelled</span></td>
+              <td>
+                <div class="order-actions">
+                  <button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal');loadOrderDetail('VXS-005')">👁️ View</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr data-status="delivered" data-name="pc emote panel">
+              <td><span class="order-id" onclick="copyText('#VXS-006')" title="Copy">#VXS-006</span></td>
+              <td>
+                <div class="order-product">
+                  <div class="order-product-icon">🖥️</div>
+                  <div>
+                    <div class="order-product-name">PC Emote Panel</div>
+                    <div class="order-product-category">PC Panel</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-green">PC</span></td>
+              <td style="color:var(--text2);font-size:12px;white-space:nowrap;">Apr 8, 2026</td>
+              <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent2);">$0.50</td>
+              <td><span class="status-badge status-delivered">Delivered</span></td>
+              <td>
+                <div class="order-actions">
+                  <button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal');loadOrderDetail('VXS-006')">👁️ View</button>
+                  <button class="btn btn-sm btn-outline" onclick="downloadKey('VXS-006')">⬇️ Key</button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State (shown when no results) -->
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-icon">📦</div>
+        <div class="empty-title">No orders found</div>
+        <div class="empty-desc">No orders match your filter. Try a different status or search term.</div>
+        <a href="index.html" class="btn btn-primary" style="margin-top:8px;">🛒 Shop Now</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================
+     ORDER DETAIL MODAL
+     — View order details, product key, support
+============================================================ -->
+<div class="modal-overlay" id="orderDetailModal">
+  <div class="modal-card" style="max-width:500px;">
+    <div class="modal-header">
+      <div class="modal-title" id="modalOrderId">📦 Order #VXS-001</div>
+      <button class="modal-close" onclick="closeModal('orderDetailModal')">✕</button>
+    </div>
+
+    <div id="modalOrderContent" style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Product info -->
+      <div style="background:var(--bg3);border-radius:10px;padding:14px;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:36px;" id="modalProductIcon">🏆</div>
+        <div>
+          <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text);" id="modalProductName">FF Guild Glory</div>
+          <div style="font-family:var(--font-ui);font-size:12px;color:var(--text3);" id="modalProductCat">Others · Lv.7 MAX</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-family:var(--font-head);font-size:16px;font-weight:900;color:var(--accent2);" id="modalPrice">$1.25</div>
+          <span class="status-badge status-delivered" id="modalStatus">Delivered</span>
+        </div>
+      </div>
+
+      <!-- Order details grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:var(--bg3);border-radius:9px;padding:12px;">
+          <div style="font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:4px;">Order ID</div>
+          <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text);" id="modalId">#VXS-001</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:9px;padding:12px;">
+          <div style="font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:4px;">Order Date</div>
+          <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text);" id="modalDate">Apr 17, 2026</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:9px;padding:12px;">
+          <div style="font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:4px;">Payment</div>
+          <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--success);">Wallet Balance</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:9px;padding:12px;">
+          <div style="font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:4px;">Delivery</div>
+          <div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--success);">Instant ⚡</div>
+        </div>
+      </div>
+
+      <!-- Product Key (delivered orders) -->
+      <div id="keySection" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:14px;">
+        <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--success);text-transform:uppercase;margin-bottom:8px;">🔑 Product Key / Download Link</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <code id="productKey" style="flex:1;background:var(--bg3);padding:10px 12px;border-radius:7px;font-size:12px;color:var(--text);word-break:break-all;font-family:'Courier New',monospace;border:1px solid var(--card-border2);">
+            VXPR-XXXX-XXXX-XXXX-ABCD
+          </code>
+          <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('productKey').textContent.trim())">📋 Copy</button>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" style="flex:1;" onclick="downloadKey('current')">⬇️ Download</button>
+        <button class="btn btn-ghost" style="flex:1;" onclick="showToast('Support ticket opened!','info');closeModal('orderDetailModal')">💬 Get Support</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="dashboard.js"></script>
+<script>
+
+  /* ── Order Data (demo) ──
+     Real app a ekhane API theke data ashbe
+  */
+  const orderData = {
+    'VXS-001': { id:'#VXS-001', icon:'🏆', name:'FF Guild Glory', cat:'Others · Lv.7 MAX', price:'$1.25', status:'delivered', date:'Apr 17, 2026', key:'VXGD-7MAX-BD24-0001' },
+    'VXS-002': { id:'#VXS-002', icon:'💜', name:'Drip Client APK', cat:'Non Root Panel', price:'$0.90', status:'pending', date:'Apr 18, 2026', key:null },
+    'VXS-003': { id:'#VXS-003', icon:'🍎', name:'iPhone Certified', cat:'iPhone Panel', price:'$10.00', status:'processing', date:'Apr 18, 2026', key:null },
+    'VXS-004': { id:'#VXS-004', icon:'🤖', name:'BRMOD PC', cat:'PC Panel', price:'$1.00', status:'delivered', date:'Apr 15, 2026', key:'BMOD-PC24-BD00-0004' },
+    'VXS-005': { id:'#VXS-005', icon:'🐍', name:'Pato Team APK', cat:'Non Root Panel', price:'$2.40', status:'cancelled', date:'Apr 10, 2026', key:null },
+    'VXS-006': { id:'#VXS-006', icon:'🖥️', name:'PC Emote Panel', cat:'PC Panel', price:'$0.50', status:'delivered', date:'Apr 8, 2026',  key:'PCEM-ALL0-BD24-0006' },
+  };
+
+  /* ── Load Order Detail into Modal ── */
+  function loadOrderDetail(orderId) {
+    const o = orderData[orderId];
+    if (!o) return;
+
+    document.getElementById('modalOrderId').textContent  = `📦 Order ${o.id}`;
+    document.getElementById('modalProductIcon').textContent = o.icon;
+    document.getElementById('modalProductName').textContent = o.name;
+    document.getElementById('modalProductCat').textContent  = o.cat;
+    document.getElementById('modalPrice').textContent       = o.price;
+    document.getElementById('modalId').textContent          = o.id;
+    document.getElementById('modalDate').textContent        = o.date;
+
+    /* Status badge */
+    const statusEl = document.getElementById('modalStatus');
+    statusEl.className = `status-badge status-${o.status}`;
+    statusEl.textContent = o.status.charAt(0).toUpperCase() + o.status.slice(1);
+
+    /* Key section */
+    const keySection = document.getElementById('keySection');
+    if (o.key) {
+      keySection.style.display = 'block';
+      document.getElementById('productKey').textContent = o.key;
+    } else {
+      keySection.style.display = 'none';
+    }
+  }
+
+  /* ── Status Filter ── */
+  let currentStatus = 'all';
+
+  function filterByStatus(status, btn) {
+    currentStatus = status;
+    /* Button active state */
+    document.querySelectorAll('.dash-card-body .btn').forEach(b => b.className = 'btn btn-sm btn-ghost');
+    btn.className = 'btn btn-sm btn-primary';
+    applyFilters();
+  }
+
+  /* ── Search Filter ── */
+  function filterOrders() { applyFilters(); }
+
+  function applyFilters() {
+    const search  = document.getElementById('searchInput').value.toLowerCase();
+    const rows    = document.querySelectorAll('#ordersBody tr');
+    let   visible = 0;
+
+    rows.forEach(row => {
+      const status = row.dataset.status || '';
+      const name   = row.dataset.name   || '';
+      const matchStatus = currentStatus === 'all' || status === currentStatus;
+      const matchSearch = !search || name.includes(search);
+      const show = matchStatus && matchSearch;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    document.getElementById('emptyState').style.display   = visible === 0 ? 'flex' : 'none';
+    document.getElementById('orderCount').textContent      = `${visible} Order${visible !== 1 ? 's' : ''}`;
+  }
+
+  /* ── Download Key ── */
+  function downloadKey(orderId) {
+    const o = orderId === 'current'
+      ? orderData[document.getElementById('modalId').textContent.replace('#','')]
+      : orderData[orderId];
+
+    if (!o?.key) { showToast('No key available for this order.', 'error'); return; }
+
+    /* Create text file download */
+    const blob = new Blob(
+      [`V1PER X SHOP — Product Key\n\nOrder: ${o.id}\nProduct: ${o.name}\nKey: ${o.key}\nDate: ${o.date}\n`],
+      { type: 'text/plain' }
+    );
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `${o.id}-key.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Key downloaded for ${o.name}!`, 'success');
+  }
+
+  /* ── Cancel Order ── */
+  async function cancelOrder(orderId) {
+    const ok = await confirmAction(`Cancel order ${orderId}? This action cannot be undone.`);
+    if (!ok) return;
+    /* 🔧 Real API: await fetch(`/api/orders/${orderId}/cancel`, { method:'POST' }) */
+    showToast(`Order #${orderId} cancellation requested.`, 'warning', 4000);
+    /* Update row status in UI */
+    const row = document.querySelector(`tr[data-status="pending"]`);
+    if (row) {
+      row.dataset.status = 'cancelled';
+      const badge = row.querySelector('.status-badge');
+      if (badge) { badge.className = 'status-badge status-cancelled'; badge.textContent = 'Cancelled'; }
+      const actions = row.querySelector('.order-actions');
+      if (actions) actions.innerHTML = `<button class="btn btn-sm btn-ghost" onclick="openModal('orderDetailModal')">👁️ View</button>`;
+    }
+  }
+
+</script>
+
+</body>
+</html>

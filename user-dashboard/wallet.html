@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="V1PER X SHOP — My Wallet"/>
+  <title>Wallet — V1PER X SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body class="page-load">
+
+<div class="dash-bg"></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================================
+     SIDEBAR
+============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🎮</div>
+    V1PER X SHOP
+  </div>
+  <div class="sidebar-section-label">Main Menu</div>
+  <nav class="sidebar-nav">
+    <a href="../index.html"   class="nav-item"><span class="nav-icon">🏠</span> Home Shop</a>
+    <a href="profile.html" class="nav-item"><span class="nav-icon">👤</span> My Profile</a>
+    <a href="wallet.html"  class="nav-item active"><span class="nav-icon">💰</span> Wallet</a>
+    <a href="orders.html"  class="nav-item"><span class="nav-icon">📦</span> My Orders <span class="nav-badge">3</span></a>
+  </nav>
+  <div class="sidebar-section-label">Account</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="#" class="nav-item"><span class="nav-icon">🔔</span> Notifications</a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔒</span> Security</a>
+    <a href="#" class="nav-item"><span class="nav-icon">❓</span> Help & Support</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">V</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">V1PER User</div>
+      <div class="sidebar-user-role">Premium Member</div>
+    </div>
+    <a href="../auth/login.html" class="sidebar-logout" title="Logout">🚪</a>
+  </div>
+</aside>
+
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<div class="dash-main">
+
+  <header class="dash-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="header-breadcrumb">
+        <a href="../index.html">🏠 Home</a>
+        <span class="sep">›</span>
+        <span class="current">Wallet</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="header-shop-link">🛒 Back to Shop</a>
+      <button class="header-btn" title="Notifications">🔔 <span class="notif-dot"></span></button>
+      <button class="header-btn" id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+
+  <div class="dash-content">
+
+    <!-- Page Title -->
+    <div class="page-title-row">
+      <div>
+        <div class="page-title"><div class="page-title-icon">💰</div> My Wallet</div>
+        <div class="page-subtitle">Manage your balance, deposit & withdraw funds</div>
+      </div>
+    </div>
+
+
+    <!-- ── STATS ROW ── -->
+    <div class="stats-row">
+      <div class="stat-card reveal">
+        <div class="stat-icon green">💵</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statBalance">$12.00</div>
+          <div class="stat-label">Current Balance</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon orange">📥</div>
+        <div class="stat-info">
+          <div class="stat-value">$36.50</div>
+          <div class="stat-label">Total Deposited</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon cyan">📤</div>
+        <div class="stat-info">
+          <div class="stat-value">$24.50</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon gold">🏆</div>
+        <div class="stat-info">
+          <div class="stat-value">18</div>
+          <div class="stat-label">Transactions</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── WALLET BALANCE CARD ── -->
+    <div class="wallet-balance-card reveal">
+      <div class="wallet-label">Available Balance</div>
+      <div class="wallet-amount">
+        <span class="currency">$</span>
+        <span id="balanceDisplay">12.00</span>
+      </div>
+      <div class="wallet-sub">Last updated: Today, 3:45 PM · Account: V1PER Gamer</div>
+      <div class="wallet-actions">
+        <!-- Deposit → opens deposit modal -->
+        <button class="btn-deposit" onclick="openModal('depositModal')">
+          ➕ Deposit Funds
+        </button>
+        <!-- Withdraw → opens withdraw modal -->
+        <button class="btn-withdraw" onclick="openModal('withdrawModal')">
+          📤 Withdraw
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ── PAYMENT METHODS CARD ── -->
+    <div class="dash-card reveal" style="margin-bottom:24px;">
+      <div class="dash-card-header">
+        <div class="dash-card-title">💳 Payment Methods</div>
+        <button class="btn btn-outline btn-sm" onclick="showToast('Payment method feature coming soon!','info')">
+          + Add Method
+        </button>
+      </div>
+      <div class="dash-card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+
+          <!-- Bkash -->
+          <div class="pay-method-card" onclick="showToast('bKash selected','info')" style="background:var(--bg3);border:1.5px solid var(--card-border2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.25s ease;">
+            <div style="font-size:28px;">📱</div>
+            <div>
+              <div style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--text);">bKash</div>
+              <div style="font-family:var(--font-ui);font-size:11px;color:var(--text3);">Mobile Banking</div>
+            </div>
+            <span class="badge badge-green" style="margin-left:auto;">Active</span>
+          </div>
+
+          <!-- Nagad -->
+          <div class="pay-method-card" onclick="showToast('Nagad selected','info')" style="background:var(--bg3);border:1.5px solid var(--card-border2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.25s ease;">
+            <div style="font-size:28px;">💳</div>
+            <div>
+              <div style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--text);">Nagad</div>
+              <div style="font-family:var(--font-ui);font-size:11px;color:var(--text3);">Mobile Banking</div>
+            </div>
+            <span class="badge badge-green" style="margin-left:auto;">Active</span>
+          </div>
+
+          <!-- USDT -->
+          <div class="pay-method-card" onclick="showToast('USDT selected','info')" style="background:var(--bg3);border:1.5px solid var(--card-border2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.25s ease;">
+            <div style="font-size:28px;">🪙</div>
+            <div>
+              <div style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--text);">USDT / Crypto</div>
+              <div style="font-family:var(--font-ui);font-size:11px;color:var(--text3);">Cryptocurrency</div>
+            </div>
+            <span class="badge badge-cyan" style="margin-left:auto;">New</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── TRANSACTION HISTORY ── -->
+    <div class="dash-card reveal">
+      <div class="dash-card-header">
+        <div class="dash-card-title">📋 Transaction History</div>
+        <!-- Filter buttons -->
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <button class="btn btn-sm btn-primary"  onclick="filterTxn('all', this)">All</button>
+          <button class="btn btn-sm btn-ghost"     onclick="filterTxn('credit', this)">Deposits</button>
+          <button class="btn btn-sm btn-ghost"     onclick="filterTxn('debit', this)">Purchases</button>
+        </div>
+      </div>
+
+      <!-- Transaction items list -->
+      <div class="transaction-list" id="txnList">
+
+        <!-- Transaction Item Template:
+             txn-icon class: credit / debit / pending
+             txn-amount class: credit / debit / pending
+             Copy kore notun transaction add korte paro
+        -->
+
+        <div class="transaction-item" data-type="credit">
+          <div class="txn-icon credit">📥</div>
+          <div class="txn-info">
+            <div class="txn-title">Deposit via bKash</div>
+            <div class="txn-date">📅 Apr 18, 2026 · 3:45 PM</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="txn-amount credit">+$10.00</div>
+            <span class="badge badge-green" style="font-size:10px;margin-top:3px;display:inline-flex;">Success</span>
+          </div>
+        </div>
+
+        <div class="transaction-item" data-type="debit">
+          <div class="txn-icon debit">🛒</div>
+          <div class="txn-info">
+            <div class="txn-title">FF Guild Glory — Level 7 MAX</div>
+            <div class="txn-date">📅 Apr 17, 2026 · 11:22 AM</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="txn-amount debit">-$1.25</div>
+            <span class="badge badge-green" style="font-size:10px;margin-top:3px;display:inline-flex;">Delivered</span>
+          </div>
+        </div>
+
+        <div class="transaction-item" data-type="debit">
+          <div class="txn-icon debit">🛒</div>
+          <div class="txn-info">
+            <div class="txn-title">Drip Client APK — Non Root</div>
+            <div class="txn-date">📅 Apr 16, 2026 · 7:14 PM</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="txn-amount debit">-$0.90</div>
+            <span class="badge badge-green" style="font-size:10px;margin-top:3px;display:inline-flex;">Delivered</span>
+          </div>
+        </div>
+
+        <div class="transaction-item" data-type="credit">
+          <div class="txn-icon credit">📥</div>
+          <div class="txn-info">
+            <div class="txn-title">Deposit via Nagad</div>
+            <div class="txn-date">📅 Apr 15, 2026 · 2:00 PM</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="txn-amount credit">+$5.00</div>
+            <span class="badge badge-green" style="font-size:10px;margin-top:3px;display:inline-flex;">Success</span>
+          </div>
+        </div>
+
+        <div class="transaction-item" data-type="debit">
+          <div class="txn-icon debit">🛒</div>
+          <div class="txn-info">
+            <div class="txn-title">iPhone Certified Panel</div>
+            <div class="txn-date">📅 Apr 14, 2026 · 5:30 PM</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="txn-amount debit">-$10.00</div>
+            <span class="badge badge-green" style="font-size:10px;margin-top:3px;display:inline-flex;">Delivered</span>
+          </div>
+        </div>
+
+        <div class="transaction-item" data-type="pending">
+          <div class="txn-icon pending">⏳</div>
+          <div class="txn-info">
+            <div class="txn-title">Deposit via USDT</div>
+            <div class="txn-date">📅 Apr 13, 2026 · 9:00 AM</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="txn-amount pending">+$20.00</div>
+            <span class="badge badge-gold" style="font-size:10px;margin-top:3px;display:inline-flex;">Pending</span>
+          </div>
+        </div>
+
+      </div>
+      <!-- END: txnList -->
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================
+     DEPOSIT MODAL
+     — openModal('depositModal') diye khola hoy
+============================================================ -->
+<div class="modal-overlay" id="depositModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">📥 Deposit Funds</div>
+      <button class="modal-close" onclick="closeModal('depositModal')">✕</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label">💵 Amount (USD)</label>
+        <input class="form-input" type="number" id="depositAmount" placeholder="Enter amount" min="1" step="0.01"/>
+        <!-- Quick amount buttons -->
+        <div class="quick-amounts">
+          <button class="quick-amount-btn" onclick="setAmt('depositAmount',1)">$1</button>
+          <button class="quick-amount-btn" onclick="setAmt('depositAmount',5)">$5</button>
+          <button class="quick-amount-btn" onclick="setAmt('depositAmount',10)">$10</button>
+          <button class="quick-amount-btn" onclick="setAmt('depositAmount',20)">$20</button>
+          <button class="quick-amount-btn" onclick="setAmt('depositAmount',50)">$50</button>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="form-group">
+        <label class="form-label">💳 Payment Method</label>
+        <select class="form-select" id="depositMethod">
+          <option value="">— Select Method —</option>
+          <option value="bkash">📱 bKash</option>
+          <option value="nagad">💳 Nagad</option>
+          <option value="usdt">🪙 USDT (TRC20)</option>
+          <option value="card">💳 Debit/Credit Card</option>
+        </select>
+      </div>
+
+      <!-- Transaction ID -->
+      <div class="form-group">
+        <label class="form-label">🔢 Transaction ID / TxHash</label>
+        <input class="form-input" type="text" id="depositTxId" placeholder="Paste your TxID here"/>
+      </div>
+
+      <!-- Info box -->
+      <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:9px;padding:12px 14px;font-family:var(--font-ui);font-size:12px;color:var(--text2);line-height:1.6;">
+        ⚠️ <strong>Send payment first</strong>, then enter your TxID above. Deposits are verified within 5-15 minutes.
+      </div>
+
+      <button class="btn btn-primary btn-full btn-lg" onclick="submitDeposit()">
+        ✅ Submit Deposit Request
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     WITHDRAW MODAL
+============================================================ -->
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">📤 Withdraw Funds</div>
+      <button class="modal-close" onclick="closeModal('withdrawModal')">✕</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+
+      <div class="form-group">
+        <label class="form-label">💵 Amount (USD)</label>
+        <input class="form-input" type="number" id="withdrawAmount" placeholder="Enter amount" min="1" step="0.01"/>
+        <div class="quick-amounts">
+          <button class="quick-amount-btn" onclick="setAmt('withdrawAmount',5)">$5</button>
+          <button class="quick-amount-btn" onclick="setAmt('withdrawAmount',10)">$10</button>
+          <button class="quick-amount-btn" onclick="setAmt('withdrawAmount',20)">$20</button>
+          <button class="quick-amount-btn" onclick="setAmt('withdrawAmount',50)">$50</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">📱 Withdraw To</label>
+        <select class="form-select" id="withdrawMethod">
+          <option value="">— Select Method —</option>
+          <option value="bkash">📱 bKash</option>
+          <option value="nagad">💳 Nagad</option>
+          <option value="usdt">🪙 USDT Wallet</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">📞 Account Number / Wallet Address</label>
+        <input class="form-input" type="text" id="withdrawAccount" placeholder="Your bKash/Nagad number or wallet"/>
+      </div>
+
+      <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:9px;padding:12px 14px;font-family:var(--font-ui);font-size:12px;color:var(--text2);line-height:1.6;">
+        ⚠️ Available balance: <strong style="color:var(--success);">$12.00</strong> · Minimum withdraw: $5.00 · Processing: 24-48 hours
+      </div>
+
+      <button class="btn btn-primary btn-full btn-lg" onclick="submitWithdraw()">
+        📤 Submit Withdraw Request
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script src="dashboard.js"></script>
+<script>
+
+  /* ── Transaction Filter ── */
+  function filterTxn(type, btn) {
+    document.querySelectorAll('.dash-card-header .btn').forEach(b => {
+      b.className = 'btn btn-sm btn-ghost';
+    });
+    btn.className = 'btn btn-sm btn-primary';
+
+    document.querySelectorAll('.transaction-item').forEach(item => {
+      if (type === 'all' || item.dataset.type === type) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  /* ── Quick Amount Buttons ── */
+  function setAmt(inputId, amount) {
+    document.getElementById(inputId).value = amount;
+    /* Highlight selected button */
+    event.target.closest('.quick-amounts')?.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
+    event.target.classList.add('selected');
+  }
+
+  /* ── Submit Deposit ── */
+  async function submitDeposit() {
+    const amt    = document.getElementById('depositAmount').value;
+    const method = document.getElementById('depositMethod').value;
+    const txId   = document.getElementById('depositTxId').value;
+
+    if (!amt || amt <= 0)  { showToast('Enter a valid amount', 'error'); return; }
+    if (!method)           { showToast('Select a payment method', 'error'); return; }
+    if (!txId.trim())      { showToast('Enter your Transaction ID', 'error'); return; }
+
+    /* 🔧 REAL API: await fetch('/api/wallet/deposit', { method:'POST', ... }) */
+    await new Promise(r => setTimeout(r, 1000));
+    closeModal('depositModal');
+    showToast(`Deposit request of $${amt} submitted! Pending review.`, 'success', 5000);
+  }
+
+  /* ── Submit Withdraw ── */
+  async function submitWithdraw() {
+    const amt     = document.getElementById('withdrawAmount').value;
+    const method  = document.getElementById('withdrawMethod').value;
+    const account = document.getElementById('withdrawAccount').value;
+
+    if (!amt || amt < 5)    { showToast('Minimum withdraw is $5', 'error'); return; }
+    if (!method)             { showToast('Select withdraw method', 'error'); return; }
+    if (!account.trim())     { showToast('Enter your account number', 'error'); return; }
+    if (parseFloat(amt) > 12) { showToast('Insufficient balance!', 'error'); return; }
+
+    /* 🔧 REAL API: await fetch('/api/wallet/withdraw', { method:'POST', ... }) */
+    await new Promise(r => setTimeout(r, 1000));
+    closeModal('withdrawModal');
+    showToast(`Withdraw of $${amt} submitted! Processing 24-48hrs.`, 'success', 5000);
+  }
+
+  /* Pay method card hover */
+  document.querySelectorAll('.pay-method-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.borderColor = 'var(--accent)';
+      card.style.background  = 'var(--hover-bg)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.borderColor = 'var(--card-border2)';
+      card.style.background  = 'var(--bg3)';
+    });
+  });
+</script>
+
+</body>
+</html>
