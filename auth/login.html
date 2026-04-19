@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+
+  <!-- ============================================================
+       META
+       — Title, description change korte ekhane edit koro
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="V1PER X SHOP — Login to your account" />
+  <title>Login — V1PER X SHOP</title>
+
+  <!-- ============================================================
+       FONTS
+       — Google Fonts: Orbitron + Inter
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       STYLESHEET
+       — Shared auth styles: auth-style.css
+  ============================================================ -->
+  <link rel="stylesheet" href="../css/auth.css" />
+
+</head>
+<body>
+
+  <!-- ============================================================
+       ANIMATED BACKGROUND BLOBS
+       — Floating glow orbs in the background
+       — Color/size change: auth-style.css e .blob-1/2/3
+  ============================================================ -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+
+  <!-- ============================================================
+       PAGE HEADER
+       — Back link (left), Logo (center), Theme toggle (right)
+       — Logo text: "V1PER X SHOP" change korte ekhane edit koro
+  ============================================================ -->
+  <header class="page-header">
+
+    <!-- Back to Home -->
+    <a href="../index.html" class="back-link">
+      <span class="back-arrow">←</span>
+      Back to Shop
+    </a>
+
+    <!-- Center Logo -->
+    <a href="../index.html" class="logo-link">
+      <div class="logo-icon">🎮</div>
+      <span>V1PER X SHOP</span>
+    </a>
+
+    <!-- Dark / Light Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+  </header>
+
+
+  <!-- ============================================================
+       MAIN BODY — Login Card
+  ============================================================ -->
+  <main class="page-body">
+    <div class="auth-wrapper">
+
+
+      <!-- ── AUTH CARD ── -->
+      <div class="auth-card" id="authCard">
+
+
+        <!-- Card Header: Icon + Title + Subtitle -->
+        <div class="card-head">
+          <div class="card-head-icon">🔑</div>
+          <h1 class="card-title">Welcome Back!</h1>
+          <p class="card-subtitle">
+            Login to your <span class="highlight">V1PER X SHOP</span> account<br/>
+            to access your purchases & more.
+          </p>
+        </div>
+
+
+        <!-- ── LOGIN FORM ── -->
+        <form class="auth-form" id="loginForm" novalidate>
+
+          <!-- Global Alert (success / error) -->
+          <div class="auth-alert" id="authAlert"></div>
+
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">
+              <span class="label-icon">✉️</span> Email Address
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="form-input"
+                type="email"
+                id="loginEmail"
+                name="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+                spellcheck="false"
+              />
+              <!-- Clear button -->
+              <span class="input-icon-btn" title="Clear" onclick="document.getElementById('loginEmail').value=''; document.getElementById('loginEmail').focus();">✕</span>
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">
+              <span class="label-icon">🔒</span> Password
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="form-input"
+                type="password"
+                id="loginPassword"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+              />
+              <!-- Show / Hide password toggle -->
+              <span class="input-icon-btn" data-toggle-pw="loginPassword" title="Show password">👁️</span>
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+
+          <!-- Login Submit Button -->
+          <button type="submit" class="btn-submit btn-login" id="loginBtn">
+            <span class="btn-text">→ Login</span>
+            <span class="spinner"></span>
+          </button>
+
+
+          <!-- Divider -->
+          <div class="auth-divider">or</div>
+
+
+          <!-- Google Login -->
+          <button type="button" class="btn-google">
+            <div class="google-icon"></div>
+            Continue with Google
+          </button>
+
+
+          <!-- Footer Links -->
+          <div class="auth-footer">
+            <!-- Forgot Password -->
+            <button type="button" class="forgot-btn" id="forgotBtn">
+              🔑 Forgot Password?
+            </button>
+            <!-- Switch to Register -->
+            <p class="switch-text">
+              Don't have an account?
+              <a href="register.html">Register now →</a>
+            </p>
+          </div>
+
+
+        </form>
+        <!-- END: LOGIN FORM -->
+
+
+      </div>
+      <!-- END: AUTH CARD -->
+
+
+    </div>
+  </main>
+
+
+  <!-- Page Footer -->
+  <footer class="page-footer">
+    © 2026 <a href="../index.html">V1PER X SHOP</a> · All Rights Reserved
+  </footer>
+
+
+  <!-- ============================================================
+       SHARED JS
+       — Theme toggle, password toggle, validation helpers
+  ============================================================ -->
+  <script src="../js/auth.js"></script>
+
+
+  <!-- ============================================================
+       LOGIN PAGE JS
+       — Form submit, forgot password logic
+       — Real API call connect korte ekhane fetch() add koro
+  ============================================================ -->
+  <script>
+
+    /* --- Live Validation on blur --- */
+    setupLiveValidation('loginEmail',    { required: true, email: true, label: 'Email' });
+    setupLiveValidation('loginPassword', { required: true, minLength: 6, label: 'Password' });
+
+
+    /* ============================================================
+       LOGIN FORM SUBMIT
+       — Validate → Loading → API call → Redirect
+       — Real API: fetch() ekhane add koro (comment dekhao)
+    ============================================================ */
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const emailInput = document.getElementById('loginEmail');
+      const passInput  = document.getElementById('loginPassword');
+      const loginBtn   = document.getElementById('loginBtn');
+      const btnText    = loginBtn.querySelector('.btn-text');
+      const card       = document.getElementById('authCard');
+
+      /* Validate */
+      const ok1 = validateField(emailInput, { required: true, email: true,    label: 'Email' });
+      const ok2 = validateField(passInput,  { required: true, minLength: 6,   label: 'Password' });
+      if (!ok1 || !ok2) { shakeEl(card); return; }
+
+      /* Loading state */
+      loginBtn.classList.add('btn-loading');
+      btnText.textContent = 'Logging in...';
+
+      try {
+
+        /* =====================================================
+           🔧 REAL API CALL EKHANE KORTE HOBE:
+
+           const res = await fetch('/api/login', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({
+               email:    emailInput.value.trim(),
+               password: passInput.value,
+             })
+           });
+           const data = await res.json();
+           if (!res.ok) throw new Error(data.message || 'Login failed');
+
+           // Token save:
+           localStorage.setItem('viper-token', data.token);
+
+        ===================================================== */
+
+        /* Demo simulation — real API hole ai line ta remove koro */
+        await new Promise(r => setTimeout(r, 1600));
+
+        /* Success */
+        showAlert('success', '✅ Login successful! Redirecting to shop...');
+
+        /* Redirect after 1.5s — real URL diye replace koro */
+        setTimeout(() => { window.location.href = '../index.html'; }, 1500);
+
+      } catch (err) {
+        /* Error */
+        showAlert('error', err.message || '❌ Login failed. Check your credentials.');
+        shakeEl(card);
+      } finally {
+        loginBtn.classList.remove('btn-loading');
+        btnText.textContent = '→ Login';
+      }
+    });
+
+
+    /* ============================================================
+       FORGOT PASSWORD
+       — Email validate → API call → success message
+       — Real API: /api/forgot-password endpoint connect koro
+    ============================================================ */
+    document.getElementById('forgotBtn').addEventListener('click', async () => {
+      const emailInput = document.getElementById('loginEmail');
+      const isValid    = validateField(emailInput, { required: true, email: true, label: 'Email' });
+
+      if (!isValid) {
+        emailInput.focus();
+        showAlert('error', 'Please enter your email address first.');
+        return;
+      }
+
+      try {
+        /* 🔧 CUSTOMIZE: Real forgot password API ekhane
+           await fetch('/api/forgot-password', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ email: emailInput.value.trim() })
+           });
+        */
+
+        /* Demo */
+        await new Promise(r => setTimeout(r, 800));
+        showAlert('success', `📧 Password reset link sent to ${emailInput.value.trim()}`);
+
+      } catch {
+        showAlert('error', 'Failed to send reset link. Try again later.');
+      }
+    });
+
+  </script>
+
+</body>
+</html>

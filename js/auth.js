@@ -1,212 +1,160 @@
 /* ============================================================
-   V1PER X SHOP — Auth Modal JavaScript
-   File: auth.js
+   V1PER X SHOP — Auth Pages Shared JavaScript
+   File: auth-script.js
 
    TABLE OF CONTENTS:
-   01. Modal Open / Close
-   02. Tab Switcher (Login ↔ Register)
-   03. Password Show / Hide Toggle
-   04. Password Strength Meter
-   05. Form Validation
-   06. Login Form Submit
-   07. Register Form Submit
-   08. Forgot Password
-   09. Google Login (placeholder)
-   10. Helper Utilities
+   01. Theme Toggle (Dark / Light)
+   02. Password Show / Hide Toggle
+   03. Password Strength Meter
+   04. Form Validation
+   05. Show Alert Message
+   06. Google Login (Placeholder)
+   07. Shake Animation Helper
    ============================================================ */
 
 
 /* ============================================================
-   01. MODAL OPEN / CLOSE
-   — openAuthModal('login') ba openAuthModal('register') call koro
-   — Overlay te click korle close hoy
-   — ESC key press e close hoy
-   — Body scroll lock hoy modal open hole
+   01. THEME TOGGLE
+   — Dark/Light mode switch
+   — localStorage e save hoy, page reload e persist kore
+   — Customize: default theme change korte 'dark' → 'light'
 ============================================================ */
+const html     = document.documentElement;
+const themeBtn = document.getElementById('themeToggle');
 
-const modalOverlay = document.getElementById('authModalOverlay');
-const authModal    = document.getElementById('authModal');
+/* Saved theme load koro (default: dark) */
+const savedTheme = localStorage.getItem('viper-theme') || 'dark';
+html.setAttribute('data-theme', savedTheme);
+if (themeBtn) themeBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
 
-/* Modal khola — tab specify korte paro: 'login' or 'register' */
-function openAuthModal(tab = 'login') {
-  modalOverlay.classList.add('active');
-  document.body.style.overflow = 'hidden'; /* Scroll lock */
-  switchTab(tab); /* Specified tab e shuru hobe */
-}
-
-/* Modal banda */
-function closeAuthModal() {
-  modalOverlay.classList.remove('active');
-  document.body.style.overflow = ''; /* Scroll unlock */
-  clearAllMessages(); /* Sob error/success clear koro */
-}
-
-/* Overlay (background) click e close */
-modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) closeAuthModal();
+/* Toggle on click */
+themeBtn?.addEventListener('click', () => {
+  const current = html.getAttribute('data-theme');
+  const next    = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('viper-theme', next);
 });
-
-/* ESC key e close */
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-    closeAuthModal();
-  }
-});
-
-/* Close button (X) */
-document.getElementById('authCloseBtn').addEventListener('click', closeAuthModal);
 
 
 /* ============================================================
-   02. TAB SWITCHER (Login ↔ Register)
-   — switchTab('login') or switchTab('register')
-   — HTML e onclick="switchTab('register')" use kora hoyeche
+   02. PASSWORD SHOW / HIDE TOGGLE
+   — data-toggle-pw="inputId" attribute diye button e set kora hoy
+   — Click korle password text/password type toggle hoy
 ============================================================ */
-
-const loginTab     = document.getElementById('loginTab');
-const registerTab  = document.getElementById('registerTab');
-const loginPanel   = document.getElementById('loginForm');
-const registerPanel = document.getElementById('registerForm');
-
-function switchTab(tab) {
-  clearAllMessages();
-
-  if (tab === 'login') {
-    /* Login tab active koro */
-    loginTab.classList.add('tab-active');
-    registerTab.classList.remove('tab-active');
-
-    /* Login panel show, register hide */
-    loginPanel.classList.add('form-panel-active');
-    registerPanel.classList.remove('form-panel-active');
-
-  } else {
-    /* Register tab active koro */
-    registerTab.classList.add('tab-active');
-    loginTab.classList.remove('tab-active');
-
-    /* Register panel show, login hide */
-    registerPanel.classList.add('form-panel-active');
-    loginPanel.classList.remove('form-panel-active');
-  }
-}
-
-/* Tab button clicks */
-loginTab.addEventListener('click',    () => switchTab('login'));
-registerTab.addEventListener('click', () => switchTab('register'));
-
-
-/* ============================================================
-   03. PASSWORD SHOW / HIDE TOGGLE
-   — Eye icon click e password visible/hidden toggle
-============================================================ */
-
-function togglePassword(inputId, toggleBtn) {
-  const input = document.getElementById(inputId);
-  const isHidden = input.type === 'password';
-
-  input.type = isHidden ? 'text' : 'password';
-  toggleBtn.textContent = isHidden ? '🙈' : '👁️';
-}
-
-/* Setup all password toggles */
 document.querySelectorAll('[data-toggle-pw]').forEach(btn => {
   btn.addEventListener('click', () => {
-    const targetId = btn.getAttribute('data-toggle-pw');
-    togglePassword(targetId, btn);
+    const inputId = btn.getAttribute('data-toggle-pw');
+    const input   = document.getElementById(inputId);
+    if (!input) return;
+
+    const isHidden    = input.type === 'password';
+    input.type        = isHidden ? 'text' : 'password';
+    btn.textContent   = isHidden ? '🙈' : '👁️';
   });
 });
 
 
 /* ============================================================
-   04. PASSWORD STRENGTH METER (Register form)
-   — Password type korle live strength check hoy
-   — Weak / Medium / Strong
+   03. PASSWORD STRENGTH METER
+   — #strengthInput id er input watch kore
+   — 3 ta .strength-bar fill kore level onujayi
+   — #strengthText span e label dekhay
+   — Customize: rules change korte checkStrength() edit koro
 ============================================================ */
+const strengthInput = document.getElementById('strengthInput');
+const strengthBars  = document.querySelectorAll('.strength-bar');
+const strengthText  = document.getElementById('strengthText');
 
-const regPasswordInput = document.getElementById('regPassword');
-const strengthBars     = document.querySelectorAll('.strength-bar');
-const strengthLabel    = document.getElementById('strengthLabel');
-
-if (regPasswordInput) {
-  regPasswordInput.addEventListener('input', () => {
-    const val      = regPasswordInput.value;
-    const strength = checkPasswordStrength(val);
-    updateStrengthUI(strength);
+if (strengthInput) {
+  strengthInput.addEventListener('input', () => {
+    const level = checkStrength(strengthInput.value);
+    renderStrength(level);
   });
 }
 
-/* Password strength logic */
-function checkPasswordStrength(password) {
-  if (password.length === 0) return 0;
-
+/* Strength check logic */
+function checkStrength(pw) {
+  if (!pw) return 0;
   let score = 0;
-  if (password.length >= 8)              score++; /* Length */
-  if (/[A-Z]/.test(password))            score++; /* Uppercase */
-  if (/[0-9]/.test(password))            score++; /* Number */
-  if (/[^A-Za-z0-9]/.test(password))    score++; /* Special char */
+  if (pw.length >= 8)           score++; /* Min 8 chars */
+  if (/[A-Z]/.test(pw))         score++; /* Uppercase letter */
+  if (/[0-9]/.test(pw))         score++; /* Number */
+  if (/[^A-Za-z0-9]/.test(pw)) score++; /* Special character */
 
   if (score <= 1) return 1; /* Weak */
   if (score <= 2) return 2; /* Medium */
   return 3;                 /* Strong */
 }
 
-/* Strength bar UI update */
-function updateStrengthUI(level) {
-  const labels  = ['', 'Weak 😟', 'Medium 🙂', 'Strong 💪'];
-  const classes = ['', 'weak',    'medium',     'strong'];
-  const colors  = ['', '#ef4444', '#f59e0b',    '#22c55e'];
+/* Strength bar UI render */
+function renderStrength(level) {
+  const config = {
+    0: { label: '',          color: '',         cls: '' },
+    1: { label: 'Weak 😟',   color: '#ef4444',  cls: 'weak' },
+    2: { label: 'Medium 🙂', color: '#f59e0b',  cls: 'medium' },
+    3: { label: 'Strong 💪', color: '#22c55e',  cls: 'strong' },
+  };
+
+  const c = config[level] || config[0];
 
   strengthBars.forEach((bar, i) => {
     bar.className = 'strength-bar';
-    if (i < level) bar.classList.add(classes[level]);
+    if (i < level) bar.classList.add(c.cls);
   });
 
-  if (strengthLabel) {
-    strengthLabel.textContent = regPasswordInput.value ? labels[level] : '';
-    strengthLabel.style.color = colors[level];
+  if (strengthText) {
+    strengthText.textContent = c.label;
+    strengthText.style.color = c.color;
   }
 }
 
 
 /* ============================================================
-   05. FORM VALIDATION
-   — Input validate kora + error message show/hide
+   04. FORM VALIDATION
+   — validateField(inputEl, rules) → true/false return kore
+   — rules object:
+       required:  true/false
+       email:     true/false (email format check)
+       minLength: number
+       maxLength: number
+       match:     'otherInputId' (confirm password er jonno)
+       label:     'Field Name' (error message e use hoy)
+   — Blur event e auto validate hoy (live validation)
 ============================================================ */
 
-/* Single field validate */
-function validateField(input, rules) {
-  const group    = input.closest('.form-group');
-  const errorEl  = group?.querySelector('.field-error');
-  const value    = input.value.trim();
-  let   errorMsg = '';
+/* Validate a single field */
+function validateField(input, rules = {}) {
+  const group   = input.closest('.form-group');
+  const errorEl = group?.querySelector('.field-error');
+  const value   = input.value.trim();
+  let   msg     = '';
 
-  /* Required check */
   if (rules.required && !value) {
-    errorMsg = `${rules.label || 'This field'} is required`;
+    msg = `${rules.label || 'This field'} is required`;
   }
-  /* Email format */
   else if (rules.email && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-    errorMsg = 'Please enter a valid email address';
+    msg = 'Enter a valid email address';
   }
-  /* Min length */
   else if (rules.minLength && value.length < rules.minLength) {
-    errorMsg = `Minimum ${rules.minLength} characters required`;
+    msg = `Minimum ${rules.minLength} characters required`;
   }
-  /* Match another field */
+  else if (rules.maxLength && value.length > rules.maxLength) {
+    msg = `Maximum ${rules.maxLength} characters allowed`;
+  }
   else if (rules.match) {
-    const matchInput = document.getElementById(rules.match);
-    if (matchInput && value !== matchInput.value) {
-      errorMsg = 'Passwords do not match';
+    const other = document.getElementById(rules.match);
+    if (other && value !== other.value) {
+      msg = 'Passwords do not match';
     }
   }
 
-  /* UI update */
-  if (errorMsg) {
+  /* Apply UI state */
+  if (msg) {
     group?.classList.add('has-error');
     group?.classList.remove('has-success');
     if (errorEl) {
-      errorEl.textContent = errorMsg;
+      errorEl.textContent = '⚠️ ' + msg;
       errorEl.classList.add('visible');
     }
     return false;
@@ -218,215 +166,73 @@ function validateField(input, rules) {
   }
 }
 
-/* Clear all validation states and messages */
-function clearAllMessages() {
+/* Clear all validation states */
+function clearValidation() {
   document.querySelectorAll('.form-group').forEach(g => {
     g.classList.remove('has-error', 'has-success');
     const err = g.querySelector('.field-error');
     if (err) err.classList.remove('visible');
   });
-  document.querySelectorAll('.auth-message').forEach(m => m.classList.remove('show'));
-  /* Reset inputs */
-  document.querySelectorAll('.form-input').forEach(i => i.value = '');
-  /* Reset password strength */
-  strengthBars.forEach(b => { b.className = 'strength-bar'; });
-  if (strengthLabel) strengthLabel.textContent = '';
 }
 
-/* Show global message inside modal */
-function showAuthMessage(formId, type, text) {
-  const msgEl = document.querySelector(`#${formId} .auth-message`);
-  if (!msgEl) return;
-  msgEl.className = `auth-message show ${type}`;
-  msgEl.innerHTML = `${type === 'success' ? '✅' : '❌'} ${text}`;
+/* Setup blur-based live validation — call once per input */
+function setupLiveValidation(inputId, rules) {
+  const input = document.getElementById(inputId);
+  input?.addEventListener('blur', () => validateField(input, rules));
 }
 
 
 /* ============================================================
-   06. LOGIN FORM SUBMIT
-   — Validate → Loading → API call (placeholder)
-   — Customize: fetch() call diye real API connect koro
+   05. SHOW ALERT MESSAGE
+   — showAlert(type, message) — 'success' or 'error'
+   — .auth-alert element lagbe page e
 ============================================================ */
+const authAlert = document.getElementById('authAlert');
 
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+function showAlert(type, message) {
+  if (!authAlert) return;
 
-  const emailInput = document.getElementById('loginEmail');
-  const passInput  = document.getElementById('loginPassword');
-  const submitBtn  = document.getElementById('loginSubmitBtn');
+  const icon = type === 'success' ? '✅' : '❌';
+  authAlert.innerHTML  = `<span class="alert-icon">${icon}</span> ${message}`;
+  authAlert.className  = `auth-alert show alert-${type}`;
 
-  /* Validate */
-  const emailOk = validateField(emailInput,  { required: true, email: true, label: 'Email' });
-  const passOk  = validateField(passInput,   { required: true, minLength: 6, label: 'Password' });
-
-  if (!emailOk || !passOk) return;
-
-  /* Loading state */
-  submitBtn.classList.add('loading');
-  submitBtn.textContent = 'Logging in...';
-
-  try {
-    /* =====================================================
-       🔧 REAL API CALL EKHANE KORTE HOBE:
-       
-       const res = await fetch('/api/login', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-           email: emailInput.value,
-           password: passInput.value
-         })
-       });
-       const data = await res.json();
-       if (!res.ok) throw new Error(data.message || 'Login failed');
-       
-    ===================================================== */
-
-    /* Demo: 1.5s delay simulate kore */
-    await new Promise(r => setTimeout(r, 1500));
-
-    /* Success */
-    showAuthMessage('loginForm', 'success', 'Login successful! Welcome back 🎮');
-    setTimeout(() => closeAuthModal(), 2000);
-
-  } catch (err) {
-    /* Error handling */
-    showAuthMessage('loginForm', 'error', err.message || 'Login failed. Please try again.');
-    authModal.classList.add('shake');
-    setTimeout(() => authModal.classList.remove('shake'), 500);
-
-  } finally {
-    submitBtn.classList.remove('loading');
-    submitBtn.innerHTML = '→ Login';
+  /* Success hole auto-hide (5s) */
+  if (type === 'success') {
+    setTimeout(() => authAlert.classList.remove('show'), 5000);
   }
-});
+}
+
+function hideAlert() {
+  authAlert?.classList.remove('show');
+}
 
 
 /* ============================================================
-   07. REGISTER FORM SUBMIT
-   — Validate all fields → API call
-   — Customize: fetch() call diye real API connect koro
+   06. GOOGLE LOGIN / REGISTER (Placeholder)
+   — Real integration: Google One Tap or Firebase Auth
+   — Ekhane shudhu placeholder notify dekhano hoyeche
 ============================================================ */
-
-document.getElementById('registerForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const nameInput      = document.getElementById('regName');
-  const emailInput     = document.getElementById('regEmail');
-  const passInput      = document.getElementById('regPassword');
-  const confirmInput   = document.getElementById('regConfirm');
-  const submitBtn      = document.getElementById('registerSubmitBtn');
-
-  /* Validate all fields */
-  const nameOk    = validateField(nameInput,    { required: true, label: 'Username', minLength: 3 });
-  const emailOk   = validateField(emailInput,   { required: true, email: true, label: 'Email' });
-  const passOk    = validateField(passInput,     { required: true, minLength: 6, label: 'Password' });
-  const confirmOk = validateField(confirmInput,  { required: true, match: 'regPassword', label: 'Confirm Password' });
-
-  if (!nameOk || !emailOk || !passOk || !confirmOk) return;
-
-  /* Loading state */
-  submitBtn.classList.add('loading');
-  submitBtn.textContent = 'Creating account...';
-
-  try {
-    /* =====================================================
-       🔧 REAL API CALL EKHANE KORTE HOBE:
-       
-       const res = await fetch('/api/register', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-           username: nameInput.value,
-           email: emailInput.value,
-           password: passInput.value
-         })
-       });
-       const data = await res.json();
-       if (!res.ok) throw new Error(data.message || 'Registration failed');
-       
-    ===================================================== */
-
-    /* Demo: 1.5s delay */
-    await new Promise(r => setTimeout(r, 1500));
-
-    /* Success → auto switch to login */
-    showAuthMessage('registerForm', 'success', 'Account created! Please login now 🎉');
-    setTimeout(() => switchTab('login'), 2200);
-
-  } catch (err) {
-    showAuthMessage('registerForm', 'error', err.message || 'Registration failed. Try again.');
-    authModal.classList.add('shake');
-    setTimeout(() => authModal.classList.remove('shake'), 500);
-
-  } finally {
-    submitBtn.classList.remove('loading');
-    submitBtn.innerHTML = '🎮 Create Account';
-  }
-});
-
-
-/* ============================================================
-   08. FORGOT PASSWORD
-   — Click e simple modal/notify show kore
-   — Customize: real reset flow ekhane add koro
-============================================================ */
-
-document.getElementById('forgotPasswordBtn').addEventListener('click', () => {
-  const email = document.getElementById('loginEmail').value.trim();
-
-  if (!email) {
-    /* Email na dile field highlight koro */
-    validateField(document.getElementById('loginEmail'), { required: true, label: 'Email' });
-    return;
-  }
-
-  /* Placeholder — real API call ekhane */
-  showAuthMessage('loginForm', 'success', `Password reset link sent to ${email} 📧`);
-});
-
-
-/* ============================================================
-   09. GOOGLE LOGIN (Placeholder)
-   — Real Google OAuth integration er jonno
-   — Google One Tap or Firebase auth use korte paro
-============================================================ */
-
 document.querySelectorAll('.btn-google').forEach(btn => {
   btn.addEventListener('click', () => {
-    /* 🔧 CUSTOMIZE: Real Google OAuth ekhane */
-    if (typeof notify === 'function') {
-      notify('Google login integration coming soon! 🔔');
-    } else {
-      alert('Google login coming soon!');
-    }
+    /* 🔧 CUSTOMIZE: Google OAuth ekhane add koro
+       Example with Firebase:
+       import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+       const provider = new GoogleAuthProvider();
+       signInWithPopup(auth, provider).then(...);
+    */
+    showAlert('error', 'Google login coming soon! 🔔');
   });
 });
 
 
 /* ============================================================
-   10. HELPER — Live validation on blur
-   — Input theke focus sore gele validate hoy
+   07. SHAKE ANIMATION HELPER
+   — shakeEl(element) → card/input shake kore error a
 ============================================================ */
-
-/* Login form live validation */
-document.getElementById('loginEmail')?.addEventListener('blur', function() {
-  validateField(this, { required: true, email: true, label: 'Email' });
-});
-document.getElementById('loginPassword')?.addEventListener('blur', function() {
-  validateField(this, { required: true, minLength: 6, label: 'Password' });
-});
-
-/* Register form live validation */
-document.getElementById('regName')?.addEventListener('blur', function() {
-  validateField(this, { required: true, minLength: 3, label: 'Username' });
-});
-document.getElementById('regEmail')?.addEventListener('blur', function() {
-  validateField(this, { required: true, email: true, label: 'Email' });
-});
-document.getElementById('regPassword')?.addEventListener('blur', function() {
-  validateField(this, { required: true, minLength: 6, label: 'Password' });
-});
-document.getElementById('regConfirm')?.addEventListener('blur', function() {
-  validateField(this, { required: true, match: 'regPassword', label: 'Confirm Password' });
-});
+function shakeEl(el) {
+  if (!el) return;
+  el.classList.remove('shake');
+  void el.offsetWidth; /* Reflow trigger */
+  el.classList.add('shake');
+  setTimeout(() => el.classList.remove('shake'), 500);
+}

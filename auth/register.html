@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+
+  <!-- ============================================================
+       META
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="V1PER X SHOP — Create your account" />
+  <title>Register — V1PER X SHOP</title>
+
+  <!-- ============================================================
+       FONTS
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       STYLESHEET
+       — Shared auth styles: auth-style.css
+  ============================================================ -->
+  <link rel="stylesheet" href="../css/auth.css" />
+
+</head>
+<body>
+
+  <!-- ============================================================
+       ANIMATED BACKGROUND BLOBS
+  ============================================================ -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+
+  <!-- ============================================================
+       PAGE HEADER
+  ============================================================ -->
+  <header class="page-header">
+
+    <!-- Back to Home -->
+    <a href="../index.html" class="back-link">
+      <span class="back-arrow">←</span>
+      Back to Shop
+    </a>
+
+    <!-- Center Logo -->
+    <a href="../index.html" class="logo-link">
+      <div class="logo-icon">🎮</div>
+      <span>V1PER X SHOP</span>
+    </a>
+
+    <!-- Dark / Light Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+  </header>
+
+
+  <!-- ============================================================
+       MAIN BODY — Register Card
+  ============================================================ -->
+  <main class="page-body">
+    <div class="auth-wrapper">
+
+
+      <!-- ── AUTH CARD ── -->
+      <div class="auth-card" id="authCard">
+
+
+        <!-- Card Header: Icon + Title + Subtitle -->
+        <div class="card-head">
+          <div class="card-head-icon">🎮</div>
+          <h1 class="card-title">Create Account</h1>
+          <p class="card-subtitle">
+            Join <span class="highlight">V1PER X SHOP</span> today.<br/>
+            Instant access to premium gaming tools.
+          </p>
+        </div>
+
+
+        <!-- ── REGISTER FORM ── -->
+        <form class="auth-form" id="registerForm" novalidate>
+
+          <!-- Global Alert (success / error) -->
+          <div class="auth-alert" id="authAlert"></div>
+
+
+          <!-- Username Field -->
+          <div class="form-group">
+            <label class="form-label" for="regName">
+              <span class="label-icon">👤</span> Username
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="form-input"
+                type="text"
+                id="regName"
+                name="username"
+                placeholder="Your gaming username"
+                autocomplete="username"
+                spellcheck="false"
+                maxlength="30"
+              />
+              <span class="input-icon-btn" title="Clear" onclick="document.getElementById('regName').value=''; document.getElementById('regName').focus();">✕</span>
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label class="form-label" for="regEmail">
+              <span class="label-icon">✉️</span> Email Address
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="form-input"
+                type="email"
+                id="regEmail"
+                name="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+                spellcheck="false"
+              />
+              <span class="input-icon-btn" title="Clear" onclick="document.getElementById('regEmail').value=''; document.getElementById('regEmail').focus();">✕</span>
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+
+          <!-- Password Field + Strength Meter -->
+          <div class="form-group">
+            <label class="form-label" for="regPassword">
+              <span class="label-icon">🔒</span> Password
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="form-input"
+                type="password"
+                id="regPassword"
+                name="password"
+                placeholder="Min. 6 characters"
+                autocomplete="new-password"
+              />
+              <span class="input-icon-btn" data-toggle-pw="regPassword" title="Show password">👁️</span>
+            </div>
+            <div class="field-error"></div>
+
+            <!-- Password Strength Meter -->
+            <div class="strength-wrap">
+              <div class="strength-bars">
+                <div class="strength-bar"></div>
+                <div class="strength-bar"></div>
+                <div class="strength-bar"></div>
+              </div>
+              <span class="strength-text" id="strengthText"></span>
+            </div>
+          </div>
+
+
+          <!-- Confirm Password Field -->
+          <div class="form-group">
+            <label class="form-label" for="regConfirm">
+              <span class="label-icon">🔐</span> Confirm Password
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="form-input"
+                type="password"
+                id="regConfirm"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+              />
+              <span class="input-icon-btn" data-toggle-pw="regConfirm" title="Show password">👁️</span>
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+
+          <!-- Terms & Conditions Checkbox -->
+          <label class="terms-label" id="termsLabel">
+            <input type="checkbox" id="termsCheck" />
+            <span class="terms-box"></span>
+            <span class="terms-text">
+              I agree to the
+              <a href="#" onclick="return false;">Terms of Service</a>
+              &amp;
+              <a href="#" onclick="return false;">Privacy Policy</a>
+            </span>
+          </label>
+          <div class="field-error" id="termsError"></div>
+
+
+          <!-- Register Submit Button -->
+          <button type="submit" class="btn-submit btn-register" id="registerBtn">
+            <span class="btn-text">🎮 Create Account</span>
+            <span class="spinner"></span>
+          </button>
+
+
+          <!-- Divider -->
+          <div class="auth-divider">or</div>
+
+
+          <!-- Google Register -->
+          <button type="button" class="btn-google">
+            <div class="google-icon"></div>
+            Continue with Google
+          </button>
+
+
+          <!-- Footer Links -->
+          <div class="auth-footer">
+            <p class="switch-text">
+              Already have an account?
+              <a href="login.html">Login here →</a>
+            </p>
+          </div>
+
+
+        </form>
+        <!-- END: REGISTER FORM -->
+
+
+      </div>
+      <!-- END: AUTH CARD -->
+
+
+    </div>
+  </main>
+
+
+  <!-- Page Footer -->
+  <footer class="page-footer">
+    © 2026 <a href="../index.html">V1PER X SHOP</a> · All Rights Reserved
+  </footer>
+
+
+  <!-- ============================================================
+       SHARED JS
+  ============================================================ -->
+  <script src="../js/auth.js"></script>
+
+
+  <!-- ============================================================
+       REGISTER PAGE JS
+       — Form submit, terms check, validation
+  ============================================================ -->
+  <script>
+
+    /* --- Password strength: link regPassword to strengthInput id --- */
+    /* auth-script.js watches #strengthInput — so we alias it */
+    /* Instead we directly bind here since id is regPassword */
+    const regPassEl   = document.getElementById('regPassword');
+    const sBars       = document.querySelectorAll('.strength-bar');
+    const sText       = document.getElementById('strengthText');
+
+    if (regPassEl) {
+      regPassEl.addEventListener('input', () => {
+        const level = checkStrength(regPassEl.value);
+        const cfg = {
+          0: { label: '',          color: '',        cls: '' },
+          1: { label: 'Weak 😟',   color: '#ef4444', cls: 'weak' },
+          2: { label: 'Medium 🙂', color: '#f59e0b', cls: 'medium' },
+          3: { label: 'Strong 💪', color: '#22c55e', cls: 'strong' },
+        };
+        const c = cfg[level] || cfg[0];
+        sBars.forEach((b, i) => {
+          b.className = 'strength-bar';
+          if (i < level) b.classList.add(c.cls);
+        });
+        if (sText) { sText.textContent = c.label; sText.style.color = c.color; }
+      });
+    }
+
+
+    /* --- Live Validation on blur --- */
+    setupLiveValidation('regName',     { required: true, minLength: 3,  label: 'Username' });
+    setupLiveValidation('regEmail',    { required: true, email: true,    label: 'Email' });
+    setupLiveValidation('regPassword', { required: true, minLength: 6,   label: 'Password' });
+    setupLiveValidation('regConfirm',  { required: true, match: 'regPassword', label: 'Confirm Password' });
+
+
+    /* Terms checkbox validate */
+    function validateTerms() {
+      const checked  = document.getElementById('termsCheck').checked;
+      const errorEl  = document.getElementById('termsError');
+      const label    = document.getElementById('termsLabel');
+
+      if (!checked) {
+        errorEl.textContent = '⚠️ You must agree to the Terms of Service';
+        errorEl.classList.add('visible');
+        label.style.color = '#ef4444';
+        return false;
+      }
+      errorEl.classList.remove('visible');
+      label.style.color = '';
+      return true;
+    }
+
+    document.getElementById('termsCheck').addEventListener('change', validateTerms);
+
+
+    /* ============================================================
+       REGISTER FORM SUBMIT
+       — Validate all fields → API call → Redirect to login
+    ============================================================ */
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const nameInput    = document.getElementById('regName');
+      const emailInput   = document.getElementById('regEmail');
+      const passInput    = document.getElementById('regPassword');
+      const confirmInput = document.getElementById('regConfirm');
+      const registerBtn  = document.getElementById('registerBtn');
+      const btnText      = registerBtn.querySelector('.btn-text');
+      const card         = document.getElementById('authCard');
+
+      /* Validate all */
+      const ok1 = validateField(nameInput,    { required: true, minLength: 3,              label: 'Username' });
+      const ok2 = validateField(emailInput,   { required: true, email: true,               label: 'Email' });
+      const ok3 = validateField(passInput,    { required: true, minLength: 6,              label: 'Password' });
+      const ok4 = validateField(confirmInput, { required: true, match: 'regPassword',      label: 'Confirm Password' });
+      const ok5 = validateTerms();
+
+      if (!ok1 || !ok2 || !ok3 || !ok4 || !ok5) {
+        shakeEl(card);
+        return;
+      }
+
+      /* Loading state */
+      registerBtn.classList.add('btn-loading');
+      btnText.textContent = 'Creating account...';
+
+      try {
+
+        /* =====================================================
+           🔧 REAL API CALL EKHANE KORTE HOBE:
+
+           const res = await fetch('/api/register', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({
+               username: nameInput.value.trim(),
+               email:    emailInput.value.trim(),
+               password: passInput.value,
+             })
+           });
+           const data = await res.json();
+           if (!res.ok) throw new Error(data.message || 'Registration failed');
+
+        ===================================================== */
+
+        /* Demo simulation */
+        await new Promise(r => setTimeout(r, 1700));
+
+        /* Success → redirect to login */
+        showAlert('success', '🎉 Account created! Redirecting to login...');
+        setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+
+      } catch (err) {
+        showAlert('error', err.message || '❌ Registration failed. Please try again.');
+        shakeEl(card);
+      } finally {
+        registerBtn.classList.remove('btn-loading');
+        btnText.textContent = '🎮 Create Account';
+      }
+    });
+
+  </script>
+
+  <!-- ============================================================
+       TERMS CHECKBOX CUSTOM STYLE (inline for simplicity)
+  ============================================================ -->
+  <style>
+    /* ── Terms Checkbox ── */
+    .terms-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      margin-top: -4px;
+    }
+
+    .terms-label input[type="checkbox"] {
+      display: none; /* Hide default checkbox */
+    }
+
+    /* Custom checkbox box */
+    .terms-box {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      border: 2px solid var(--input-border);
+      border-radius: 5px;
+      background: var(--input-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      margin-top: 1px;
+    }
+
+    /* Checked state */
+    .terms-label input:checked + .terms-box {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.2);
+    }
+
+    .terms-label input:checked + .terms-box::after {
+      content: '✓';
+      font-size: 11px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .terms-text {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--text3);
+      line-height: 1.5;
+    }
+
+    .terms-text a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .terms-text a:hover { text-decoration: underline; }
+  </style>
+
+</body>
+</html>
