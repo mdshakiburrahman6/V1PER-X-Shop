@@ -1,0 +1,513 @@
+/* ============================================================
+   V1PER X SHOP — Admin Dashboard Stylesheet
+   File: admin.css
+
+   TABLE OF CONTENTS:
+   01. CSS Variables & Themes
+   02. Reset & Base
+   03. Scrollbar
+   04. Background Grid
+   05. Admin Layout (Sidebar + Main)
+   06. Admin Sidebar
+   07. Sidebar Nav Items & Groups
+   08. Mobile Toggle & Overlay
+   09. Top Header Bar
+   10. Page Title Row
+   11. KPI / Stats Cards
+   12. Data Table
+   13. Table Action Buttons
+   14. Status & General Badges
+   15. Toggle Switch
+   16. Content Card / Panel
+   17. Form Fields & Grid
+   18. Tag Input (Chips)
+   19. Image Upload Area
+   20. Buttons
+   21. Modal
+   22. Inline Alert
+   23. Search & Filter Bar
+   24. Pagination
+   25. Empty State
+   26. Bar Chart (CSS)
+   27. Animations
+   28. Responsive
+   ============================================================ */
+
+
+/* ============================================================
+   01. CSS VARIABLES & THEMES
+   — --admin-accent change kore color badao
+============================================================ */
+:root {
+  --admin-accent:      #f97316;
+  --admin-accent-dark: #c2410c;
+  --admin-accent2:     #f59e0b;
+  --admin-red:         #ef4444;
+  --admin-green:       #22c55e;
+  --admin-cyan:        #06b6d4;
+  --admin-purple:      #a855f7;
+  --radius:      12px;
+  --radius-sm:   8px;
+  --radius-xs:   5px;
+  --transition:  0.28s cubic-bezier(.4,0,.2,1);
+  --font-head:   'Orbitron', monospace;
+  --font-ui:     'Inter', sans-serif;
+  --sidebar-w:   250px;
+  --header-h:    62px;
+}
+
+[data-theme="dark"] {
+  --bg:            #08080f;
+  --bg2:           #0d0d18;
+  --bg3:           #131320;
+  --bg4:           #1a1a2a;
+  --card:          #101018;
+  --card2:         #161626;
+  --card-border:   rgba(249,115,22,0.14);
+  --card-border2:  rgba(255,255,255,0.06);
+  --text:          #f0efff;
+  --text2:         #a49fbe;
+  --text3:         #65607e;
+  --sidebar-bg:    #0a0a14;
+  --sidebar-border:rgba(249,115,22,0.1);
+  --header-bg:     rgba(10,10,20,0.96);
+  --input-bg:      rgba(255,255,255,0.04);
+  --input-border:  rgba(255,255,255,0.09);
+  --shadow:        0 4px 24px rgba(0,0,0,0.55);
+  --shadow-lg:     0 16px 56px rgba(0,0,0,0.72);
+  --glow:          0 0 20px rgba(249,115,22,0.18);
+  --hover-bg:      rgba(249,115,22,0.07);
+  --divider:       rgba(255,255,255,0.055);
+  --table-head:    rgba(255,255,255,0.03);
+  --table-hover:   rgba(249,115,22,0.05);
+}
+
+[data-theme="light"] {
+  --bg:            #f4f2ff;
+  --bg2:           #ece8ff;
+  --bg3:           #e5e0ff;
+  --bg4:           #dad4ff;
+  --card:          #ffffff;
+  --card2:         #faf9ff;
+  --card-border:   rgba(249,115,22,0.16);
+  --card-border2:  rgba(0,0,0,0.07);
+  --text:          #16101f;
+  --text2:         #5a4a7a;
+  --text3:         #9a8aaa;
+  --sidebar-bg:    #ffffff;
+  --sidebar-border:rgba(249,115,22,0.13);
+  --header-bg:     rgba(255,255,255,0.96);
+  --input-bg:      #f7f5ff;
+  --input-border:  rgba(0,0,0,0.09);
+  --shadow:        0 4px 24px rgba(80,60,120,0.08);
+  --shadow-lg:     0 16px 56px rgba(80,60,120,0.13);
+  --glow:          0 0 20px rgba(249,115,22,0.12);
+  --hover-bg:      rgba(249,115,22,0.055);
+  --divider:       rgba(0,0,0,0.055);
+  --table-head:    rgba(0,0,0,0.025);
+  --table-hover:   rgba(249,115,22,0.04);
+}
+
+
+/* ============================================================
+   02. RESET & BASE
+============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background var(--transition),color var(--transition);}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;}
+img{max-width:100%;display:block;}
+
+
+/* ============================================================
+   03. SCROLLBAR
+============================================================ */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--admin-accent);border-radius:3px;}
+
+
+/* ============================================================
+   04. BACKGROUND GRID
+============================================================ */
+.admin-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(249,115,22,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(249,115,22,0.025) 1px,transparent 1px);
+  background-size:44px 44px;}
+
+
+/* ============================================================
+   05. ADMIN LAYOUT
+============================================================ */
+.admin-layout{display:flex;min-height:100vh;position:relative;z-index:1;}
+.admin-main{flex:1;margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;transition:margin-left var(--transition);}
+.admin-content{flex:1;padding:clamp(16px,2.5vw,30px) clamp(14px,2.5vw,30px);margin-top:var(--header-h);}
+
+
+/* ============================================================
+   06. ADMIN SIDEBAR
+============================================================ */
+.admin-sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-border);display:flex;flex-direction:column;z-index:300;overflow-y:auto;overflow-x:hidden;transition:transform var(--transition),background var(--transition);}
+
+.sidebar-logo{padding:16px 16px 14px;border-bottom:1px solid var(--divider);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.sidebar-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 12px rgba(249,115,22,0.4);flex-shrink:0;}
+.sidebar-logo-name{font-family:var(--font-head);font-size:11.5px;font-weight:900;color:var(--text);letter-spacing:0.5px;line-height:1.2;}
+.sidebar-logo-sub{font-family:var(--font-ui);font-size:10px;color:var(--admin-accent);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;}
+
+.nav-section-label{font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;padding:14px 16px 5px;flex-shrink:0;}
+.sidebar-nav{flex:1;padding:5px 8px;display:flex;flex-direction:column;gap:2px;}
+
+
+/* ============================================================
+   07. SIDEBAR NAV ITEMS & GROUPS
+============================================================ */
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;font-family:var(--font-ui);font-size:12.5px;font-weight:500;color:var(--text2);transition:all var(--transition);position:relative;white-space:nowrap;text-decoration:none;}
+.nav-item:hover{background:var(--hover-bg);color:var(--text);}
+.nav-item.active{background:linear-gradient(135deg,rgba(249,115,22,0.16),rgba(194,65,12,0.08));color:var(--admin-accent);font-weight:600;border:1px solid rgba(249,115,22,0.18);}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:55%;background:var(--admin-accent);border-radius:0 2px 2px 0;}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:var(--admin-accent);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;min-width:18px;text-align:center;}
+.nav-badge.red{background:var(--admin-red);}
+.nav-badge.green{background:var(--admin-green);}
+
+/* Collapsible nav group */
+.nav-group-btn{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;font-family:var(--font-ui);font-size:12.5px;font-weight:500;color:var(--text2);cursor:pointer;transition:all var(--transition);user-select:none;background:none;border:none;width:100%;text-align:left;}
+.nav-group-btn:hover{background:var(--hover-bg);color:var(--text);}
+.nav-group-btn.open{color:var(--admin-accent);}
+.nav-arrow{margin-left:auto;font-size:10px;transition:transform var(--transition);}
+.nav-group-btn.open .nav-arrow{transform:rotate(90deg);}
+.nav-sub{display:none;flex-direction:column;gap:1px;padding-left:16px;margin-top:2px;}
+.nav-sub.open{display:flex;}
+.nav-sub .nav-item{font-size:12px;padding:7px 11px;}
+
+/* Sidebar user */
+.sidebar-user{padding:11px 13px;border-top:1px solid var(--divider);display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.sidebar-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-dark));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;font-family:var(--font-ui);}
+.sidebar-user-info{flex:1;min-width:0;}
+.sidebar-user-name{font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sidebar-user-role{font-size:10px;color:var(--admin-accent);font-weight:700;font-family:var(--font-ui);text-transform:uppercase;letter-spacing:0.5px;}
+.sidebar-logout{width:26px;height:26px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--admin-red);transition:all var(--transition);flex-shrink:0;}
+.sidebar-logout:hover{background:rgba(239,68,68,0.22);transform:scale(1.06);}
+
+
+/* ============================================================
+   08. MOBILE TOGGLE & OVERLAY
+============================================================ */
+.mobile-menu-btn{display:none;width:36px;height:36px;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-sm);align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:8px;}
+.mobile-menu-btn span{display:block;width:17px;height:2px;background:var(--text2);border-radius:2px;transition:all var(--transition);}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:290;backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
+.sidebar-overlay.active{opacity:1;pointer-events:all;}
+
+
+/* ============================================================
+   09. TOP HEADER BAR
+============================================================ */
+.admin-header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:var(--header-bg);border-bottom:1px solid var(--divider);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(14px,2.5vw,30px);z-index:200;transition:left var(--transition);gap:12px;}
+.header-left{display:flex;align-items:center;gap:10px;}
+.header-right{display:flex;align-items:center;gap:7px;}
+
+.breadcrumb{font-family:var(--font-ui);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.breadcrumb a{color:var(--text3);transition:color var(--transition);}
+.breadcrumb a:hover{color:var(--admin-accent);}
+.breadcrumb .sep{font-size:10px;}
+.breadcrumb .cur{color:var(--text);font-weight:600;}
+
+.hdr-btn{width:35px;height:35px;background:var(--card);border:1px solid var(--card-border2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--text2);transition:all var(--transition);position:relative;text-decoration:none;}
+.hdr-btn:hover{border-color:var(--admin-accent);color:var(--admin-accent);}
+.hdr-btn .dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--admin-red);border-radius:50%;border:2px solid var(--header-bg);}
+
+.admin-badge-hdr{font-family:var(--font-ui);font-size:10.5px;font-weight:700;padding:4px 9px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);color:var(--admin-red);border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;}
+.view-site-link{font-family:var(--font-ui);font-size:12px;font-weight:600;padding:6px 12px;background:var(--card);border:1px solid var(--card-border2);border-radius:var(--radius-sm);color:var(--text2);transition:all var(--transition);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.view-site-link:hover{border-color:var(--admin-accent);color:var(--admin-accent);}
+
+
+/* ============================================================
+   10. PAGE TITLE ROW
+============================================================ */
+.page-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.page-title{font-family:var(--font-head);font-size:clamp(17px,2.6vw,22px);font-weight:900;color:var(--text);display:flex;align-items:center;gap:9px;letter-spacing:0.4px;}
+.page-title-icon{width:38px;height:38px;background:linear-gradient(135deg,rgba(249,115,22,0.18),rgba(194,65,12,0.08));border:1px solid rgba(249,115,22,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.page-subtitle{font-family:var(--font-ui);font-size:12px;color:var(--text3);margin-top:3px;}
+.title-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+
+/* ============================================================
+   11. KPI / STATS CARDS
+============================================================ */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:clamp(10px,1.8vw,16px);margin-bottom:22px;}
+.kpi-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden;transition:all var(--transition);}
+.kpi-card:hover{transform:translateY(-3px);box-shadow:var(--glow),var(--shadow);}
+.kpi-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+.kpi-card.orange::before{background:var(--admin-accent);}
+.kpi-card.green::before{background:var(--admin-green);}
+.kpi-card.red::before{background:var(--admin-red);}
+.kpi-card.cyan::before{background:var(--admin-cyan);}
+.kpi-card.purple::before{background:var(--admin-purple);}
+.kpi-card.gold::before{background:var(--admin-accent2);}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.kpi-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.kpi-icon.orange{background:rgba(249,115,22,0.14);}
+.kpi-icon.green{background:rgba(34,197,94,0.13);}
+.kpi-icon.red{background:rgba(239,68,68,0.12);}
+.kpi-icon.cyan{background:rgba(6,182,212,0.12);}
+.kpi-icon.purple{background:rgba(168,85,247,0.12);}
+.kpi-icon.gold{background:rgba(245,158,11,0.12);}
+.kpi-trend{font-family:var(--font-ui);font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;}
+.kpi-trend.up{background:rgba(34,197,94,0.12);color:var(--admin-green);}
+.kpi-trend.down{background:rgba(239,68,68,0.1);color:var(--admin-red);}
+.kpi-value{font-family:var(--font-head);font-size:clamp(20px,2.8vw,26px);font-weight:900;color:var(--text);line-height:1.1;}
+.kpi-label{font-family:var(--font-ui);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-top:3px;}
+.kpi-sub{font-family:var(--font-ui);font-size:11px;color:var(--text3);margin-top:7px;padding-top:7px;border-top:1px solid var(--divider);}
+
+
+/* ============================================================
+   12. DATA TABLE
+============================================================ */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.admin-table{width:100%;border-collapse:collapse;min-width:580px;}
+.admin-table th{font-family:var(--font-ui);font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;padding:10px 13px;text-align:left;background:var(--table-head);border-bottom:1px solid var(--divider);white-space:nowrap;}
+.admin-table th.sortable{cursor:pointer;user-select:none;}
+.admin-table th.sortable:hover{color:var(--admin-accent);}
+.admin-table td{padding:12px 13px;font-family:var(--font-ui);font-size:12.5px;color:var(--text);border-bottom:1px solid var(--divider);vertical-align:middle;}
+.admin-table tbody tr:last-child td{border-bottom:none;}
+.admin-table tbody tr{transition:background var(--transition);}
+.admin-table tbody tr:hover{background:var(--table-hover);}
+.admin-table th:first-child,.admin-table td:first-child{width:42px;text-align:center;padding:10px 6px;}
+.row-check{width:15px;height:15px;accent-color:var(--admin-accent);cursor:pointer;}
+
+/* Product name cell */
+.prod-cell{display:flex;align-items:center;gap:10px;}
+.prod-thumb{width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1px solid var(--card-border2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;object-fit:cover;}
+.prod-name{font-weight:600;color:var(--text);font-size:12.5px;}
+.prod-sku{font-size:10.5px;color:var(--text3);margin-top:1px;}
+
+/* User cell */
+.user-cell{display:flex;align-items:center;gap:9px;}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-dark));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.user-name{font-weight:600;color:var(--text);font-size:12.5px;}
+.user-email{font-size:11px;color:var(--text3);margin-top:1px;}
+
+
+/* ============================================================
+   13. TABLE ACTION BUTTONS
+============================================================ */
+.tbl-actions{display:flex;gap:5px;align-items:center;}
+.tbl-btn{width:29px;height:29px;border-radius:7px;border:1px solid transparent;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:all var(--transition);background:var(--bg3);color:var(--text2);}
+.tbl-btn:hover{transform:scale(1.1);}
+.tbl-btn.edit{border-color:rgba(6,182,212,0.2);color:var(--admin-cyan);}
+.tbl-btn.edit:hover{background:rgba(6,182,212,0.12);}
+.tbl-btn.del{border-color:rgba(239,68,68,0.2);color:var(--admin-red);}
+.tbl-btn.del:hover{background:rgba(239,68,68,0.12);}
+.tbl-btn.view{border-color:rgba(249,115,22,0.2);color:var(--admin-accent);}
+.tbl-btn.view:hover{background:rgba(249,115,22,0.1);}
+
+
+/* ============================================================
+   14. STATUS & GENERAL BADGES
+============================================================ */
+.badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-ui);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;}
+.badge-active  {background:rgba(34,197,94,0.13); color:var(--admin-green); border:1px solid rgba(34,197,94,0.22);}
+.badge-inactive{background:rgba(107,101,133,0.14);color:var(--text3);      border:1px solid rgba(107,101,133,0.18);}
+.badge-pending {background:rgba(245,158,11,0.13); color:var(--admin-accent2);border:1px solid rgba(245,158,11,0.22);}
+.badge-banned  {background:rgba(239,68,68,0.12);  color:var(--admin-red);   border:1px solid rgba(239,68,68,0.2);}
+.badge-orange  {background:rgba(249,115,22,0.13); color:var(--admin-accent);border:1px solid rgba(249,115,22,0.22);}
+.badge-cyan    {background:rgba(6,182,212,0.12);  color:var(--admin-cyan);  border:1px solid rgba(6,182,212,0.2);}
+.badge-purple  {background:rgba(168,85,247,0.12); color:var(--admin-purple);border:1px solid rgba(168,85,247,0.2);}
+
+
+/* ============================================================
+   15. TOGGLE SWITCH
+============================================================ */
+.toggle-switch{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0;display:inline-block;}
+.toggle-switch input{display:none;}
+.toggle-track{width:36px;height:20px;background:var(--bg4);border-radius:20px;transition:background var(--transition);border:1px solid var(--card-border2);display:block;}
+.toggle-switch input:checked + .toggle-track{background:var(--admin-accent);border-color:var(--admin-accent);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:left var(--transition);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.toggle-switch input:checked ~ .toggle-thumb{left:19px;}
+
+
+/* ============================================================
+   16. CONTENT CARD / PANEL
+============================================================ */
+.admin-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow);}
+.admin-card-header{padding:14px 18px;border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.admin-card-title{font-family:var(--font-head);font-size:12.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:0.3px;}
+.admin-card-title::before{content:'';width:3px;height:16px;background:linear-gradient(to bottom,var(--admin-accent),var(--admin-accent-dark));border-radius:2px;flex-shrink:0;}
+.admin-card-body{padding:18px;}
+
+
+/* ============================================================
+   17. FORM FIELDS & GRID
+============================================================ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.form-grid.single{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1 / -1;}
+.form-label{font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;gap:5px;}
+.required::after{content:' *';color:var(--admin-red);}
+.form-input,.form-select,.form-textarea{background:var(--input-bg);border:1.5px solid var(--input-border);border-radius:var(--radius-sm);padding:9px 12px;font-family:var(--font-ui);font-size:13px;color:var(--text);outline:none;transition:all 0.22s ease;width:100%;}
+.form-textarea{resize:vertical;min-height:84px;}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a49fbe' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;}
+.form-input::placeholder{color:var(--text3);font-size:12.5px;}
+.form-input:hover,.form-select:hover,.form-textarea:hover{border-color:rgba(249,115,22,0.35);}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--admin-accent);box-shadow:0 0 0 3px rgba(249,115,22,0.12);background:rgba(249,115,22,0.03);}
+.field-hint{font-family:var(--font-ui);font-size:11px;color:var(--text3);}
+.field-error{font-family:var(--font-ui);font-size:11px;color:var(--admin-red);display:none;align-items:center;gap:4px;}
+.field-error.show{display:flex;}
+.has-error .form-input,.has-error .form-select,.has-error .form-textarea{border-color:var(--admin-red);box-shadow:0 0 0 3px rgba(239,68,68,0.1);}
+.has-success .form-input{border-color:var(--admin-green);}
+
+/* Input with icon */
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .form-input{padding-left:36px;}
+.input-prefix-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none;}
+
+/* Price input */
+.price-input-wrap{position:relative;}
+.price-symbol{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--text3);}
+.price-input-wrap .form-input{padding-left:26px;}
+
+
+/* ============================================================
+   18. TAG INPUT (Chips)
+============================================================ */
+.tag-input-wrap{border:1.5px solid var(--input-border);border-radius:var(--radius-sm);background:var(--input-bg);padding:6px 9px;display:flex;flex-wrap:wrap;gap:5px;min-height:42px;transition:border-color 0.22s ease;cursor:text;}
+.tag-input-wrap:focus-within{border-color:var(--admin-accent);box-shadow:0 0 0 3px rgba(249,115,22,0.12);}
+.tag-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(249,115,22,0.14);border:1px solid rgba(249,115,22,0.25);color:var(--admin-accent);font-family:var(--font-ui);font-size:11px;font-weight:600;padding:3px 8px 3px 10px;border-radius:20px;}
+.tag-chip-rm{width:14px;height:14px;border-radius:50%;border:none;background:rgba(249,115,22,0.2);color:var(--admin-accent);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:background var(--transition);line-height:1;}
+.tag-chip-rm:hover{background:rgba(239,68,68,0.25);color:var(--admin-red);}
+.tag-input-field{border:none;outline:none;background:transparent;font-family:var(--font-ui);font-size:12.5px;color:var(--text);min-width:80px;flex:1;padding:2px 4px;}
+.tag-input-field::placeholder{color:var(--text3);font-size:12px;}
+
+
+/* ============================================================
+   19. IMAGE UPLOAD AREA
+============================================================ */
+.upload-area{border:2px dashed var(--input-border);border-radius:var(--radius);padding:26px 18px;text-align:center;cursor:pointer;transition:all var(--transition);background:var(--input-bg);position:relative;}
+.upload-area:hover,.upload-area.dragover{border-color:var(--admin-accent);background:rgba(249,115,22,0.04);}
+.upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2;}
+.upload-icon{font-size:34px;margin-bottom:8px;}
+.upload-title{font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.upload-sub{font-family:var(--font-ui);font-size:11.5px;color:var(--text3);}
+.upload-accent{color:var(--admin-accent);font-weight:700;}
+.img-previews{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.img-prev-item{position:relative;width:72px;height:72px;}
+.img-prev-item img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--card-border2);}
+.img-prev-rm{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--admin-red);color:#fff;border-radius:50%;border:none;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform var(--transition);}
+.img-prev-rm:hover{transform:scale(1.15);}
+
+
+/* ============================================================
+   20. BUTTONS
+============================================================ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:var(--font-ui);font-size:12.5px;font-weight:600;padding:9px 17px;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all var(--transition);white-space:nowrap;letter-spacing:0.3px;text-decoration:none;}
+.btn-primary{background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-dark));color:#fff;box-shadow:0 3px 12px rgba(249,115,22,0.32);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,0.48);}
+.btn-success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 3px 12px rgba(34,197,94,0.28);}
+.btn-success:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(34,197,94,0.42);}
+.btn-danger{background:rgba(239,68,68,0.12);color:var(--admin-red);border:1px solid rgba(239,68,68,0.22);}
+.btn-danger:hover{background:rgba(239,68,68,0.22);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--admin-accent);border:1.5px solid var(--admin-accent);}
+.btn-outline:hover{background:var(--hover-bg);transform:translateY(-1px);}
+.btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--card-border2);}
+.btn-ghost:hover{color:var(--text);border-color:var(--admin-accent);background:var(--hover-bg);}
+.btn-sm{font-size:11.5px;padding:7px 12px;}
+.btn-lg{font-size:13.5px;padding:11px 24px;}
+.btn-full{width:100%;}
+.btn-loading{opacity:0.72;pointer-events:none;}
+
+
+/* ============================================================
+   21. MODAL
+============================================================ */
+.modal-overlay{position:fixed;inset:0;background:rgba(4,3,10,0.80);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:14px;opacity:0;visibility:hidden;transition:opacity 0.3s ease,visibility 0.3s ease;}
+.modal-overlay.active{opacity:1;visibility:visible;}
+.modal-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;width:100%;padding:22px;box-shadow:var(--shadow-lg);transform:translateY(16px) scale(0.97);transition:transform 0.3s cubic-bezier(.34,1.5,.64,1);max-height:90vh;overflow-y:auto;}
+.modal-overlay.active .modal-card{transform:none;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.modal-title{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.modal-close{width:27px;height:27px;background:var(--bg3);border:1px solid var(--card-border2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2);cursor:pointer;transition:all var(--transition);}
+.modal-close:hover{border-color:var(--admin-red);color:var(--admin-red);transform:rotate(90deg);}
+.modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--divider);flex-wrap:wrap;}
+
+
+/* ============================================================
+   22. INLINE ALERT
+============================================================ */
+.alert{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;border-radius:9px;font-family:var(--font-ui);font-size:12.5px;font-weight:500;line-height:1.5;margin-bottom:14px;}
+.alert.hidden{display:none;}
+.alert-success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:var(--admin-green);}
+.alert-error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.22);color:var(--admin-red);}
+.alert-info{background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.22);color:var(--admin-cyan);}
+.alert-warn{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.22);color:var(--admin-accent2);}
+
+
+/* ============================================================
+   23. SEARCH & FILTER BAR
+============================================================ */
+.filter-bar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--divider);}
+.search-box{position:relative;flex:1;min-width:160px;}
+.search-box input{width:100%;background:var(--input-bg);border:1.5px solid var(--input-border);border-radius:var(--radius-sm);padding:8px 13px 8px 34px;font-family:var(--font-ui);font-size:12.5px;color:var(--text);outline:none;transition:all 0.22s;}
+.search-box input:focus{border-color:var(--admin-accent);box-shadow:0 0 0 3px rgba(249,115,22,0.1);}
+.search-box input::placeholder{color:var(--text3);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text3);pointer-events:none;}
+.filter-select{background:var(--input-bg);border:1.5px solid var(--input-border);border-radius:var(--radius-sm);padding:7px 28px 7px 10px;font-family:var(--font-ui);font-size:12px;color:var(--text);outline:none;cursor:pointer;transition:all 0.22s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a49fbe' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;}
+.filter-select:focus{border-color:var(--admin-accent);}
+.bulk-bar{display:none;align-items:center;gap:9px;padding:9px 16px;background:rgba(249,115,22,0.08);border-bottom:1px solid rgba(249,115,22,0.15);font-family:var(--font-ui);font-size:12.5px;color:var(--text2);}
+.bulk-bar.show{display:flex;}
+.bulk-count{font-weight:700;color:var(--admin-accent);}
+
+
+/* ============================================================
+   24. PAGINATION
+============================================================ */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid var(--divider);gap:10px;flex-wrap:wrap;}
+.pagination-info{font-family:var(--font-ui);font-size:11.5px;color:var(--text3);}
+.pagination-btns{display:flex;gap:4px;}
+.pg-btn{width:30px;height:30px;background:var(--bg3);border:1px solid var(--card-border2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--font-ui);font-size:12px;color:var(--text2);cursor:pointer;transition:all var(--transition);}
+.pg-btn:hover{border-color:var(--admin-accent);color:var(--admin-accent);}
+.pg-btn.active{background:var(--admin-accent);color:#fff;border-color:var(--admin-accent);}
+.pg-btn:disabled{opacity:0.4;pointer-events:none;}
+
+
+/* ============================================================
+   25. EMPTY STATE
+============================================================ */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;text-align:center;gap:11px;}
+.empty-icon{font-size:48px;opacity:0.44;animation:floatIcon 3s ease-in-out infinite;}
+@keyframes floatIcon{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.empty-title{font-family:var(--font-head);font-size:14.5px;font-weight:700;color:var(--text2);}
+.empty-desc{font-family:var(--font-ui);font-size:12.5px;color:var(--text3);max-width:250px;line-height:1.6;}
+
+
+/* ============================================================
+   26. BAR CHART (CSS only)
+============================================================ */
+.bar-chart-wrap{display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 8px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.bar{width:100%;border-radius:5px 5px 0 0;background:linear-gradient(to top,var(--admin-accent-dark),var(--admin-accent));transition:height 0.8s cubic-bezier(.34,1.56,.64,1);min-height:4px;}
+.bar-lbl{font-family:var(--font-ui);font-size:10px;color:var(--text3);}
+.bar-val{font-family:var(--font-ui);font-size:10px;font-weight:700;color:var(--text2);}
+
+
+/* ============================================================
+   27. ANIMATIONS
+============================================================ */
+.page-load{animation:pgIn 0.4s ease both;}
+@keyframes pgIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity 0.42s ease,transform 0.42s ease;}
+.reveal.in{opacity:1;transform:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin{animation:spin 1s linear infinite;}
+.shake{animation:shk 0.36s ease;}
+@keyframes shk{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+
+
+/* ============================================================
+   28. RESPONSIVE
+============================================================ */
+@media(max-width:1024px){:root{--sidebar-w:220px;}.stats-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:768px){:root{--sidebar-w:250px;}.admin-sidebar{transform:translateX(-100%);}.admin-sidebar.open{transform:translateX(0);box-shadow:4px 0 28px rgba(0,0,0,0.4);}.admin-main{margin-left:0;}.admin-header{left:0;}.mobile-menu-btn{display:flex;}.form-grid{grid-template-columns:1fr;}.stats-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr;}.page-title-row{flex-direction:column;}.form-grid.cols-3{grid-template-columns:1fr;}}

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Users — V1PER X SHOP Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/admin.css"/>
+</head>
+<body class="page-load">
+<div class="admin-bg"></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================================ SIDEBAR ============================================================ -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">⚡</div>
+    <div class="sidebar-logo-text">
+      <div class="sidebar-logo-name">V1PER X SHOP</div>
+      <div class="sidebar-logo-sub">Admin Panel</div>
+    </div>
+  </div>
+  <div class="nav-section-label">Overview</div>
+  <nav class="sidebar-nav">
+    <a href="admin-dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="#" class="nav-item"><span class="nav-icon">📦</span> Orders <span class="nav-badge red">8</span></a>
+  </nav>
+  <div class="nav-section-label">Catalog</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <button class="nav-group-btn" id="prodGroupBtn">
+      <span class="nav-icon">🎮</span> Products <span class="nav-arrow">›</span>
+    </button>
+    <div class="nav-sub" id="prodGroupSub">
+      <a href="admin-products.html" class="nav-item"><span class="nav-icon">📋</span> All Products</a>
+      <a href="admin-products.html?action=add" class="nav-item"><span class="nav-icon">➕</span> Add Product</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🏷️</span> Categories</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🔖</span> Tags</a>
+    </div>
+  </nav>
+  <div class="nav-section-label">People</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="admin-users.html" class="nav-item active"><span class="nav-icon">👥</span> Users</a>
+    <a href="#" class="nav-item"><span class="nav-icon">💰</span> Transactions</a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span> Support <span class="nav-badge red">5</span></a>
+  </nav>
+  <div class="nav-section-label">System</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span> Settings</a>
+    <a href="../index.html" class="nav-item"><span class="nav-icon">🏠</span> View Shop</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">A</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">Admin</div>
+      <div class="sidebar-user-role">Super Admin</div>
+    </div>
+    <a href="../auth/login.html" class="sidebar-logout" title="Logout">🚪</a>
+  </div>
+</aside>
+
+<!-- ============================================================ MAIN ============================================================ -->
+<div class="admin-main">
+  <header class="admin-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+      <div class="breadcrumb">
+        <a href="admin-dashboard.html">⚡ Admin</a>
+        <span class="sep">›</span><span class="cur">Users</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="admin-badge-hdr">🔴 Admin</span>
+      <a href="../index.html" class="view-site-link" target="_blank">🛒 View Shop</a>
+      <button class="hdr-btn">🔔<span class="dot"></span></button>
+      <button class="hdr-btn" id="themeToggle">🌙</button>
+    </div>
+  </header>
+
+  <div class="admin-content">
+
+    <div class="page-title-row">
+      <div>
+        <div class="page-title"><div class="page-title-icon">👥</div> Users</div>
+        <div class="page-subtitle">Manage all registered users — view, edit, ban, adjust balance</div>
+      </div>
+      <div class="title-actions">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Export CSV ready!','success')">📥 Export</button>
+        <button class="btn btn-primary" onclick="openModal('userModal');setAddUserMode()">➕ Add User</button>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="alert hidden" id="pageAlert"></div>
+
+    <!-- KPI mini row -->
+    <div class="stats-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
+      <div class="kpi-card cyan reveal">
+        <div class="kpi-top"><div class="kpi-icon cyan">👥</div><div class="kpi-trend up">↑ 12%</div></div>
+        <div class="kpi-value">124</div><div class="kpi-label">Total Users</div>
+      </div>
+      <div class="kpi-card green reveal">
+        <div class="kpi-top"><div class="kpi-icon green">✅</div></div>
+        <div class="kpi-value">118</div><div class="kpi-label">Active</div>
+      </div>
+      <div class="kpi-card red reveal">
+        <div class="kpi-top"><div class="kpi-icon red">🚫</div></div>
+        <div class="kpi-value">3</div><div class="kpi-label">Banned</div>
+      </div>
+      <div class="kpi-card purple reveal">
+        <div class="kpi-top"><div class="kpi-icon purple">⭐</div></div>
+        <div class="kpi-value">28</div><div class="kpi-label">Premium</div>
+      </div>
+      <div class="kpi-card gold reveal">
+        <div class="kpi-top"><div class="kpi-icon gold">💰</div></div>
+        <div class="kpi-value">$284</div><div class="kpi-label">Total Balance</div>
+      </div>
+    </div>
+
+    <!-- Users Table Card -->
+    <div class="admin-card reveal">
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="userSearch" placeholder="Search name, email, UID..." oninput="filterUsers(this.value)"/>
+        </div>
+        <select class="filter-select" id="roleFilter" onchange="applyUserFilters()">
+          <option value="">All Roles</option>
+          <option value="Premium">Premium</option>
+          <option value="Free">Free</option>
+          <option value="Admin">Admin</option>
+        </select>
+        <select class="filter-select" id="statusFilter" onchange="applyUserFilters()">
+          <option value="">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Banned">Banned</option>
+        </select>
+        <select class="filter-select" onchange="sortUsers(this.value)">
+          <option value="joined_desc">Newest First</option>
+          <option value="joined_asc">Oldest First</option>
+          <option value="spent_desc">Most Spent</option>
+          <option value="orders_desc">Most Orders</option>
+        </select>
+      </div>
+
+      <!-- Bulk Bar -->
+      <div class="bulk-bar" id="bulkBar">
+        <span>Selected: <strong class="bulk-count" id="bulkCount">0</strong></span>
+        <button class="btn btn-danger btn-sm" onclick="bulkBanUsers()">🚫 Ban Selected</button>
+        <button class="btn btn-ghost btn-sm"  onclick="clearSelection()">✕ Clear</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="row-check" id="selectAll"/></th>
+              <th class="sortable">User ↕</th>
+              <th>FF UID</th>
+              <th>Role</th>
+              <th>Balance</th>
+              <th>Orders</th>
+              <th>Spent</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="userEmpty" style="display:none;">
+        <div class="empty-icon">👥</div>
+        <div class="empty-title">No users found</div>
+        <div class="empty-desc">Try adjusting your search or filters.</div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="pagination-info">Showing <strong id="showCount">6</strong> of <strong id="totalCount">124</strong> users</div>
+        <div class="pagination-btns">
+          <button class="pg-btn" disabled>‹</button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn" onclick="showToast('Page 2','info')">2</button>
+          <button class="pg-btn" onclick="showToast('Page 3','info')">3</button>
+          <button class="pg-btn" onclick="showToast('Next page','info')">›</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================
+     USER VIEW / EDIT MODAL
+============================================================ -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal-card" style="max-width:560px;">
+    <div class="modal-header">
+      <div class="modal-title" id="userModalTitle">👤 User Details</div>
+      <button class="modal-close" onclick="closeModal('userModal')">✕</button>
+    </div>
+    <div class="alert hidden" id="userFormAlert"></div>
+    <form id="userForm" onsubmit="return false;">
+      <input type="hidden" id="editUserId"/>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:16px;background:var(--bg3);border-radius:10px;">
+        <div id="modalAvatar" style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-dark));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;">R</div>
+        <div>
+          <div id="modalUserName" style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text);">Rakib Hassan</div>
+          <div id="modalUserEmail" style="font-size:12px;color:var(--text3);margin-top:2px;">rakib@email.com</div>
+          <div id="modalUserJoined" style="font-size:11px;color:var(--text3);margin-top:2px;">Joined: Jan 15, 2024</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div id="modalUserSpent" style="font-family:var(--font-head);font-size:14px;font-weight:900;color:var(--admin-accent2);">$24.50</div>
+          <div style="font-size:11px;color:var(--text3);">Total Spent</div>
+        </div>
+      </div>
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label">👤 Full Name</label>
+          <input class="form-input" type="text" id="uName" placeholder="Full name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">✉️ Email</label>
+          <input class="form-input" type="email" id="uEmail" placeholder="Email address"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🎯 FF UID</label>
+          <input class="form-input" type="text" id="uUid" placeholder="FreeFire UID"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📱 Phone</label>
+          <input class="form-input" type="tel" id="uPhone" placeholder="Phone number"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">⭐ Role</label>
+          <select class="form-select" id="uRole">
+            <option value="Free">Free</option>
+            <option value="Premium">Premium</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">💰 Wallet Balance ($)</label>
+          <div class="price-input-wrap">
+            <span class="price-symbol">$</span>
+            <input class="form-input" type="number" id="uBalance" step="0.01" min="0" placeholder="0.00"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🚦 Account Status</label>
+          <select class="form-select" id="uStatus">
+            <option value="Active">✅ Active</option>
+            <option value="Banned">🚫 Banned</option>
+            <option value="Suspended">⏸️ Suspended</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📝 Admin Note</label>
+          <input class="form-input" type="text" id="uNote" placeholder="Internal note (not visible to user)"/>
+        </div>
+      </div>
+      <!-- User stats -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;" id="userStatsRow">
+        <div style="background:var(--bg3);border-radius:9px;padding:11px;text-align:center;">
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:900;color:var(--text);" id="mOrders">12</div>
+          <div style="font-size:11px;color:var(--text3);">Orders</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:9px;padding:11px;text-align:center;">
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:900;color:var(--admin-accent2);" id="mSpent">$24.50</div>
+          <div style="font-size:11px;color:var(--text3);">Spent</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:9px;padding:11px;text-align:center;">
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:900;color:var(--admin-green);" id="mBalance">$12.00</div>
+          <div style="font-size:11px;color:var(--text3);">Balance</div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="banUserBtn" onclick="toggleBanUser()">🚫 Ban User</button>
+      <button class="btn btn-ghost" onclick="closeModal('userModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveUser()" id="saveUserBtn">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/admin.js"></script>
+<script>
+
+  /* ── Demo User Data ── */
+  let users = [
+    { id:'U001', init:'R', name:'Rakib Hassan',   email:'rakib@email.com',    uid:'8024740', phone:'+880 1700-001', role:'Premium', status:'Active',  balance:12.00, orders:12, spent:24.50, joined:'Jan 15, 2024', note:'' },
+    { id:'U002', init:'S', name:'Sabbir Ahmed',   email:'sabbir@email.com',   uid:'9013456', phone:'+880 1800-002', role:'Free',    status:'Active',  balance:5.00,  orders:4,  spent:5.90,  joined:'Feb 2, 2024',  note:'' },
+    { id:'U003', init:'M', name:'Mehedi FF',      email:'mehedi@email.com',   uid:'7654321', phone:'+880 1900-003', role:'Premium', status:'Active',  balance:30.00, orders:22, spent:88.00, joined:'Mar 10, 2024', note:'' },
+    { id:'U004', init:'A', name:'Arif Hossain',   email:'arif@email.com',     uid:'1234567', phone:'+880 1700-004', role:'Free',    status:'Banned',  balance:0,     orders:2,  spent:1.80,  joined:'Apr 1, 2024',  note:'Chargeback fraud' },
+    { id:'U005', init:'N', name:'Noman Khan',     email:'noman@email.com',    uid:'3456789', phone:'+880 1800-005', role:'Free',    status:'Active',  balance:2.50,  orders:6,  spent:8.40,  joined:'Apr 5, 2024',  note:'' },
+    { id:'U006', init:'J', name:'Jamil Hasan',    email:'jamil@email.com',    uid:'9876543', phone:'+880 1900-006', role:'Premium', status:'Active',  balance:50.00, orders:35, spent:140.00,joined:'Jan 1, 2024',  note:'VIP customer' },
+  ];
+
+  let editingUserId = null;
+
+  /* ── Render Users Table ── */
+  function renderUsers(data) {
+    const tbody = document.getElementById('userTbody');
+    const empty = document.getElementById('userEmpty');
+    const showC = document.getElementById('showCount');
+
+    if (!data.length) { tbody.innerHTML=''; empty.style.display='flex'; if(showC) showC.textContent=0; return; }
+    empty.style.display = 'none';
+    if(showC) showC.textContent = data.length;
+
+    tbody.innerHTML = data.map(u => `
+      <tr data-id="${u.id}">
+        <td><input type="checkbox" class="row-check" onchange="updateBulkBar()"/></td>
+        <td>
+          <div class="user-cell">
+            <div class="user-avatar">${u.init}</div>
+            <div>
+              <div class="user-name">${u.name}</div>
+              <div class="user-email">${u.email}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span onclick="copyText('${u.uid}')" style="font-family:'Courier New',monospace;font-size:11.5px;background:var(--bg3);padding:2px 7px;border-radius:5px;cursor:pointer;border:1px solid var(--card-border2);" title="Copy UID">
+            ${u.uid}
+          </span>
+        </td>
+        <td>
+          <span class="badge ${u.role==='Premium'?'badge-orange':u.role==='Admin'?'badge-purple':'badge-inactive'}">${u.role}</span>
+        </td>
+        <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--admin-green);">$${u.balance.toFixed(2)}</td>
+        <td style="font-weight:600;">${u.orders}</td>
+        <td style="font-family:var(--font-head);font-size:12.5px;font-weight:700;color:var(--admin-accent2);">$${u.spent.toFixed(2)}</td>
+        <td>
+          <span class="badge ${u.status==='Active'?'badge-active':u.status==='Banned'?'badge-banned':'badge-pending'}">${u.status}</span>
+        </td>
+        <td style="color:var(--text3);font-size:11.5px;white-space:nowrap;">${u.joined}</td>
+        <td>
+          <div class="tbl-actions">
+            <button class="tbl-btn view" onclick="viewUser('${u.id}')" title="View/Edit">👁️</button>
+            <button class="tbl-btn edit" onclick="openEditUser('${u.id}')" title="Edit">✏️</button>
+            <button class="tbl-btn del"  onclick="banUser('${u.id}')" title="${u.status==='Banned'?'Unban':'Ban'}">${u.status==='Banned'?'✅':'🚫'}</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  renderUsers(users);
+
+  /* ── Filter ── */
+  function filterUsers(q) { applyUserFilters(q); }
+
+  function applyUserFilters(searchOverride) {
+    const q      = searchOverride ?? document.getElementById('userSearch').value.toLowerCase();
+    const role   = document.getElementById('roleFilter').value;
+    const status = document.getElementById('statusFilter').value;
+
+    const filtered = users.filter(u => {
+      const matchQ = !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.uid.includes(q);
+      const matchR = !role   || u.role === role;
+      const matchS = !status || u.status === status;
+      return matchQ && matchR && matchS;
+    });
+    renderUsers(filtered);
+  }
+
+  /* ── Sort ── */
+  function sortUsers(by) {
+    const sorted = [...users].sort((a,b) => {
+      if (by==='spent_desc') return b.spent - a.spent;
+      if (by==='orders_desc') return b.orders - a.orders;
+      return 0;
+    });
+    renderUsers(sorted);
+  }
+
+  /* ── View User ── */
+  function viewUser(id) { openEditUser(id); }
+
+  /* ── Open Edit User Modal ── */
+  function openEditUser(id) {
+    const u = users.find(x => x.id===id);
+    if (!u) return;
+    editingUserId = id;
+    document.getElementById('userModalTitle').textContent = `👤 ${u.name}`;
+    document.getElementById('modalAvatar').textContent    = u.init;
+    document.getElementById('modalUserName').textContent  = u.name;
+    document.getElementById('modalUserEmail').textContent = u.email;
+    document.getElementById('modalUserJoined').textContent = `Joined: ${u.joined}`;
+    document.getElementById('modalUserSpent').textContent = `$${u.spent.toFixed(2)}`;
+    document.getElementById('uName').value    = u.name;
+    document.getElementById('uEmail').value   = u.email;
+    document.getElementById('uUid').value     = u.uid;
+    document.getElementById('uPhone').value   = u.phone;
+    document.getElementById('uBalance').value = u.balance;
+    document.getElementById('uNote').value    = u.note;
+    document.getElementById('mOrders').textContent  = u.orders;
+    document.getElementById('mSpent').textContent   = `$${u.spent.toFixed(2)}`;
+    document.getElementById('mBalance').textContent = `$${u.balance.toFixed(2)}`;
+
+    Array.from(document.getElementById('uRole').options).forEach(o => { o.selected = o.value === u.role; });
+    Array.from(document.getElementById('uStatus').options).forEach(o => { o.selected = o.value === u.status; });
+
+    const banBtn = document.getElementById('banUserBtn');
+    banBtn.textContent = u.status === 'Banned' ? '✅ Unban User' : '🚫 Ban User';
+    banBtn.className   = u.status === 'Banned' ? 'btn btn-success btn-sm' : 'btn btn-danger btn-sm';
+
+    hideAlert('userFormAlert');
+    openModal('userModal');
+  }
+
+  /* ── Add User Mode ── */
+  function setAddUserMode() {
+    editingUserId = null;
+    document.getElementById('userModalTitle').textContent = '➕ Add New User';
+    document.getElementById('userForm').reset();
+    document.getElementById('modalAvatar').textContent    = '?';
+    document.getElementById('modalUserName').textContent  = 'New User';
+    document.getElementById('modalUserEmail').textContent = '—';
+    document.getElementById('modalUserJoined').textContent= '';
+    document.getElementById('modalUserSpent').textContent = '$0.00';
+    document.getElementById('mOrders').textContent  = '0';
+    document.getElementById('mSpent').textContent   = '$0.00';
+    document.getElementById('mBalance').textContent = '$0.00';
+    document.getElementById('banUserBtn').style.display = 'none';
+    hideAlert('userFormAlert');
+    openModal('userModal');
+  }
+
+  /* ── Save User ── */
+  async function saveUser() {
+    const btn = document.getElementById('saveUserBtn');
+    btn.classList.add('btn-loading'); btn.textContent = 'Saving...';
+    try {
+      await new Promise(r => setTimeout(r, 700));
+      /* 🔧 REAL API: await fetch('/api/admin/users/'+editingUserId, { method:'PUT', ... }) */
+
+      if (editingUserId) {
+        const u = users.find(x => x.id === editingUserId);
+        if (u) {
+          u.name    = document.getElementById('uName').value    || u.name;
+          u.email   = document.getElementById('uEmail').value   || u.email;
+          u.uid     = document.getElementById('uUid').value     || u.uid;
+          u.phone   = document.getElementById('uPhone').value   || u.phone;
+          u.balance = parseFloat(document.getElementById('uBalance').value) || 0;
+          u.note    = document.getElementById('uNote').value;
+          u.role    = document.getElementById('uRole').value;
+          u.status  = document.getElementById('uStatus').value;
+          u.init    = u.name[0].toUpperCase();
+        }
+      } else {
+        const newU = {
+          id:'U'+String(users.length+1).padStart(3,'0'),
+          init: (document.getElementById('uName').value[0]||'?').toUpperCase(),
+          name: document.getElementById('uName').value,
+          email: document.getElementById('uEmail').value,
+          uid: document.getElementById('uUid').value,
+          phone: document.getElementById('uPhone').value,
+          role: document.getElementById('uRole').value || 'Free',
+          status: document.getElementById('uStatus').value || 'Active',
+          balance: parseFloat(document.getElementById('uBalance').value)||0,
+          orders:0, spent:0, joined:'Today', note:document.getElementById('uNote').value,
+        };
+        users.unshift(newU);
+      }
+
+      renderUsers(users);
+      closeModal('userModal');
+      showToast('User saved successfully!', 'success');
+      showAlert('pageAlert','success','✅ User updated successfully!');
+    } catch(e) {
+      showAlert('userFormAlert','error','Save failed. Try again.');
+    } finally {
+      btn.classList.remove('btn-loading');
+      btn.textContent = '💾 Save Changes';
+    }
+  }
+
+  /* ── Ban / Unban from modal ── */
+  async function toggleBanUser() {
+    const u = users.find(x => x.id === editingUserId);
+    if (!u) return;
+    const isBanned = u.status === 'Banned';
+    await new Promise(r => setTimeout(r, 400));
+    u.status = isBanned ? 'Active' : 'Banned';
+    renderUsers(users);
+    closeModal('userModal');
+    showToast(`User ${isBanned ? 'unbanned' : 'banned'}: ${u.name}`, isBanned ? 'success' : 'warning');
+  }
+
+  /* ── Ban from table ── */
+  async function banUser(id) {
+    const u = users.find(x => x.id===id);
+    if (!u) return;
+    const isBanned = u.status === 'Banned';
+    const ok = await confirmDel(`${isBanned ? 'Unban' : 'Ban'} ${u.name}?`);
+    if (!ok) return;
+    u.status = isBanned ? 'Active' : 'Banned';
+    renderUsers(users);
+    showToast(`${u.name} ${isBanned ? 'unbanned' : 'banned'}`, isBanned ? 'success' : 'warning');
+  }
+
+  /* ── Bulk Ban ── */
+  async function bulkBanUsers() {
+    const sel = [...document.querySelectorAll('.row-check:checked')].map(c => c.closest('tr')?.dataset.id).filter(Boolean);
+    if (!sel.length) return;
+    const ok = await confirmDel(`Ban ${sel.length} user(s)?`);
+    if (!ok) return;
+    sel.forEach(id => { const u = users.find(x=>x.id===id); if(u) u.status='Banned'; });
+    renderUsers(users); clearSelection();
+    showToast(`${sel.length} users banned`, 'warning');
+  }
+
+</script>
+</body>
+</html>

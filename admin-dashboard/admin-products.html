@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products — V1PER X SHOP Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/admin.css"/>
+</head>
+<body class="page-load">
+<div class="admin-bg"></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================================ SIDEBAR ============================================================ -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">⚡</div>
+    <div class="sidebar-logo-text">
+      <div class="sidebar-logo-name">V1PER X SHOP</div>
+      <div class="sidebar-logo-sub">Admin Panel</div>
+    </div>
+  </div>
+  <div class="nav-section-label">Overview</div>
+  <nav class="sidebar-nav">
+    <a href="admin-dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="#" class="nav-item"><span class="nav-icon">📦</span> Orders <span class="nav-badge red">8</span></a>
+  </nav>
+  <div class="nav-section-label">Catalog</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <button class="nav-group-btn open" id="prodGroupBtn">
+      <span class="nav-icon">🎮</span> Products <span class="nav-arrow">›</span>
+    </button>
+    <div class="nav-sub open" id="prodGroupSub">
+      <a href="admin-products.html" class="nav-item active"><span class="nav-icon">📋</span> All Products</a>
+      <a href="#" onclick="openModal('productModal');setAddMode();return false;" class="nav-item"><span class="nav-icon">➕</span> Add Product</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🏷️</span> Categories</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🔖</span> Tags</a>
+    </div>
+  </nav>
+  <div class="nav-section-label">People</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="admin-users.html" class="nav-item"><span class="nav-icon">👥</span> Users</a>
+    <a href="#" class="nav-item"><span class="nav-icon">💰</span> Transactions</a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span> Support <span class="nav-badge red">5</span></a>
+  </nav>
+  <div class="nav-section-label">System</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span> Settings</a>
+    <a href="../index.html" class="nav-item"><span class="nav-icon">🏠</span> View Shop</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">A</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">Admin</div>
+      <div class="sidebar-user-role">Super Admin</div>
+    </div>
+    <a href="../auth/login.html" class="sidebar-logout" title="Logout">🚪</a>
+  </div>
+</aside>
+
+<!-- ============================================================ MAIN ============================================================ -->
+<div class="admin-main">
+  <header class="admin-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+      <div class="breadcrumb">
+        <a href="admin-dashboard.html">⚡ Admin</a>
+        <span class="sep">›</span><span class="cur">Products</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="admin-badge-hdr">🔴 Admin</span>
+      <a href="../index.html" class="view-site-link" target="_blank">🛒 View Shop</a>
+      <button class="hdr-btn">🔔<span class="dot"></span></button>
+      <button class="hdr-btn" id="themeToggle">🌙</button>
+    </div>
+  </header>
+
+  <div class="admin-content">
+
+    <div class="page-title-row">
+      <div>
+        <div class="page-title"><div class="page-title-icon">🎮</div> Products</div>
+        <div class="page-subtitle">Manage all products — add, edit, delete, toggle visibility</div>
+      </div>
+      <div class="title-actions">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Export CSV ready!','success')">📥 Export CSV</button>
+        <button class="btn btn-primary" onclick="openModal('productModal');setAddMode()">➕ Add Product</button>
+      </div>
+    </div>
+
+    <!-- Inline Alert -->
+    <div class="alert hidden" id="pageAlert"></div>
+
+    <!-- Product Table Card -->
+    <div class="admin-card reveal">
+
+      <!-- Search & Filter Bar -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search products..." oninput="debounce(()=>filterProductTable(this.value),250)()" id="prodSearch"/>
+        </div>
+        <select class="filter-select" onchange="filterBySelect('prodTbody', this.value, 4)" id="catFilter">
+          <option value="">All Categories</option>
+          <option>Others</option>
+          <option>Non Root</option>
+          <option>Root</option>
+          <option>iPhone</option>
+          <option>PC</option>
+        </select>
+        <select class="filter-select" onchange="filterBySelect('prodTbody', this.value, 6)">
+          <option value="">All Status</option>
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('prodSearch').value='';document.getElementById('catFilter').value='';filterProductTable('')">↺ Reset</button>
+      </div>
+
+      <!-- Bulk Action Bar -->
+      <div class="bulk-bar" id="bulkBar">
+        <span>Selected: <strong class="bulk-count" id="bulkCount">0</strong></span>
+        <button class="btn btn-danger btn-sm" onclick="bulkDelete()">🗑️ Delete Selected</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearSelection()">✕ Clear</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="row-check" id="selectAll"/></th>
+              <th class="sortable">Product ↕</th>
+              <th>Brand</th>
+              <th>Price</th>
+              <th class="sortable">Category ↕</th>
+              <th>Tags</th>
+              <th>Status</th>
+              <th>Sales</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="prodTbody">
+            <!-- Rows injected by JS — see productData array below -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="prodEmpty" style="display:none;">
+        <div class="empty-icon">🎮</div>
+        <div class="empty-title">No products found</div>
+        <div class="empty-desc">Try a different search or add a new product.</div>
+        <button class="btn btn-primary" onclick="openModal('productModal');setAddMode()">➕ Add Product</button>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="pagination-info">Showing <strong id="showCount">5</strong> of <strong id="totalCount">5</strong> products</div>
+        <div class="pagination-btns">
+          <button class="pg-btn" disabled>‹</button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn" onclick="showToast('Page 2 coming soon','info')">2</button>
+          <button class="pg-btn" onclick="showToast('Page 3 coming soon','info')">›</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================
+     ADD / EDIT PRODUCT MODAL
+     — openModal('productModal') diye khola hoy
+     — setAddMode() / setEditMode(data) JS theke call hoy
+============================================================ -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-card" style="max-width:720px;">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">➕ Add New Product</div>
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    </div>
+
+    <!-- Form Alert -->
+    <div class="alert hidden" id="formAlert"></div>
+
+    <form id="productForm" onsubmit="return false;">
+      <input type="hidden" id="editProductId"/>
+
+      <!-- ── ROW 1: Name + Brand ── -->
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label required">🎮 Product Name</label>
+          <input class="form-input" type="text" id="pName" placeholder="e.g. FF Guild Glory"/>
+          <div class="field-error" id="pNameErr"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏷️ Brand</label>
+          <!-- Brand: new brand add korte option tag add koro -->
+          <input class="form-input" type="text" id="pBrand" placeholder="e.g. FreeFire, BGMI, PC"/>
+        </div>
+      </div>
+
+      <!-- ── ROW 2: Category + Platform ── -->
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label required">📂 Category</label>
+          <!-- Notun category: option tag ekhane add koro -->
+          <select class="form-select" id="pCategory">
+            <option value="">— Select Category —</option>
+            <option value="Others">Others</option>
+            <option value="Non Root">Non Root Panel</option>
+            <option value="Root">Root Panel</option>
+            <option value="iPhone">iPhone Panel</option>
+            <option value="PC">PC Panel</option>
+          </select>
+          <div class="field-error" id="pCatErr"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📱 Platform</label>
+          <select class="form-select" id="pPlatform">
+            <option value="">— Select Platform —</option>
+            <option>Android</option>
+            <option>iOS / iPhone</option>
+            <option>PC / Windows</option>
+            <option>All Platforms</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ── ROW 3: Price + Old Price + Stock ── -->
+      <div class="form-grid cols-3" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label required">💵 Price (USD)</label>
+          <div class="price-input-wrap">
+            <span class="price-symbol">$</span>
+            <input class="form-input" type="number" id="pPrice" placeholder="0.00" min="0" step="0.01"/>
+          </div>
+          <div class="field-error" id="pPriceErr"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏷️ Old Price (USD)</label>
+          <div class="price-input-wrap">
+            <span class="price-symbol">$</span>
+            <input class="form-input" type="number" id="pOldPrice" placeholder="0.00" min="0" step="0.01"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📦 Stock / Keys</label>
+          <input class="form-input" type="number" id="pStock" placeholder="e.g. 100" min="0"/>
+        </div>
+      </div>
+
+      <!-- ── Description ── -->
+      <div class="form-group full" style="margin-bottom:14px;">
+        <label class="form-label required">📝 Description</label>
+        <textarea class="form-textarea" id="pDesc" placeholder="Short product description shown on shop..."></textarea>
+        <div class="field-error" id="pDescErr"></div>
+      </div>
+
+      <!-- ── Product Key / Download Link ── -->
+      <div class="form-group full" style="margin-bottom:14px;">
+        <label class="form-label">🔑 Product Key / Download Link</label>
+        <textarea class="form-textarea" id="pKey" placeholder="Key or download URL — delivered instantly after purchase..." style="min-height:64px;"></textarea>
+        <div class="field-hint">This is what the customer receives after purchase.</div>
+      </div>
+
+      <!-- ── Tags ── -->
+      <div class="form-group full" style="margin-bottom:14px;">
+        <label class="form-label">🔖 Tags</label>
+        <!-- Tag input: type a tag + press Enter or comma -->
+        <div class="tag-input-wrap" id="tagWrap">
+          <input class="tag-input-field" type="text" placeholder="Type tag + Enter (e.g. headshot, autofarm)"/>
+        </div>
+        <input type="hidden" id="pTagsHidden"/>
+        <div class="field-hint">Press Enter or comma after each tag.</div>
+      </div>
+
+      <!-- ── Image Upload ── -->
+      <div class="form-group full" style="margin-bottom:14px;">
+        <label class="form-label">🖼️ Product Image / Emoji</label>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;">
+          <div>
+            <label class="form-label" style="text-transform:none;font-size:11px;margin-bottom:5px;">Emoji Icon</label>
+            <input class="form-input" type="text" id="pEmoji" placeholder="🏆" maxlength="4" style="font-size:22px;text-align:center;width:70px;"/>
+          </div>
+          <div style="flex:1;">
+            <label class="form-label" style="text-transform:none;font-size:11px;margin-bottom:5px;">Or Upload Image</label>
+            <div class="upload-area" id="imgUploadArea">
+              <input type="file" accept="image/*" multiple/>
+              <div class="upload-icon">📁</div>
+              <div class="upload-title">Drag & drop or <span class="upload-accent">browse</span></div>
+              <div class="upload-sub">PNG, JPG, WEBP · Max 2MB each</div>
+            </div>
+            <div class="img-previews" id="imgPreviewGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Status + Featured ── -->
+      <div class="form-grid" style="margin-bottom:4px;">
+        <div class="form-group">
+          <label class="form-label">📡 Status</label>
+          <select class="form-select" id="pStatus">
+            <option value="active">✅ Active</option>
+            <option value="inactive">❌ Inactive</option>
+            <option value="draft">📝 Draft</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">⭐ Options</label>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:var(--font-ui);font-size:13px;color:var(--text2);">
+              <label class="toggle-switch">
+                <input type="checkbox" id="pFeatured"/>
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              Featured Product
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:var(--font-ui);font-size:13px;color:var(--text2);">
+              <label class="toggle-switch">
+                <input type="checkbox" id="pHasDemo" checked/>
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              Has Demo Button
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:var(--font-ui);font-size:13px;color:var(--text2);">
+              <label class="toggle-switch">
+                <input type="checkbox" id="pVerified" checked/>
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              Verified Badge
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('productModal')">Cancel</button>
+      <button class="btn btn-success" onclick="saveProduct()" id="saveProdBtn">💾 Save Product</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     DELETE CONFIRM MODAL
+============================================================ -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-card" style="max-width:400px;">
+    <div class="modal-header">
+      <div class="modal-title">🗑️ Confirm Delete</div>
+      <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
+    </div>
+    <div style="text-align:center;padding:10px 0 20px;">
+      <div style="font-size:48px;margin-bottom:12px;">⚠️</div>
+      <div style="font-family:var(--font-ui);font-size:14px;color:var(--text);margin-bottom:6px;">Delete <strong id="deleteProductName">"FF Guild Glory"</strong>?</div>
+      <div style="font-family:var(--font-ui);font-size:12.5px;color:var(--text3);">This action cannot be undone. All data will be permanently removed.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDeleteProduct()" id="confirmDelBtn">🗑️ Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/admin.js"></script>
+<script>
+
+  /* ============================================================
+     PRODUCT DATA (Demo)
+     — Real app a API theke ashbe
+     — notun field add korte object ta extend koro
+  ============================================================ */
+  let products = [
+    { id:'P001', emoji:'🏆', name:'FF Guild Glory',      brand:'FreeFire',  category:'Others',   platform:'Android',     price:1.25,  oldPrice:2.50, stock:500, tags:'guild,glory,ff',  status:'active',   featured:false, verified:true,  hasDemo:true,  sales:48,  desc:'FreeFire Guild Level Up Box — Boost your guild ranking instantly.',     key:'VXGD-7MAX-BD24-####' },
+    { id:'P002', emoji:'📱', name:'Fluorite iOS FF',     brand:'iPhone',    category:'iPhone',   platform:'iOS',         price:5.00,  oldPrice:0,    stock:200, tags:'iphone,ios,ff',   status:'active',   featured:true,  verified:true,  hasDemo:false, sales:22,  desc:'Best FreeFire panel for iPhone — No jailbreak required.',             key:'FLRT-IOS-####-BD24' },
+    { id:'P003', emoji:'💜', name:'Drip Client APK',     brand:'Drip',      category:'Non Root', platform:'Android',     price:0.90,  oldPrice:0,    stock:999, tags:'nonroot,headshot', status:'active',   featured:false, verified:true,  hasDemo:true,  sales:38,  desc:'FreeFire best non-root panel with headshot & autofarm features.',      key:'DRIP-NRBD-####-2024' },
+    { id:'P004', emoji:'🖥️',name:'PC Emote Panel',      brand:'V1PER',     category:'PC',       platform:'PC',          price:0.50,  oldPrice:0,    stock:999, tags:'pc,emote,ff',     status:'active',   featured:false, verified:true,  hasDemo:true,  sales:31,  desc:'PC emote panel — All emotes unlock, no tip draw, no lag.',            key:'PCEM-ALL0-BD24-####' },
+    { id:'P005', emoji:'🍎', name:'iPhone Certified',    brand:'iPhone',    category:'iPhone',   platform:'iOS',         price:10.00, oldPrice:0,    stock:150, tags:'iphone,certified',status:'inactive', featured:false, verified:true,  hasDemo:true,  sales:14,  desc:'iPhone certified panel — Plug, stage & edge features included.',      key:'IPHC-CERT-####-BD24' },
+  ];
+
+  let editingId   = null;
+  let deleteTarget = null;
+
+  /* ── Render Table ── */
+  function renderTable(data) {
+    const tbody = document.getElementById('prodTbody');
+    const empty = document.getElementById('prodEmpty');
+    const showC = document.getElementById('showCount');
+    const totC  = document.getElementById('totalCount');
+
+    if (!data.length) {
+      tbody.innerHTML = '';
+      empty.style.display = 'flex';
+      if(showC) showC.textContent = 0;
+      return;
+    }
+    empty.style.display = 'none';
+    if(showC) showC.textContent = data.length;
+    if(totC)  totC.textContent  = products.length;
+
+    tbody.innerHTML = data.map(p => `
+      <tr data-id="${p.id}">
+        <td><input type="checkbox" class="row-check" onchange="updateBulkBar()"/></td>
+        <td>
+          <div class="prod-cell">
+            <div class="prod-thumb">${p.emoji}</div>
+            <div>
+              <div class="prod-name">${p.name}</div>
+              <div class="prod-sku">${p.id} ${p.featured ? '⭐' : ''}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:var(--text2);font-size:12.5px;">${p.brand || '—'}</td>
+        <td>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:900;color:var(--admin-accent2);">$${p.price.toFixed(2)}</div>
+          ${p.oldPrice ? `<div style="font-size:10.5px;color:var(--text3);text-decoration:line-through;">$${p.oldPrice.toFixed(2)}</div>` : ''}
+        </td>
+        <td><span class="badge badge-cyan">${p.category}</span></td>
+        <td>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;max-width:160px;">
+            ${(p.tags||'').split(',').filter(Boolean).slice(0,3).map(t => `<span style="background:rgba(249,115,22,0.1);color:var(--admin-accent);font-size:10px;padding:1px 6px;border-radius:10px;font-family:var(--font-ui);font-weight:600;">${t.trim()}</span>`).join('')}
+          </div>
+        </td>
+        <td>
+          <label class="toggle-switch" title="Toggle active">
+            <input type="checkbox" ${p.status==='active'?'checked':''} onchange="toggleStatus('${p.id}',this.checked)"/>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </td>
+        <td style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text2);">${p.sales}</td>
+        <td>
+          <div class="tbl-actions">
+            <button class="tbl-btn view" onclick="viewProduct('${p.id}')" title="View">👁️</button>
+            <button class="tbl-btn edit" onclick="setEditMode('${p.id}')" title="Edit">✏️</button>
+            <button class="tbl-btn del"  onclick="promptDelete('${p.id}')" title="Delete">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  renderTable(products);
+
+  /* ── Filter ── */
+  function filterProductTable(q) {
+    const filtered = q
+      ? products.filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || p.tags.toLowerCase().includes(q.toLowerCase()))
+      : products;
+    renderTable(filtered);
+  }
+
+  /* ── Toggle Status ── */
+  function toggleStatus(id, active) {
+    const p = products.find(x => x.id === id);
+    if (p) { p.status = active ? 'active' : 'inactive'; showToast(`${p.name} ${active ? 'activated' : 'deactivated'}`, active ? 'success' : 'warning'); }
+  }
+
+  /* ── View Product ── */
+  function viewProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (p) showToast(`${p.emoji} ${p.name} — $${p.price} · ${p.sales} sales`, 'info', 4000);
+  }
+
+  /* ── Add Mode ── */
+  function setAddMode() {
+    editingId = null;
+    document.getElementById('modalTitle').textContent = '➕ Add New Product';
+    document.getElementById('saveProdBtn').textContent = '💾 Save Product';
+    document.getElementById('productForm').reset();
+    document.getElementById('editProductId').value = '';
+    document.getElementById('pTagsHidden').value = '';
+    document.getElementById('imgPreviewGrid').innerHTML = '';
+    document.querySelectorAll('.tag-chip').forEach(c => c.remove());
+    hideAlert('formAlert');
+    clearValidation();
+    initTagInput('tagWrap', 'pTagsHidden');
+    initImageUpload('imgUploadArea', 'imgPreviewGrid');
+  }
+
+  /* ── Edit Mode ── */
+  function setEditMode(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    editingId = id;
+    document.getElementById('modalTitle').textContent = `✏️ Edit — ${p.name}`;
+    document.getElementById('saveProdBtn').textContent = '💾 Update Product';
+    document.getElementById('editProductId').value = id;
+    document.getElementById('pName').value     = p.name;
+    document.getElementById('pBrand').value    = p.brand || '';
+    document.getElementById('pDesc').value     = p.desc || '';
+    document.getElementById('pPrice').value    = p.price;
+    document.getElementById('pOldPrice').value = p.oldPrice || '';
+    document.getElementById('pStock').value    = p.stock || '';
+    document.getElementById('pEmoji').value    = p.emoji || '';
+    document.getElementById('pKey').value      = p.key || '';
+    document.getElementById('pStatus').value   = p.status;
+    document.getElementById('pFeatured').checked = p.featured;
+    document.getElementById('pHasDemo').checked  = p.hasDemo;
+    document.getElementById('pVerified').checked  = p.verified;
+    document.getElementById('pTagsHidden').value = p.tags || '';
+
+    /* Set selects */
+    const catSel = document.getElementById('pCategory');
+    Array.from(catSel.options).forEach(o => { if(o.value === p.category) o.selected = true; });
+    const platSel = document.getElementById('pPlatform');
+    Array.from(platSel.options).forEach(o => { if(o.text.includes(p.platform)) o.selected = true; });
+
+    document.getElementById('imgPreviewGrid').innerHTML = '';
+    hideAlert('formAlert');
+    clearValidation();
+    initTagInput('tagWrap', 'pTagsHidden');
+    initImageUpload('imgUploadArea', 'imgPreviewGrid');
+    openModal('productModal');
+  }
+
+  /* ── Save Product ── */
+  async function saveProduct() {
+    const btn = document.getElementById('saveProdBtn');
+    const nameEl  = document.getElementById('pName');
+    const catEl   = document.getElementById('pCategory');
+    const priceEl = document.getElementById('pPrice');
+    const descEl  = document.getElementById('pDesc');
+
+    /* Validate */
+    const v1 = validateField(nameEl,  { required:true, minLength:3, label:'Product Name' });
+    const v2 = validateField(catEl,   { required:true, label:'Category' });
+    const v3 = validateField(priceEl, { required:true, min:0, label:'Price' });
+    const v4 = validateField(descEl,  { required:true, minLength:10, label:'Description' });
+    if (!v1||!v2||!v3||!v4) { showAlert('formAlert','error','Please fix the errors above.'); return; }
+
+    btn.classList.add('btn-loading');
+    btn.textContent = 'Saving...';
+
+    try {
+      /* 🔧 REAL API CALL EKHANE:
+         const res = await fetch('/api/admin/products'+(editingId?'/'+editingId:''), {
+           method: editingId ? 'PUT' : 'POST',
+           headers: { 'Content-Type':'application/json' },
+           body: JSON.stringify({
+             name: nameEl.value, category: catEl.value,
+             price: parseFloat(priceEl.value), description: descEl.value, ...
+           })
+         });
+         const data = await res.json();
+         if (!res.ok) throw new Error(data.message);
+      */
+      await new Promise(r => setTimeout(r, 900));
+
+      const newProd = {
+        id:       editingId || 'P' + String(products.length + 1).padStart(3,'0'),
+        name:     document.getElementById('pName').value,
+        brand:    document.getElementById('pBrand').value,
+        category: document.getElementById('pCategory').value,
+        platform: document.getElementById('pPlatform').value,
+        price:    parseFloat(document.getElementById('pPrice').value) || 0,
+        oldPrice: parseFloat(document.getElementById('pOldPrice').value) || 0,
+        stock:    parseInt(document.getElementById('pStock').value) || 0,
+        desc:     document.getElementById('pDesc').value,
+        key:      document.getElementById('pKey').value,
+        emoji:    document.getElementById('pEmoji').value || '🎮',
+        tags:     document.getElementById('pTagsHidden').value,
+        status:   document.getElementById('pStatus').value,
+        featured: document.getElementById('pFeatured').checked,
+        hasDemo:  document.getElementById('pHasDemo').checked,
+        verified: document.getElementById('pVerified').checked,
+        sales:    0,
+      };
+
+      if (editingId) {
+        const idx = products.findIndex(x => x.id === editingId);
+        if (idx >= 0) { newProd.sales = products[idx].sales; products[idx] = newProd; }
+      } else {
+        products.unshift(newProd);
+      }
+
+      renderTable(products);
+      closeModal('productModal');
+      showToast(`${editingId ? 'Updated' : 'Added'}: ${newProd.name}`, 'success');
+      showAlert('pageAlert', 'success', `✅ Product "${newProd.name}" ${editingId ? 'updated' : 'added'} successfully!`);
+
+    } catch(err) {
+      showAlert('formAlert','error', err.message || 'Save failed. Try again.');
+    } finally {
+      btn.classList.remove('btn-loading');
+      btn.textContent = editingId ? '💾 Update Product' : '💾 Save Product';
+    }
+  }
+
+  /* ── Delete ── */
+  function promptDelete(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    deleteTarget = id;
+    document.getElementById('deleteProductName').textContent = `"${p.name}"`;
+    openModal('deleteModal');
+  }
+
+  async function confirmDeleteProduct() {
+    const btn = document.getElementById('confirmDelBtn');
+    btn.classList.add('btn-loading');
+    try {
+      await new Promise(r => setTimeout(r, 700));
+      /* 🔧 REAL API: await fetch(`/api/admin/products/${deleteTarget}`,{method:'DELETE'}) */
+      const p = products.find(x => x.id === deleteTarget);
+      products = products.filter(x => x.id !== deleteTarget);
+      renderTable(products);
+      closeModal('deleteModal');
+      showToast(`Deleted: ${p?.name}`, 'success');
+    } finally { btn.classList.remove('btn-loading'); }
+  }
+
+  /* ── Bulk Delete ── */
+  async function bulkDelete() {
+    const selected = [...document.querySelectorAll('.row-check:checked')].map(c => c.closest('tr')?.dataset.id).filter(Boolean);
+    if (!selected.length) return;
+    const ok = await confirmDel(`Delete ${selected.length} selected product(s)?`);
+    if (!ok) return;
+    products = products.filter(p => !selected.includes(p.id));
+    renderTable(products);
+    clearSelection();
+    showToast(`${selected.length} products deleted`, 'success');
+  }
+
+  /* ── Auto open add modal if ?action=add ── */
+  if (new URLSearchParams(location.search).get('action') === 'add') {
+    setTimeout(() => { openModal('productModal'); setAddMode(); }, 300);
+  }
+
+  /* ── Init tag & upload on page load ── */
+  initTagInput('tagWrap','pTagsHidden');
+  initImageUpload('imgUploadArea','imgPreviewGrid');
+</script>
+</body>
+</html>

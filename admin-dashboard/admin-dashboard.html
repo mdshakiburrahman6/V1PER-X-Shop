@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — V1PER X SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/admin.css"/>
+</head>
+<body class="page-load">
+<div class="admin-bg"></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================================ SIDEBAR ============================================================ -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">⚡</div>
+    <div class="sidebar-logo-text">
+      <div class="sidebar-logo-name">V1PER X SHOP</div>
+      <div class="sidebar-logo-sub">Admin Panel</div>
+    </div>
+  </div>
+
+  <div class="nav-section-label">Overview</div>
+  <nav class="sidebar-nav">
+    <a href="admin-dashboard.html" class="nav-item active"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="#" class="nav-item"><span class="nav-icon">📈</span> Analytics</a>
+    <a href="#" class="nav-item"><span class="nav-icon">📦</span> Orders <span class="nav-badge red">8</span></a>
+  </nav>
+
+  <div class="nav-section-label">Catalog</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <!-- Collapsible Products group -->
+    <button class="nav-group-btn open" id="prodGroupBtn">
+      <span class="nav-icon">🎮</span> Products <span class="nav-arrow">›</span>
+    </button>
+    <div class="nav-sub open" id="prodGroupSub">
+      <a href="admin-products.html" class="nav-item active"><span class="nav-icon">📋</span> All Products</a>
+      <a href="admin-products.html?action=add" class="nav-item"><span class="nav-icon">➕</span> Add Product</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🏷️</span> Categories</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🔖</span> Tags</a>
+    </div>
+  </nav>
+
+  <div class="nav-section-label">People</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="admin-users.html" class="nav-item"><span class="nav-icon">👥</span> Users <span class="nav-badge">124</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💰</span> Transactions</a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span> Support <span class="nav-badge red">5</span></a>
+  </nav>
+
+  <div class="nav-section-label">System</div>
+  <nav class="sidebar-nav" style="flex:0;">
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span> Settings</a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔒</span> Security</a>
+    <a href="#" class="nav-item"><span class="nav-icon">📝</span> Logs</a>
+    <a href="../index.html" class="nav-item"><span class="nav-icon">🏠</span> View Shop</a>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">A</div>
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">Admin</div>
+      <div class="sidebar-user-role">Super Admin</div>
+    </div>
+    <a href="../auth/login.html" class="sidebar-logout" title="Logout">🚪</a>
+  </div>
+</aside>
+
+<!-- ============================================================ MAIN ============================================================ -->
+<div class="admin-main">
+  <header class="admin-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+      <div class="breadcrumb">
+        <a href="admin-dashboard.html">⚡ Admin</a>
+        <span class="sep">›</span><span class="cur">Dashboard</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="admin-badge-hdr">🔴 Admin</span>
+      <a href="../index.html" class="view-site-link" target="_blank">🛒 View Shop</a>
+      <button class="hdr-btn" title="Notifications">🔔<span class="dot"></span></button>
+      <button class="hdr-btn" id="themeToggle" title="Theme">🌙</button>
+    </div>
+  </header>
+
+  <div class="admin-content">
+
+    <!-- Page Title -->
+    <div class="page-title-row">
+      <div>
+        <div class="page-title"><div class="page-title-icon">📊</div> Dashboard</div>
+        <div class="page-subtitle">Welcome back, Admin! Here's what's happening today.</div>
+      </div>
+      <div class="title-actions">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Report exported!','success')">📥 Export</button>
+        <button class="btn btn-primary btn-sm" onclick="location.href='admin-products.html?action=add'">➕ Add Product</button>
+      </div>
+    </div>
+
+    <!-- ── KPI CARDS ── -->
+    <div class="stats-grid">
+      <div class="kpi-card orange reveal">
+        <div class="kpi-top">
+          <div class="kpi-icon orange">💰</div>
+          <div class="kpi-trend up">↑ 12%</div>
+        </div>
+        <div class="kpi-value">$284.50</div>
+        <div class="kpi-label">Total Revenue</div>
+        <div class="kpi-sub">This month</div>
+      </div>
+      <div class="kpi-card green reveal">
+        <div class="kpi-top">
+          <div class="kpi-icon green">📦</div>
+          <div class="kpi-trend up">↑ 8%</div>
+        </div>
+        <div class="kpi-value">148</div>
+        <div class="kpi-label">Total Orders</div>
+        <div class="kpi-sub">8 pending</div>
+      </div>
+      <div class="kpi-card cyan reveal">
+        <div class="kpi-top">
+          <div class="kpi-icon cyan">👥</div>
+          <div class="kpi-trend up">↑ 24%</div>
+        </div>
+        <div class="kpi-value">124</div>
+        <div class="kpi-label">Total Users</div>
+        <div class="kpi-sub">12 new this week</div>
+      </div>
+      <div class="kpi-card purple reveal">
+        <div class="kpi-top">
+          <div class="kpi-icon purple">🎮</div>
+          <div class="kpi-trend up">↑ 3</div>
+        </div>
+        <div class="kpi-value">18</div>
+        <div class="kpi-label">Products</div>
+        <div class="kpi-sub">All active</div>
+      </div>
+      <div class="kpi-card red reveal">
+        <div class="kpi-top">
+          <div class="kpi-icon red">💬</div>
+          <div class="kpi-trend down">↑ 5 new</div>
+        </div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-label">Open Tickets</div>
+        <div class="kpi-sub">Needs response</div>
+      </div>
+      <div class="kpi-card gold reveal">
+        <div class="kpi-top">
+          <div class="kpi-icon gold">⭐</div>
+          <div class="kpi-trend up">↑ 4.9</div>
+        </div>
+        <div class="kpi-value">4.9★</div>
+        <div class="kpi-label">Avg Rating</div>
+        <div class="kpi-sub">From 210 reviews</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;align-items:start;" id="mainGrid">
+
+      <!-- LEFT -->
+      <div>
+        <!-- Revenue Chart -->
+        <div class="admin-card reveal">
+          <div class="admin-card-header">
+            <div class="admin-card-title">📈 Revenue — Last 7 Days</div>
+            <span class="badge badge-active">Live</span>
+          </div>
+          <div class="admin-card-body">
+            <div class="bar-chart-wrap" id="revenueChart"></div>
+          </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="admin-card reveal">
+          <div class="admin-card-header">
+            <div class="admin-card-title">📦 Recent Orders</div>
+            <a href="#" class="btn btn-ghost btn-sm">View All →</a>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>User</th>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code style="font-size:11px;background:var(--bg3);padding:2px 6px;border-radius:4px;">#VXS-148</code></td>
+                  <td>Rakib Hassan</td>
+                  <td>FF Guild Glory</td>
+                  <td style="font-weight:700;color:var(--admin-accent2);">$1.25</td>
+                  <td><span class="badge badge-active">Delivered</span></td>
+                  <td style="color:var(--text3);font-size:12px;">Apr 18, 2026</td>
+                </tr>
+                <tr>
+                  <td><code style="font-size:11px;background:var(--bg3);padding:2px 6px;border-radius:4px;">#VXS-147</code></td>
+                  <td>Sabbir Ahmed</td>
+                  <td>iPhone Certified</td>
+                  <td style="font-weight:700;color:var(--admin-accent2);">$10.00</td>
+                  <td><span class="badge badge-pending">Pending</span></td>
+                  <td style="color:var(--text3);font-size:12px;">Apr 18, 2026</td>
+                </tr>
+                <tr>
+                  <td><code style="font-size:11px;background:var(--bg3);padding:2px 6px;border-radius:4px;">#VXS-146</code></td>
+                  <td>Mehedi FF</td>
+                  <td>Drip Client APK</td>
+                  <td style="font-weight:700;color:var(--admin-accent2);">$0.90</td>
+                  <td><span class="badge badge-active">Delivered</span></td>
+                  <td style="color:var(--text3);font-size:12px;">Apr 17, 2026</td>
+                </tr>
+                <tr>
+                  <td><code style="font-size:11px;background:var(--bg3);padding:2px 6px;border-radius:4px;">#VXS-145</code></td>
+                  <td>Arif Hossain</td>
+                  <td>BRMOD PC</td>
+                  <td style="font-weight:700;color:var(--admin-accent2);">$1.00</td>
+                  <td><span class="badge badge-active">Delivered</span></td>
+                  <td style="color:var(--text3);font-size:12px;">Apr 17, 2026</td>
+                </tr>
+                <tr>
+                  <td><code style="font-size:11px;background:var(--bg3);padding:2px 6px;border-radius:4px;">#VXS-144</code></td>
+                  <td>Noman Khan</td>
+                  <td>PC Emote Panel</td>
+                  <td style="font-weight:700;color:var(--admin-accent2);">$0.50</td>
+                  <td><span class="badge badge-pending">Pending</span></td>
+                  <td style="color:var(--text3);font-size:12px;">Apr 17, 2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+        <!-- Top Products -->
+        <div class="admin-card reveal">
+          <div class="admin-card-header">
+            <div class="admin-card-title">🏆 Top Products</div>
+          </div>
+          <div class="admin-card-body" style="padding:0;">
+            <div id="topProductsList"></div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="admin-card reveal">
+          <div class="admin-card-header">
+            <div class="admin-card-title">⚡ Quick Actions</div>
+          </div>
+          <div class="admin-card-body" style="display:flex;flex-direction:column;gap:9px;">
+            <a href="admin-products.html?action=add" class="btn btn-primary btn-full">➕ Add New Product</a>
+            <a href="admin-users.html" class="btn btn-outline btn-full">👥 Manage Users</a>
+            <button class="btn btn-ghost btn-full" onclick="showToast('Orders page coming soon','info')">📦 View All Orders</button>
+            <button class="btn btn-ghost btn-full" onclick="showToast('Settings coming soon','info')">⚙️ Site Settings</button>
+          </div>
+        </div>
+
+        <!-- Recent Users -->
+        <div class="admin-card reveal">
+          <div class="admin-card-header">
+            <div class="admin-card-title">👤 New Users</div>
+            <a href="admin-users.html" class="btn btn-ghost btn-sm">All →</a>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <div id="recentUsersList"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+  /* Revenue bar chart */
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const vals = [28,42,35,55,48,72,60];
+  const max  = Math.max(...vals);
+  const chart = document.getElementById('revenueChart');
+  if(chart) {
+    chart.innerHTML = days.map((d,i) => `
+      <div class="bar-col">
+        <div class="bar-val">$${vals[i]}</div>
+        <div class="bar" style="height:${(vals[i]/max)*120}px"></div>
+        <div class="bar-lbl">${d}</div>
+      </div>`).join('');
+  }
+
+  /* Top products */
+  const topProds = [
+    {icon:'🏆',name:'FF Guild Glory',      cat:'Others',   sales:48, rev:'$60.00'},
+    {icon:'📱',name:'Fluorite iOS FF',     cat:'iPhone',   sales:22, rev:'$110.00'},
+    {icon:'💜',name:'Drip Client APK',     cat:'Non Root', sales:38, rev:'$34.20'},
+    {icon:'🍎',name:'iPhone Certified',    cat:'iPhone',   sales:14, rev:'$140.00'},
+    {icon:'🖥️',name:'PC Emote Panel',     cat:'PC',       sales:31, rev:'$15.50'},
+  ];
+
+  const topList = document.getElementById('topProductsList');
+  if(topList) {
+    topList.innerHTML = topProds.map((p,i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--divider);transition:background 0.2s;" onmouseenter="this.style.background='var(--table-hover)'" onmouseleave="this.style.background=''">
+        <div style="font-size:22px;">${p.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:var(--font-ui);font-size:12.5px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+          <div style="font-size:11px;color:var(--text3);">${p.cat} · ${p.sales} sales</div>
+        </div>
+        <div style="font-family:var(--font-head);font-size:12px;font-weight:900;color:var(--admin-accent2);">${p.rev}</div>
+      </div>`).join('');
+  }
+
+  /* Recent users */
+  const recentUsers = [
+    {init:'R',name:'Rakib Hassan',  date:'Today'},
+    {init:'S',name:'Sabbir Ahmed',  date:'Today'},
+    {init:'M',name:'Mehedi FF',     date:'Yesterday'},
+    {init:'A',name:'Arif Hossain',  date:'Apr 16'},
+  ];
+
+  const rList = document.getElementById('recentUsersList');
+  if(rList) {
+    rList.innerHTML = recentUsers.map(u => `
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--divider);">
+        <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-dark));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">${u.init}</div>
+        <div style="flex:1;"><div style="font-family:var(--font-ui);font-size:12.5px;font-weight:600;color:var(--text);">${u.name}</div></div>
+        <div style="font-size:11px;color:var(--text3);">${u.date}</div>
+      </div>`).join('');
+  }
+
+  /* Responsive grid */
+  function fixGrid(){
+    const g = document.getElementById('mainGrid');
+    if(!g) return;
+    g.style.gridTemplateColumns = window.innerWidth < 900 ? '1fr' : '1fr 340px';
+  }
+  fixGrid(); window.addEventListener('resize', fixGrid);
+</script>
+</body>
+</html>
