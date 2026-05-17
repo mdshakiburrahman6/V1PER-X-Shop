@@ -52,7 +52,8 @@
        — Mobile hamburger menu: #hamburger button
        — Login button: .btn-primary
   ============================================================ -->
-  <header>
+ <div class="header-area">
+   <header>
 
     <!-- Logo -->
     <a href="#" class="logo">
@@ -76,7 +77,7 @@
       <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
 
       <!-- Login Button -->
-      <a href="auth/login.html" class="btn-primary" >Login</a>
+      <a href="auth/login.html" class="btn-primary log_btn" >Login</a>
 
       <!-- Hamburger (Mobile only, shown via CSS) -->
       <div class="hamburger" id="hamburger" aria-label="Menu">
@@ -87,6 +88,7 @@
 
     </div>
   </header>
+ </div>
 
 
   <!-- ============================================================
@@ -100,9 +102,9 @@
     <a href="#categories" class="nav-link" onclick="closeMobile()">📂 Categories</a>
     <a href="#why"        class="nav-link" onclick="closeMobile()">⭐ Why Us</a>
     <a href="#contact"    class="nav-link" onclick="closeMobile()">💬 Support</a>
-    <button class="btn-primary" style="width:100%; padding:12px;" onclick="notify('Login feature coming soon!')">
-      Login / Register
-    </button>
+    <a class="btn-primary log_btn_mobile" style="width:100%; padding:12px;" href="auth/login.html">
+      Login
+    </a>
   </div>
 
 

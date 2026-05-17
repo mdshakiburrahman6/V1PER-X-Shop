@@ -179,10 +179,26 @@ img {
    — Fixed top header with blur effect
    — Logo, desktop nav links, theme toggle, login button
    ============================================================ */
-header {
-  position: fixed;
+.header-area{
+  width: 100%;
+  position: relative;
   top: 0; left: 0; right: 0;
   z-index: 1000;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 clamp(16px, 4vw, 48px);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), border-color var(--transition);
+}
+header {
+  width: 1400px;
+  top: 0; left: 0; right: 0;
+  z-index: 999;
   background: var(--header-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -390,12 +406,20 @@ nav {
 .hero-content {
   position: relative;
   z-index: 2;
-  width: 100%;
+  /* width: 100%;
   padding: clamp(40px, 6vw, 80px) clamp(16px, 6vw, 80px);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(24px, 4vw, 60px);
-  align-items: center;
+  align-items: center; */
+
+  width: 1400px; 
+  margin: 0 auto; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 60px; 
+  padding: 60px clamp(16px, 4vw, 48px);
 }
 
 /* "Premium Gaming Tools" badge pill */
@@ -1474,6 +1498,8 @@ footer {
 /* Tablet — footer 2 column */
 @media (max-width: 1100px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  header{ padding: 0; }
+  .log_btn_mobile{ text-align: center;}
 }
 
 /* Tablet / Mobile — hide desktop nav, show hamburger */
@@ -1486,6 +1512,8 @@ footer {
   .footer-grid   { grid-template-columns: 1fr 1fr; }
   .featured-banner  { text-align: center; justify-content: center; }
   .featured-visual  { display: none; }
+  .announce-bar, .log_btn { display: none;}
+  .log_btn_mobile{ text-align: center;}
 }
 
 /* Small Mobile */
@@ -1497,9 +1525,13 @@ footer {
   .product-grid       { grid-template-columns: 1fr 1fr; }
   .card-btns          { flex-direction: column; }
   .btn-demo, .btn-buy { font-size: 10px; padding: 6px 10px; }
+  .announce-bar , .log_btn { display: none;}
+  .log_btn_mobile{ text-align: center;}
 }
 
 /* Very Small Mobile */
 @media (max-width: 360px) {
   .product-grid { grid-template-columns: 1fr; }
+  .announce-bar , .log_btn { display: none;}
+  .log_btn_mobile{ text-align: center;}
 }
